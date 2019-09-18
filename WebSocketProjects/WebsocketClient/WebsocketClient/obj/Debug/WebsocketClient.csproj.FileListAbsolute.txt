@@ -39,3 +39,17 @@ C:\Users\ROKAS\Desktop\WebSocketProjects\WebSocketProjects\WebsocketClient\Webso
 C:\Users\ROKAS\Desktop\WebSocketProjects\WebSocketProjects\WebsocketClient\WebsocketClient\obj\Debug\WebsocketClient.csproj.CopyComplete
 C:\Users\ROKAS\Desktop\WebSocketProjects\WebSocketProjects\WebsocketClient\WebsocketClient\obj\Debug\WebsocketClient.exe
 C:\Users\ROKAS\Desktop\WebSocketProjects\WebSocketProjects\WebsocketClient\WebsocketClient\obj\Debug\WebsocketClient.pdb
+C:\Users\Edvinas\Desktop\KTU 2019-2020\Objektinis programų projektavimas\RaceField\WebSocketProjects\WebsocketClient\WebsocketClient\bin\Debug\WebsocketClient.exe.config
+C:\Users\Edvinas\Desktop\KTU 2019-2020\Objektinis programų projektavimas\RaceField\WebSocketProjects\WebsocketClient\WebsocketClient\bin\Debug\WebsocketClient.exe
+C:\Users\Edvinas\Desktop\KTU 2019-2020\Objektinis programų projektavimas\RaceField\WebSocketProjects\WebsocketClient\WebsocketClient\bin\Debug\WebsocketClient.pdb
+C:\Users\Edvinas\Desktop\KTU 2019-2020\Objektinis programų projektavimas\RaceField\WebSocketProjects\WebsocketClient\WebsocketClient\bin\Debug\Newtonsoft.Json.dll
+C:\Users\Edvinas\Desktop\KTU 2019-2020\Objektinis programų projektavimas\RaceField\WebSocketProjects\WebsocketClient\WebsocketClient\bin\Debug\websocket-sharp.dll
+C:\Users\Edvinas\Desktop\KTU 2019-2020\Objektinis programų projektavimas\RaceField\WebSocketProjects\WebsocketClient\WebsocketClient\bin\Debug\websocket-sharp.xml
+C:\Users\Edvinas\Desktop\KTU 2019-2020\Objektinis programų projektavimas\RaceField\WebSocketProjects\WebsocketClient\WebsocketClient\obj\Debug\WebsocketClient.csprojAssemblyReference.cache
+C:\Users\Edvinas\Desktop\KTU 2019-2020\Objektinis programų projektavimas\RaceField\WebSocketProjects\WebsocketClient\WebsocketClient\obj\Debug\WebsocketClient.Form1.resources
+C:\Users\Edvinas\Desktop\KTU 2019-2020\Objektinis programų projektavimas\RaceField\WebSocketProjects\WebsocketClient\WebsocketClient\obj\Debug\WebsocketClient.Properties.Resources.resources
+C:\Users\Edvinas\Desktop\KTU 2019-2020\Objektinis programų projektavimas\RaceField\WebSocketProjects\WebsocketClient\WebsocketClient\obj\Debug\WebsocketClient.csproj.GenerateResource.cache
+C:\Users\Edvinas\Desktop\KTU 2019-2020\Objektinis programų projektavimas\RaceField\WebSocketProjects\WebsocketClient\WebsocketClient\obj\Debug\WebsocketClient.csproj.CoreCompileInputs.cache
+C:\Users\Edvinas\Desktop\KTU 2019-2020\Objektinis programų projektavimas\RaceField\WebSocketProjects\WebsocketClient\WebsocketClient\obj\Debug\WebsocketClient.csproj.CopyComplete
+C:\Users\Edvinas\Desktop\KTU 2019-2020\Objektinis programų projektavimas\RaceField\WebSocketProjects\WebsocketClient\WebsocketClient\obj\Debug\WebsocketClient.exe
+C:\Users\Edvinas\Desktop\KTU 2019-2020\Objektinis programų projektavimas\RaceField\WebSocketProjects\WebsocketClient\WebsocketClient\obj\Debug\WebsocketClient.pdb

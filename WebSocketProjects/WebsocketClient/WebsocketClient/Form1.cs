@@ -50,17 +50,21 @@ namespace WebsocketClient
 
             string host = host_begin + IPinput.Text + ":" + PortInput.Text;
             client = new WebSocket(host);
+
             client.OnOpen += (ss, ee) =>
             {
                 
                 listBox1.Items.Add(string.Format("Connected to {0} successfully ", host));
             };
+
             client.OnError += (ss, ee) =>
                listBox1.Items.Add("Error: " + ee.Message);
+
             client.OnMessage += (ss, ee) =>
             {
                 MessageReceived(ss, ee);
             };
+
             client.OnClose += (ss, ee) =>
             {
                 listBox1.Items.Add(string.Format("Disconnected with {0}", host));
