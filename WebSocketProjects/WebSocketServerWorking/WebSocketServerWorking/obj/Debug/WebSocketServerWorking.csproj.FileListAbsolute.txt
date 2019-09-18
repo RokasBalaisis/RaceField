@@ -30,3 +30,14 @@ C:\Users\ROKAS\Desktop\WebSocketProjects\WebSocketProjects\WebSocketServerWorkin
 C:\Users\ROKAS\Desktop\WebSocketProjects\WebSocketProjects\WebSocketServerWorking\WebSocketServerWorking\obj\Debug\WebSocketServerWorking.csproj.CopyComplete
 C:\Users\ROKAS\Desktop\WebSocketProjects\WebSocketProjects\WebSocketServerWorking\WebSocketServerWorking\obj\Debug\WebSocketServerWorking.exe
 C:\Users\ROKAS\Desktop\WebSocketProjects\WebSocketProjects\WebSocketServerWorking\WebSocketServerWorking\obj\Debug\WebSocketServerWorking.pdb
+C:\Users\Edvinas\Desktop\KTU 2019-2020\Objektinis programų projektavimas\RaceField\WebSocketProjects\WebSocketServerWorking\WebSocketServerWorking\bin\Debug\WebSocketServerWorking.exe.config
+C:\Users\Edvinas\Desktop\KTU 2019-2020\Objektinis programų projektavimas\RaceField\WebSocketProjects\WebSocketServerWorking\WebSocketServerWorking\bin\Debug\WebSocketServerWorking.exe
+C:\Users\Edvinas\Desktop\KTU 2019-2020\Objektinis programų projektavimas\RaceField\WebSocketProjects\WebSocketServerWorking\WebSocketServerWorking\bin\Debug\WebSocketServerWorking.pdb
+C:\Users\Edvinas\Desktop\KTU 2019-2020\Objektinis programų projektavimas\RaceField\WebSocketProjects\WebSocketServerWorking\WebSocketServerWorking\bin\Debug\Newtonsoft.Json.dll
+C:\Users\Edvinas\Desktop\KTU 2019-2020\Objektinis programų projektavimas\RaceField\WebSocketProjects\WebSocketServerWorking\WebSocketServerWorking\bin\Debug\websocket-sharp.dll
+C:\Users\Edvinas\Desktop\KTU 2019-2020\Objektinis programų projektavimas\RaceField\WebSocketProjects\WebSocketServerWorking\WebSocketServerWorking\bin\Debug\websocket-sharp.xml
+C:\Users\Edvinas\Desktop\KTU 2019-2020\Objektinis programų projektavimas\RaceField\WebSocketProjects\WebSocketServerWorking\WebSocketServerWorking\obj\Debug\WebSocketServerWorking.csprojAssemblyReference.cache
+C:\Users\Edvinas\Desktop\KTU 2019-2020\Objektinis programų projektavimas\RaceField\WebSocketProjects\WebSocketServerWorking\WebSocketServerWorking\obj\Debug\WebSocketServerWorking.csproj.CoreCompileInputs.cache
+C:\Users\Edvinas\Desktop\KTU 2019-2020\Objektinis programų projektavimas\RaceField\WebSocketProjects\WebSocketServerWorking\WebSocketServerWorking\obj\Debug\WebSocketServerWorking.csproj.CopyComplete
+C:\Users\Edvinas\Desktop\KTU 2019-2020\Objektinis programų projektavimas\RaceField\WebSocketProjects\WebSocketServerWorking\WebSocketServerWorking\obj\Debug\WebSocketServerWorking.exe
+C:\Users\Edvinas\Desktop\KTU 2019-2020\Objektinis programų projektavimas\RaceField\WebSocketProjects\WebSocketServerWorking\WebSocketServerWorking\obj\Debug\WebSocketServerWorking.pdb
