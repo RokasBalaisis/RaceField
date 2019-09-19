@@ -28,6 +28,8 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
             this.listBox1 = new System.Windows.Forms.ListBox();
             this.button2 = new System.Windows.Forms.Button();
             this.button3 = new System.Windows.Forms.Button();
@@ -38,12 +40,14 @@
             this.PortInput = new System.Windows.Forms.TextBox();
             this.playerCounter = new System.Windows.Forms.Label();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
-            this.SendBtn = new System.Windows.Forms.Button();
-            this.textBox1 = new System.Windows.Forms.TextBox();
+            this.InputMessageField = new System.Windows.Forms.TextBox();
             this.usernameInput = new System.Windows.Forms.TextBox();
             this.label3 = new System.Windows.Forms.Label();
             this.backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
-            this.richTextBox1 = new WebsocketClient.TransparentTextField();
+            this.GameRate = new System.Windows.Forms.Timer(this.components);
+            this.transparentCar1 = new WebsocketClient.TransparentCar();
+            this.TextingField = new WebsocketClient.TransparentTextLog();
+            this.transparentTextBoxField1 = new WebsocketClient.TransparentTextBoxField();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
             // 
@@ -132,25 +136,15 @@
             this.pictureBox1.TabStop = false;
             this.pictureBox1.Paint += new System.Windows.Forms.PaintEventHandler(this.pictureBox1_Paint);
             // 
-            // SendBtn
+            // InputMessageField
             // 
-            this.SendBtn.Location = new System.Drawing.Point(288, 381);
-            this.SendBtn.Margin = new System.Windows.Forms.Padding(2);
-            this.SendBtn.Name = "SendBtn";
-            this.SendBtn.Size = new System.Drawing.Size(56, 19);
-            this.SendBtn.TabIndex = 18;
-            this.SendBtn.Text = "Send";
-            this.SendBtn.UseVisualStyleBackColor = true;
-            this.SendBtn.Click += new System.EventHandler(this.SendBtn_Click);
-            // 
-            // textBox1
-            // 
-            this.textBox1.Location = new System.Drawing.Point(2, 380);
-            this.textBox1.Margin = new System.Windows.Forms.Padding(2);
-            this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(282, 20);
-            this.textBox1.TabIndex = 17;
-            this.textBox1.KeyDown += new System.Windows.Forms.KeyEventHandler(this.textBox1_KeyDown);
+            this.InputMessageField.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.InputMessageField.Location = new System.Drawing.Point(1, 659);
+            this.InputMessageField.Margin = new System.Windows.Forms.Padding(2);
+            this.InputMessageField.Name = "InputMessageField";
+            this.InputMessageField.Size = new System.Drawing.Size(1252, 13);
+            this.InputMessageField.TabIndex = 17;
+            this.InputMessageField.KeyDown += new System.Windows.Forms.KeyEventHandler(this.MessageInput_KeyDown);
             // 
             // usernameInput
             // 
@@ -170,27 +164,50 @@
             this.label3.TabIndex = 20;
             this.label3.Text = "Username";
             // 
-            // richTextBox1
+            // GameRate
             // 
-            this.richTextBox1.BackColor = System.Drawing.Color.Transparent;
-            this.richTextBox1.ForeColor = System.Drawing.Color.Black;
-            this.richTextBox1.Location = new System.Drawing.Point(76, 234);
-            this.richTextBox1.Name = "richTextBox1";
-            this.richTextBox1.Size = new System.Drawing.Size(584, 105);
-            this.richTextBox1.TabIndex = 21;
-            this.richTextBox1.Text = "asdasd\nfdfsdf\ndsf\nsdfsdfsdfds";
+            this.GameRate.Tick += new System.EventHandler(this.GameRate_Tick);
+            // 
+            // transparentCar1
+            // 
+            this.transparentCar1.Location = new System.Drawing.Point(261, 391);
+            this.transparentCar1.Name = "transparentCar1";
+            this.transparentCar1.Size = new System.Drawing.Size(100, 51);
+            this.transparentCar1.TabIndex = 23;
+            // 
+            // TextingField
+            // 
+            this.TextingField.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.TextingField.Location = new System.Drawing.Point(2, 462);
+            this.TextingField.Name = "TextingField";
+            this.TextingField.ReadOnly = true;
+            this.TextingField.ScrollBars = System.Windows.Forms.RichTextBoxScrollBars.Vertical;
+            this.TextingField.Size = new System.Drawing.Size(1250, 196);
+            this.TextingField.TabIndex = 22;
+            this.TextingField.Text = "";
+            this.TextingField.TextChanged += new System.EventHandler(this.TextingField_TextChanged);
+            // 
+            // transparentTextBoxField1
+            // 
+            this.transparentTextBoxField1.Location = new System.Drawing.Point(308, 529);
+            this.transparentTextBoxField1.Name = "transparentTextBoxField1";
+            this.transparentTextBoxField1.Size = new System.Drawing.Size(100, 20);
+            this.transparentTextBoxField1.TabIndex = 24;
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(128)))), ((int)(((byte)(128)))), ((int)(((byte)(255)))));
-            this.ClientSize = new System.Drawing.Size(828, 404);
-            this.Controls.Add(this.richTextBox1);
+            this.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("$this.BackgroundImage")));
+            this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.ClientSize = new System.Drawing.Size(1264, 681);
+            this.Controls.Add(this.transparentTextBoxField1);
+            this.Controls.Add(this.transparentCar1);
+            this.Controls.Add(this.TextingField);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.usernameInput);
-            this.Controls.Add(this.SendBtn);
-            this.Controls.Add(this.textBox1);
+            this.Controls.Add(this.InputMessageField);
             this.Controls.Add(this.pictureBox1);
             this.Controls.Add(this.PortInput);
             this.Controls.Add(this.label2);
@@ -200,10 +217,14 @@
             this.Controls.Add(this.button3);
             this.Controls.Add(this.button2);
             this.Controls.Add(this.listBox1);
+            this.DoubleBuffered = true;
+            this.KeyPreview = true;
             this.Margin = new System.Windows.Forms.Padding(2);
             this.Name = "Form1";
             this.Text = "Form1";
             this.Load += new System.EventHandler(this.Form1_Load);
+            this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.Form1_KeyDown);
+            this.KeyUp += new System.Windows.Forms.KeyEventHandler(this.Form1_KeyUp);
             this.Resize += new System.EventHandler(this.Form1_Resize);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.ResumeLayout(false);
@@ -222,12 +243,14 @@
         private System.Windows.Forms.TextBox PortInput;
         private System.Windows.Forms.Label playerCounter;
         private System.Windows.Forms.PictureBox pictureBox1;
-        private System.Windows.Forms.Button SendBtn;
-        private System.Windows.Forms.TextBox textBox1;
+        private System.Windows.Forms.TextBox InputMessageField;
         private System.Windows.Forms.TextBox usernameInput;
         private System.Windows.Forms.Label label3;
         private System.ComponentModel.BackgroundWorker backgroundWorker1;
-        private TransparentTextField richTextBox1;
+        private TransparentTextLog TextingField;
+        private System.Windows.Forms.Timer GameRate;
+        private TransparentCar transparentCar1;
+        private TransparentTextBoxField transparentTextBoxField1;
     }
 }
 

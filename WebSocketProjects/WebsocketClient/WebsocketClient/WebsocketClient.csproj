@@ -50,6 +50,18 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="TransparentTextBoxField.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="UIToolBox\TransparentRichTextField.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="TransparentCar.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="TransparentTextLog.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Form1.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -58,11 +70,11 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="TransparentTextField.cs">
+    <Compile Include="UIToolBox\TransparentPanel.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="TransparentTextField.Designer.cs">
-      <DependentUpon>TransparentTextField.cs</DependentUpon>
+    <Compile Include="UIToolBox\TransparentTextBox.cs">
+      <SubType>Component</SubType>
     </Compile>
     <EmbeddedResource Include="Form1.resx">
       <DependentUpon>Form1.cs</DependentUpon>
@@ -75,10 +87,8 @@
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
     </Compile>
-    <EmbeddedResource Include="TransparentTextField.resx">
-      <DependentUpon>TransparentTextField.cs</DependentUpon>
-    </EmbeddedResource>
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
@@ -92,6 +102,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\car_blue.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
