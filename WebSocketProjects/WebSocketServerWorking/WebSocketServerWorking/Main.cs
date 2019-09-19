@@ -55,6 +55,7 @@ namespace WebSocketServerWorking
                 counter = 0;
             }
         }
+
         protected override void OnClose(CloseEventArgs e)
         {
             MapData.getMapData().unregisterPlayer(this.ID);

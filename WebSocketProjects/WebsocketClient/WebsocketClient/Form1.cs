@@ -14,8 +14,6 @@ using WebSocketSharp.Net;
 
 namespace WebsocketClient
 {
-
-
     public partial class Form1 : Form //     !!!!!!!! ! WARNING ! !!!!!!!!    must be first class in this file
     {
         [DllImport("user32.dll", EntryPoint = "HideCaret")]
@@ -34,6 +32,17 @@ namespace WebsocketClient
         {
             image = new Bitmap(pictureBox1.ClientSize.Width, pictureBox1.ClientSize.Height, System.Drawing.Imaging.PixelFormat.Format32bppArgb);
             PlayingField_Paint();
+        }
+
+        private void Form1_Resize(object sender, EventArgs e) // TODO: set default playing field ratio and hangle resizing all objects IF PAGE for e.g. MAXIMIZED IT SHOULD keep ratio to playingfield not window. and set it in the middle
+        {
+            Control control = (Control)sender;
+
+            // Ensure the Form remains square (Height = Width). 
+            if (control.Size.Height != control.Size.Width)
+            {
+                control.Size = new Size(control.Size.Width, control.Size.Width);
+            }
         }
 
         private void SendBtn_Click(object sender, EventArgs e)
@@ -104,7 +113,7 @@ namespace WebsocketClient
             pictureBox1.Invalidate();
         }
 
-        private void MessageReceived(object ss, MessageEventArgs ee) // root message get function to call other function to parse messages
+        private void MessageReceived(object ss, MessageEventArgs ee) // root message get function to call other functions to parse messages
         {
             listBox1.Items.Add("Response: " + ee.Data);
             JObject data = JObject.Parse(ee.Data);
@@ -153,38 +162,7 @@ namespace WebsocketClient
         {
             e.Graphics.DrawImage(image, 0, 0, image.Width, image.Height);
         }
-
-
-
-        protected override void WndProc(ref Message m)
-        {
-            int wParam = (m.WParam.ToInt32() & 0xFFF0);
-
-            if (m.Msg == 0x00A3)    //block double click restore/maximize event
-            {
-                return;
-            }
-
-            if (m.Msg == 0x0112) // WM_SYSCOMMAND
-            {
-                // Check your window state here
-                if (m.WParam == new IntPtr(0xF030)) // Maximize event - SC_MAXIMIZE from Winuser.h
-                {
-                    //texting1.Text = "maximized";
-                }
-                if (m.WParam == new IntPtr(0xF120)) // Restore event - SC_RESTORE from Winuser.h
-                {
-                    //texting1.Text = "restored";
-
-                }
-                if (m.WParam == new IntPtr(0XF020)) // Minimize event - SC_MINIMIZE from Winuser.h
-                {
-                    //texting1.Text = "minimized";
-                }
-            }
-            base.WndProc(ref m);
-        }
-
+       
         private void richTextBox1_TextChanged(object sender, EventArgs e)
         {
             // set the current caret position to the end
