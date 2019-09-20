@@ -133,15 +133,16 @@ namespace WebsocketClient
             }
         }
 
-        private void button2_Click(object sender, EventArgs e)
+        private void ConnectBTN_Click(object sender, EventArgs e)
         {
 
             string host = host_begin + IPinput.Text + ":" + PortInput.Text;
             client = new WebSocket(host);
 
+            MainMenuPanel.Visible = false;
+            //TODO: add screen disabler - grey half transparent panel in background
             client.OnOpen += (ss, ee) =>
             {
-                
                 listBox1.Items.Add(string.Format("Connected to {0} successfully ", host));
             };
 
@@ -156,7 +157,7 @@ namespace WebsocketClient
             client.OnClose += (ss, ee) =>
             {
                 listBox1.Items.Add(string.Format("Disconnected with {0}", host));
-                PlayingField_Paint();
+                PlayingField_Paint(); // TODO: deprecated
             };
             client.SetCookie(new Cookie("username", usernameInput.Text));
             client.Connect();
@@ -250,5 +251,9 @@ namespace WebsocketClient
             TextingField.ScrollToCaret();
         }
 
+        private void DBPanelCnnectBTN_Click(object sender, EventArgs e)
+        {
+            // TODO: connect to databse register if not exists or connect and get player prefs from DB
+        }
     }
 }

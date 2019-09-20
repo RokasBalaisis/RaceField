@@ -50,7 +50,13 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="TransparentTextBoxField.cs">
+    <Compile Include="testas.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="UIToolBox\test.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="UIToolBox\TransparentTextBox.cs">
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="UIToolBox\TransparentRichTextField.cs">
@@ -73,9 +79,7 @@
     <Compile Include="UIToolBox\TransparentPanel.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="UIToolBox\TransparentTextBox.cs">
-      <SubType>Component</SubType>
-    </Compile>
+    <Compile Include="UIToolBox\win32.cs" />
     <EmbeddedResource Include="Form1.resx">
       <DependentUpon>Form1.cs</DependentUpon>
     </EmbeddedResource>
