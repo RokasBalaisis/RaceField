@@ -14,10 +14,13 @@ using WebSocketSharp.Net;
 
 namespace WebsocketClient
 {
-
-
     public partial class Form1 : Form //     !!!!!!!! ! WARNING ! !!!!!!!!    must be first class in this file
     {
+        public static bool isMessaging = false;
+        public static bool isUpPressed = false;
+        public static bool isDownPressed = false;
+        public static bool isLeftPressed = false;
+        public static bool isRightPressed = false;
         [DllImport("user32.dll", EntryPoint = "HideCaret")]
         public static extern long HideCaret(IntPtr hwnd);
 
@@ -29,31 +32,117 @@ namespace WebsocketClient
         private WebSocket client;
         const string host_begin = "ws://";
         Bitmap image;
-
+        
         private void Form1_Load(object sender, EventArgs e)
         {
             image = new Bitmap(pictureBox1.ClientSize.Width, pictureBox1.ClientSize.Height, System.Drawing.Imaging.PixelFormat.Format32bppArgb);
             PlayingField_Paint();
         }
-
-        private void SendBtn_Click(object sender, EventArgs e)
+        
+        private void Form1_Resize(object sender, EventArgs e) // TODO: set default playing field ratio and hangle resizing all objects IF PAGE for e.g. MAXIMIZED IT SHOULD keep ratio to playingfield not window. and set it in the middle
         {
-            var content = textBox1.Text;
-            textBox1.Text = "";
-            JObject message = new JObject();
-            message["message"] = content;
-            client.Send(message.ToString());
+            Control control = (Control)sender;
+
+            // Ensure the Form remains square (Height = Width). 
+            if (control.Size.Height != control.Size.Width)
+            {
+                control.Size = new Size(control.Size.Width, control.Size.Width);
+            }
         }
 
-        private void button2_Click(object sender, EventArgs e)
+        private void Form1_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (isMessaging)
+            {
+            }
+            else
+            {
+                if (e.KeyCode == Keys.Oemtilde) // go into messaging mode
+                {
+                    isMessaging = true;
+                    InputMessageField.Focus();
+                }
+                else if (e.KeyCode == Keys.Up)
+                {
+                    isUpPressed = true;
+                }
+                else if (e.KeyCode == Keys.Down)
+                {
+                    isDownPressed = true;
+                }
+                else if (e.KeyCode == Keys.Left)
+                {
+                    isLeftPressed = true;
+                }
+                else if (e.KeyCode == Keys.Right)
+                {
+                    isRightPressed = true;
+                }
+            }
+        }
+
+        private void Form1_KeyUp(object sender, KeyEventArgs e)
+        {
+            if (isMessaging)
+            {
+
+            }
+            else
+            {
+                if (e.KeyCode == Keys.Up)
+                {
+                    isUpPressed = false;
+                }
+                else if (e.KeyCode == Keys.Down)
+                {
+                    isDownPressed = false;
+                }
+                else if (e.KeyCode == Keys.Left)
+                {
+                    isLeftPressed = false;
+                }
+                else if (e.KeyCode == Keys.Right)
+                {
+                    isRightPressed = false;
+                }
+            }
+        }
+
+        private void GameRate_Tick(object sender, EventArgs e)
+        {
+            // TODO: add logic for moving
+            // moving should be car like up- forward, down-slowing, left\right - rotating
+        }
+
+        private void MessageInput_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyValue == 13)
+            {
+                var content = InputMessageField.Text;
+                InputMessageField.Text = "";
+                JObject message = new JObject();
+                message["message"] = content;
+                client.Send(message.ToString());
+                e.Handled = true;
+                e.SuppressKeyPress = true;
+            }
+            else if (e.KeyCode == Keys.Oemtilde)
+            {
+                isMessaging = false;
+                this.Focus(); // TODO: remove focus from input field to form - this don't work
+            }
+        }
+
+        private void ConnectBTN_Click(object sender, EventArgs e)
         {
 
             string host = host_begin + IPinput.Text + ":" + PortInput.Text;
             client = new WebSocket(host);
 
+            MainMenuPanel.Visible = false;
+            //TODO: add screen disabler - grey half transparent panel in background
             client.OnOpen += (ss, ee) =>
             {
-                
                 listBox1.Items.Add(string.Format("Connected to {0} successfully ", host));
             };
 
@@ -68,7 +157,7 @@ namespace WebsocketClient
             client.OnClose += (ss, ee) =>
             {
                 listBox1.Items.Add(string.Format("Disconnected with {0}", host));
-                PlayingField_Paint();
+                PlayingField_Paint(); // TODO: deprecated
             };
             client.SetCookie(new Cookie("username", usernameInput.Text));
             client.Connect();
@@ -89,7 +178,7 @@ namespace WebsocketClient
             //player initial location should be received from server along with map size and data
         }
 
-        private void DrawPlayer(Point position, Color color)
+        private void DrawPlayer(Point position, Color color) // TODO: remove and work with images
         {
             
             Point[] points = new Point[4];
@@ -104,7 +193,7 @@ namespace WebsocketClient
             pictureBox1.Invalidate();
         }
 
-        private void MessageReceived(object ss, MessageEventArgs ee) // root message get function to call other function to parse messages
+        private void MessageReceived(object ss, MessageEventArgs ee) // root message get function to call other functions to parse messages
         {
             listBox1.Items.Add("Response: " + ee.Data);
             JObject data = JObject.Parse(ee.Data);
@@ -112,14 +201,14 @@ namespace WebsocketClient
             {
                 string text = data["message"].ToString();
                 Color color = Color.FromName(data["sender"]["color"].ToString());
-                richTextBox1.SelectedRtf = string.Format(@"{{\rtf1\ansi \b {0} \b0 }}", data["sender"]["username"] + ": ");
-                richTextBox1.SelectedRtf = string.Format(@"{{\rtf1\ansi \plain {0} \plain0 \par }}", text);
-                string[] lines = richTextBox1.Lines;    // Count the lines of rich text box
-                var start = richTextBox1.GetFirstCharIndexFromLine(lines.Count() - 2);  // Get the 1st char index of the appended text
+                TextingField.SelectedRtf = string.Format(@"{{\rtf1\ansi \b {0} \b0 }}", data["sender"]["username"] + ": ");
+                TextingField.SelectedRtf = string.Format(@"{{\rtf1\ansi \plain {0} \plain0 \par }}", text);
+                string[] lines = TextingField.Lines;    // Count the lines of rich text box
+                var start = TextingField.GetFirstCharIndexFromLine(lines.Count() - 2);  // Get the 1st char index of the appended text
                 var length = lines[lines.Count() - 2].Length; // Get the last char index of appended text
 
-                richTextBox1.Select(start, length);
-                richTextBox1.SelectionColor = color;
+                TextingField.Select(start, length);
+                TextingField.SelectionColor = color;
 
             }
             else
@@ -153,64 +242,18 @@ namespace WebsocketClient
         {
             e.Graphics.DrawImage(image, 0, 0, image.Width, image.Height);
         }
-
-
-
-        protected override void WndProc(ref Message m)
-        {
-            int wParam = (m.WParam.ToInt32() & 0xFFF0);
-
-            if (m.Msg == 0x00A3)    //block double click restore/maximize event
-            {
-                return;
-            }
-
-            if (m.Msg == 0x0112) // WM_SYSCOMMAND
-            {
-                // Check your window state here
-                if (m.WParam == new IntPtr(0xF030)) // Maximize event - SC_MAXIMIZE from Winuser.h
-                {
-                    //texting1.Text = "maximized";
-                }
-                if (m.WParam == new IntPtr(0xF120)) // Restore event - SC_RESTORE from Winuser.h
-                {
-                    //texting1.Text = "restored";
-
-                }
-                if (m.WParam == new IntPtr(0XF020)) // Minimize event - SC_MINIMIZE from Winuser.h
-                {
-                    //texting1.Text = "minimized";
-                }
-            }
-            base.WndProc(ref m);
-        }
-
-        private void richTextBox1_TextChanged(object sender, EventArgs e)
+       
+        private void TextingField_TextChanged(object sender, EventArgs e)
         {
             // set the current caret position to the end
-            richTextBox1.SelectionStart = richTextBox1.Text.Length;
+            TextingField.SelectionStart = TextingField.Text.Length;
             // scroll it automatically
-            richTextBox1.ScrollToCaret();
+            TextingField.ScrollToCaret();
         }
 
-        private void textBox1_KeyDown(object sender, KeyEventArgs e)
+        private void DBPanelCnnectBTN_Click(object sender, EventArgs e)
         {
-            if (e.KeyValue == 13)
-            {
-                SendBtn.PerformClick();
-
-                e.Handled = true;
-                e.SuppressKeyPress = true;
-            }
+            // TODO: connect to databse register if not exists or connect and get player prefs from DB
         }
-
     }
-
-    public class Player
-    {
-        // all player drawing stats settings and functions to draw it
-        // maybe some other class for current player, because it will have more functionality and controlls 
-    }
-
-
 }
