@@ -67,6 +67,10 @@ namespace WebSocketServerWorking
                         exit = true;
                         break;
 
+                    case "test":
+                        DBmanager.GetDBmanager().Connect();
+                        break;
+
                     case "help":
                         Console.WriteLine("*****List of available commands*****");
                         Console.WriteLine("clear - clear the console");

@@ -1,0 +1,12 @@
+c2114109@urhen.com
+racefieldslaptazodis
+https://remotemysql.com/dashboard.php
+Username: nt62qrWRGL
+
+Database name: nt62qrWRGL
+
+Password: JGyJoOraKI
+
+Server: remotemysql.com
+
+Port: 3306

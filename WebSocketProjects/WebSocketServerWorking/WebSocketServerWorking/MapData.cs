@@ -10,7 +10,7 @@ using Newtonsoft.Json.Linq;
 
 namespace WebSocketServerWorking
 {
-    public class MapData // Singleton made by R.P. :D
+    public class MapData
     {
         // TODO: rename methods with capital letters
         List<Player> players;
