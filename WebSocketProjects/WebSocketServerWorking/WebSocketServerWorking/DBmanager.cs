@@ -11,7 +11,7 @@ namespace WebSocketServerWorking
     {
         static private DBmanager dBmanager;
         MySqlConnection cnn;
-        String connetionString = @"Data Source=remotemysql.com:3306;Initial Catalog=nt62qrWRGL;User ID=nt62qrWRGL;Password=JGyJoOraKI";
+        String connetionString = @"Data Source=remotemysql.com; Port=3306;Initial Catalog=nt62qrWRGL;User ID=nt62qrWRGL;Password=JGyJoOraKI";
         String sql = "";
         MySqlCommand command;
         MySqlDataReader sqlDataReader;
