@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data.SqlClient;
+using MySql.Data.MySqlClient;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -10,12 +10,12 @@ namespace WebSocketServerWorking
     public class DBmanager
     {
         static private DBmanager dBmanager;
-        SqlConnection cnn;
+        MySqlConnection cnn;
         String connetionString = @"Data Source=remotemysql.com:3306;Initial Catalog=nt62qrWRGL;User ID=nt62qrWRGL;Password=JGyJoOraKI";
         String sql = "";
-        SqlCommand command;
-        SqlDataReader sqlDataReader;
-
+        MySqlCommand command;
+        MySqlDataReader sqlDataReader;
+       
         public DBmanager() { }
 
         public static DBmanager GetDBmanager()
@@ -29,9 +29,9 @@ namespace WebSocketServerWorking
 
         private void StartConnection(String sql)
         {
-            cnn = new SqlConnection(connetionString);
+            cnn = new MySqlConnection(connetionString);
             cnn.Open();
-            command = new SqlCommand(sql, cnn);
+            command = new MySqlCommand(sql, cnn);
             sqlDataReader = command.ExecuteReader();
         }
 

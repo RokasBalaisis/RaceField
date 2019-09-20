@@ -29,7 +29,7 @@ namespace WebSocketServerWorking
                         break;
 
                     case "players data":
-                        JObject data = MapData.getMapData().getPlayersData();
+                        JObject data = null;//.getPlayersData();
                         int i = 0;
                         if (data[i.ToString()] == null)
                         {
@@ -53,7 +53,7 @@ namespace WebSocketServerWorking
 
                     case "start":
                         wssv.Start();
-                        wssv.AddWebSocketService<Main>("/");
+                        wssv.AddWebSocketService<SocketComunicator>("/");
                         ConsoleHelpers.PrintInitialServerInfo(wssv.Address, wssv.Port);
                         break;
 
@@ -91,17 +91,6 @@ namespace WebSocketServerWorking
 
         }
 
-        public class Program
-        {
-            public static void Main(string[] args)
-            {
-                ConsoleHelpers.SetInitialWindowSize();
-                ConsoleHelpers.PrintLogo();
-                var ip = "127.0.0.1";
-                var port = 8080;
-                var wssv = new WebSocketServer(System.Net.IPAddress.Parse(ip), port);
-                StartCommandListener(wssv);
-            }
-        }
+        
     }
 }

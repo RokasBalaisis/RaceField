@@ -15,19 +15,6 @@ namespace WebSocketServerWorking
         // TODO: rename methods with capital letters
         List<Player> players;
         private int idCounter = 0;
-        private static MapData mapData;
-
-        public MapData() { }
-
-        public static MapData getMapData()
-        {
-            if (mapData == null)
-            {
-                mapData = new MapData();
-                mapData.players = new List<Player>();
-            }
-            return mapData;
-        }
 
         public int registerPlayer(string ID, string username, Point pos, Color color)
         {
@@ -83,7 +70,7 @@ namespace WebSocketServerWorking
         public void UpdateClientsMap(WebSocketSessionManager Sessions)
         {
             JObject data = new JObject();
-            data["players"] = MapData.getMapData().getPlayersData();
+            data["players"] = getPlayersData();
             data["playerCount"] = players.Count;
             data["type"] = "mapupdate";
             for (int i = 0; i < players.Count; i++)

@@ -10,7 +10,7 @@ using Newtonsoft.Json.Linq;
 
 namespace WebSocketServerWorking
 {
-    public class Main : WebSocketBehavior
+    public class SocketComunicator : WebSocketBehavior
     {
         int[,] initialLoc = new int[,] //temporary
         {
@@ -36,9 +36,9 @@ namespace WebSocketServerWorking
             var msg = e.Data;
             Console.WriteLine(msg);
             JObject data = JObject.Parse(e.Data);
-            data["sender"] = MapData.getMapData().getPlayerDataByID(this.ID);
+            data["sender"] = ServerController.GetMapData(0).getPlayerDataByID(this.ID);
             data["type"] = "message";
-            MapData.getMapData().SendAll(Sessions, data); // TODO: check if only message data is send  strip all other
+            ServerController.GetMapData(0).SendAll(Sessions, data); // TODO: check if only message data is send  strip all other
             Send(msg);
         }
 
@@ -46,8 +46,8 @@ namespace WebSocketServerWorking
         {
             string username = Context.CookieCollection["username"].Value;
             Console.WriteLine(this.ID + " connected successfully");
-            int id = MapData.getMapData().registerPlayer(this.ID, username, new Point(initialLoc[counter, 0], initialLoc[counter, 1]), colors[counter]);
-            MapData.getMapData().UpdateClientsMap(Sessions);
+            int id = ServerController.GetMapData(0).registerPlayer(this.ID, username, new Point(initialLoc[counter, 0], initialLoc[counter, 1]), colors[counter]);
+            ServerController.GetMapData(0).UpdateClientsMap(Sessions);
             counter++;
 
             if (counter == initialLoc.GetLength(0))
@@ -58,8 +58,8 @@ namespace WebSocketServerWorking
 
         protected override void OnClose(CloseEventArgs e)
         {
-            MapData.getMapData().unregisterPlayer(this.ID);
-            MapData.getMapData().UpdateClientsMap(Sessions);
+            ServerController.GetMapData(0).unregisterPlayer(this.ID);
+            ServerController.GetMapData(0).UpdateClientsMap(Sessions);
             base.OnClose(e);
         }
     }
