@@ -45,17 +45,17 @@
             this.backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
             this.GameRate = new System.Windows.Forms.Timer(this.components);
             this.MainMenuPanel = new System.Windows.Forms.Panel();
+            this.DBPanel = new System.Windows.Forms.Panel();
+            this.DBPanelCnnectBTN = new System.Windows.Forms.Button();
+            this.DBPanelPassLabel = new System.Windows.Forms.Label();
+            this.DBPanelUNameLabel = new System.Windows.Forms.Label();
+            this.DBPanelPassField = new System.Windows.Forms.TextBox();
+            this.DBPanelUNameField = new System.Windows.Forms.TextBox();
+            this.DBPanelName = new System.Windows.Forms.Label();
             this.MainMenuTitle = new System.Windows.Forms.Label();
             this.InputMessageField = new WebsocketClient.TransparentTextLog();
             this.transparentCar1 = new WebsocketClient.TransparentCar();
             this.TextingField = new WebsocketClient.TransparentTextLog();
-            this.DBPanel = new System.Windows.Forms.Panel();
-            this.DBPanelName = new System.Windows.Forms.Label();
-            this.DBPanelUNameField = new System.Windows.Forms.TextBox();
-            this.DBPanelPassField = new System.Windows.Forms.TextBox();
-            this.DBPanelUNameLabel = new System.Windows.Forms.Label();
-            this.DBPanelPassLabel = new System.Windows.Forms.Label();
-            this.DBPanelCnnectBTN = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.MainMenuPanel.SuspendLayout();
             this.DBPanel.SuspendLayout();
@@ -141,7 +141,7 @@
             this.pictureBox1.Location = new System.Drawing.Point(12, 132);
             this.pictureBox1.Margin = new System.Windows.Forms.Padding(2);
             this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(799, 174);
+            this.pictureBox1.Size = new System.Drawing.Size(799, 308);
             this.pictureBox1.TabIndex = 15;
             this.pictureBox1.TabStop = false;
             this.pictureBox1.Paint += new System.Windows.Forms.PaintEventHandler(this.pictureBox1_Paint);
@@ -185,6 +185,72 @@
             this.MainMenuPanel.Size = new System.Drawing.Size(960, 540);
             this.MainMenuPanel.TabIndex = 25;
             // 
+            // DBPanel
+            // 
+            this.DBPanel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(128)))), ((int)(((byte)(128)))));
+            this.DBPanel.Controls.Add(this.DBPanelCnnectBTN);
+            this.DBPanel.Controls.Add(this.DBPanelPassLabel);
+            this.DBPanel.Controls.Add(this.DBPanelUNameLabel);
+            this.DBPanel.Controls.Add(this.DBPanelPassField);
+            this.DBPanel.Controls.Add(this.DBPanelUNameField);
+            this.DBPanel.Controls.Add(this.DBPanelName);
+            this.DBPanel.Location = new System.Drawing.Point(292, 165);
+            this.DBPanel.Name = "DBPanel";
+            this.DBPanel.Size = new System.Drawing.Size(383, 238);
+            this.DBPanel.TabIndex = 21;
+            this.DBPanel.Visible = false;
+            // 
+            // DBPanelCnnectBTN
+            // 
+            this.DBPanelCnnectBTN.Location = new System.Drawing.Point(130, 188);
+            this.DBPanelCnnectBTN.Name = "DBPanelCnnectBTN";
+            this.DBPanelCnnectBTN.Size = new System.Drawing.Size(131, 23);
+            this.DBPanelCnnectBTN.TabIndex = 5;
+            this.DBPanelCnnectBTN.Text = "Login / Register";
+            this.DBPanelCnnectBTN.UseVisualStyleBackColor = true;
+            this.DBPanelCnnectBTN.Click += new System.EventHandler(this.DBPanelCnnectBTN_Click);
+            // 
+            // DBPanelPassLabel
+            // 
+            this.DBPanelPassLabel.AutoSize = true;
+            this.DBPanelPassLabel.Location = new System.Drawing.Point(128, 140);
+            this.DBPanelPassLabel.Name = "DBPanelPassLabel";
+            this.DBPanelPassLabel.Size = new System.Drawing.Size(52, 13);
+            this.DBPanelPassLabel.TabIndex = 4;
+            this.DBPanelPassLabel.Text = "password";
+            // 
+            // DBPanelUNameLabel
+            // 
+            this.DBPanelUNameLabel.AutoSize = true;
+            this.DBPanelUNameLabel.Location = new System.Drawing.Point(127, 97);
+            this.DBPanelUNameLabel.Name = "DBPanelUNameLabel";
+            this.DBPanelUNameLabel.Size = new System.Drawing.Size(53, 13);
+            this.DBPanelUNameLabel.TabIndex = 3;
+            this.DBPanelUNameLabel.Text = "username";
+            // 
+            // DBPanelPassField
+            // 
+            this.DBPanelPassField.Location = new System.Drawing.Point(197, 140);
+            this.DBPanelPassField.Name = "DBPanelPassField";
+            this.DBPanelPassField.Size = new System.Drawing.Size(100, 20);
+            this.DBPanelPassField.TabIndex = 2;
+            // 
+            // DBPanelUNameField
+            // 
+            this.DBPanelUNameField.Location = new System.Drawing.Point(197, 94);
+            this.DBPanelUNameField.Name = "DBPanelUNameField";
+            this.DBPanelUNameField.Size = new System.Drawing.Size(100, 20);
+            this.DBPanelUNameField.TabIndex = 1;
+            // 
+            // DBPanelName
+            // 
+            this.DBPanelName.AutoSize = true;
+            this.DBPanelName.Location = new System.Drawing.Point(158, 28);
+            this.DBPanelName.Name = "DBPanelName";
+            this.DBPanelName.Size = new System.Drawing.Size(83, 13);
+            this.DBPanelName.TabIndex = 0;
+            this.DBPanelName.Text = "Login / Register";
+            // 
             // MainMenuTitle
             // 
             this.MainMenuTitle.AutoSize = true;
@@ -224,72 +290,6 @@
             this.TextingField.TabIndex = 22;
             this.TextingField.Text = "";
             this.TextingField.TextChanged += new System.EventHandler(this.TextingField_TextChanged);
-            // 
-            // DBPanel
-            // 
-            this.DBPanel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(128)))), ((int)(((byte)(128)))));
-            this.DBPanel.Controls.Add(this.DBPanelCnnectBTN);
-            this.DBPanel.Controls.Add(this.DBPanelPassLabel);
-            this.DBPanel.Controls.Add(this.DBPanelUNameLabel);
-            this.DBPanel.Controls.Add(this.DBPanelPassField);
-            this.DBPanel.Controls.Add(this.DBPanelUNameField);
-            this.DBPanel.Controls.Add(this.DBPanelName);
-            this.DBPanel.Location = new System.Drawing.Point(292, 165);
-            this.DBPanel.Name = "DBPanel";
-            this.DBPanel.Size = new System.Drawing.Size(383, 238);
-            this.DBPanel.TabIndex = 21;
-            this.DBPanel.Visible = false;
-            // 
-            // DBPanelName
-            // 
-            this.DBPanelName.AutoSize = true;
-            this.DBPanelName.Location = new System.Drawing.Point(158, 28);
-            this.DBPanelName.Name = "DBPanelName";
-            this.DBPanelName.Size = new System.Drawing.Size(83, 13);
-            this.DBPanelName.TabIndex = 0;
-            this.DBPanelName.Text = "Login / Register";
-            // 
-            // DBPanelUNameField
-            // 
-            this.DBPanelUNameField.Location = new System.Drawing.Point(197, 94);
-            this.DBPanelUNameField.Name = "DBPanelUNameField";
-            this.DBPanelUNameField.Size = new System.Drawing.Size(100, 20);
-            this.DBPanelUNameField.TabIndex = 1;
-            // 
-            // DBPanelPassField
-            // 
-            this.DBPanelPassField.Location = new System.Drawing.Point(197, 140);
-            this.DBPanelPassField.Name = "DBPanelPassField";
-            this.DBPanelPassField.Size = new System.Drawing.Size(100, 20);
-            this.DBPanelPassField.TabIndex = 2;
-            // 
-            // DBPanelUNameLabel
-            // 
-            this.DBPanelUNameLabel.AutoSize = true;
-            this.DBPanelUNameLabel.Location = new System.Drawing.Point(127, 97);
-            this.DBPanelUNameLabel.Name = "DBPanelUNameLabel";
-            this.DBPanelUNameLabel.Size = new System.Drawing.Size(53, 13);
-            this.DBPanelUNameLabel.TabIndex = 3;
-            this.DBPanelUNameLabel.Text = "username";
-            // 
-            // DBPanelPassLabel
-            // 
-            this.DBPanelPassLabel.AutoSize = true;
-            this.DBPanelPassLabel.Location = new System.Drawing.Point(128, 140);
-            this.DBPanelPassLabel.Name = "DBPanelPassLabel";
-            this.DBPanelPassLabel.Size = new System.Drawing.Size(52, 13);
-            this.DBPanelPassLabel.TabIndex = 4;
-            this.DBPanelPassLabel.Text = "password";
-            // 
-            // DBPanelCnnectBTN
-            // 
-            this.DBPanelCnnectBTN.Location = new System.Drawing.Point(130, 188);
-            this.DBPanelCnnectBTN.Name = "DBPanelCnnectBTN";
-            this.DBPanelCnnectBTN.Size = new System.Drawing.Size(131, 23);
-            this.DBPanelCnnectBTN.TabIndex = 5;
-            this.DBPanelCnnectBTN.Text = "Login / Register";
-            this.DBPanelCnnectBTN.UseVisualStyleBackColor = true;
-            this.DBPanelCnnectBTN.Click += new System.EventHandler(this.DBPanelCnnectBTN_Click);
             // 
             // Form1
             // 
