@@ -21,12 +21,21 @@ namespace WebsocketClient
         public static bool isDownPressed = false;
         public static bool isLeftPressed = false;
         public static bool isRightPressed = false;
+
+        public static int speed = 15;
+        public static int angle = 0;
+        public static int mod = 0;
+        public static double x = 100;
+        public static double y = 100;
+        
+
         [DllImport("user32.dll", EntryPoint = "HideCaret")]
         public static extern long HideCaret(IntPtr hwnd);
 
         public Form1()
         {
             InitializeComponent();
+
         }
 
         private WebSocket client;
@@ -36,6 +45,11 @@ namespace WebsocketClient
         private void Form1_Load(object sender, EventArgs e)
         {
             image = new Bitmap(pictureBox1.ClientSize.Width, pictureBox1.ClientSize.Height, System.Drawing.Imaging.PixelFormat.Format32bppArgb);
+                        
+            GameRate_Tick(sender,e);
+
+           
+
             PlayingField_Paint();
         }
         
@@ -65,18 +79,23 @@ namespace WebsocketClient
                 else if (e.KeyCode == Keys.Up)
                 {
                     isUpPressed = true;
+                    mod = 1;
+
                 }
                 else if (e.KeyCode == Keys.Down)
                 {
                     isDownPressed = true;
+                    mod = -1;
                 }
                 else if (e.KeyCode == Keys.Left)
                 {
                     isLeftPressed = true;
+                    angle -= 10;
                 }
                 else if (e.KeyCode == Keys.Right)
                 {
                     isRightPressed = true;
+                    angle += 10;
                 }
             }
         }
@@ -92,10 +111,12 @@ namespace WebsocketClient
                 if (e.KeyCode == Keys.Up)
                 {
                     isUpPressed = false;
+                    
                 }
                 else if (e.KeyCode == Keys.Down)
                 {
                     isDownPressed = false;
+                    
                 }
                 else if (e.KeyCode == Keys.Left)
                 {
@@ -105,6 +126,12 @@ namespace WebsocketClient
                 {
                     isRightPressed = false;
                 }
+
+                if(e.KeyCode == Keys.Up || e.KeyCode == Keys.Down)
+                {
+                    mod = 0;
+                }
+
             }
         }
 
@@ -112,7 +139,54 @@ namespace WebsocketClient
         {
             // TODO: add logic for moving
             // moving should be car like up- forward, down-slowing, left\right - rotating
+            Timer timer = new Timer();
+            timer.Interval = (100); // 10 secs
+            timer.Tick += new EventHandler(timer_Tick);
+            timer.Start();
+
         }
+
+        private void timer_Tick(object sender, EventArgs e)
+        {
+            x += (speed * mod) * Math.Cos(Math.PI / 150 * angle);
+            y += (speed * mod) * Math.Sin(Math.PI / 150 * angle);
+
+            Point position = new Point(Convert.ToInt32(x),Convert.ToInt32(y));
+
+            
+            
+            DrawPlayer(position, Color.Red);
+           
+
+
+        }
+
+        public Point RotatePoint(Point p1, Point p2, double angle)
+        {
+
+            double radians = ConvertToRadians(angle);
+            double sin = Math.Sin(radians);
+            double cos = Math.Cos(radians);
+
+            // Translate point back to origin
+            p1.X -= p2.X;
+            p1.Y -= p2.Y;
+
+            // Rotate point
+            double xnew = p1.X * cos - p1.Y * sin;
+            double ynew = p1.X * sin + p1.Y * cos;
+
+            // Translate point back
+            Point newPoint = new Point((int)xnew + p2.X, (int)ynew + p2.Y);
+            return newPoint;
+        }
+
+        public double ConvertToRadians(double angle)
+        {
+            return (Math.PI / 180) * angle;
+        }
+
+
 
         private void MessageInput_KeyDown(object sender, KeyEventArgs e)
         {
@@ -174,6 +248,7 @@ namespace WebsocketClient
 
             Graphics g = Graphics.FromImage(image);
             g.FillRectangle(Brushes.Black, pictureBox1.ClientRectangle);
+
             pictureBox1.Invalidate();
             //player initial location should be received from server along with map size and data
         }
@@ -182,15 +257,27 @@ namespace WebsocketClient
         {
             
             Point[] points = new Point[4];
-            points[0] = new Point(-5 + position.X, -5 + position.Y);
-            points[1] = new Point(-5 + position.X, 5 + position.Y);
-            points[2] = new Point(5 + position.X, 5 + position.Y);
-            points[3] = new Point(5 + position.X, -5 + position.Y);
+            points[0] = new Point(-10 + position.X, -10 + position.Y);
+            points[1] = new Point(-10 + position.X, 10 + position.Y);
+            points[2] = new Point(10 + position.X, 10 + position.Y);
+            points[3] = new Point(10 + position.X, -10 + position.Y);
+
+            Point rotation = new Point(position.X, position.Y);
+
+            
+            for (int i = 0; i < points.Length; i++)
+            {
+                    points[i] = RotatePoint(points[i], rotation, angle);
+            }
+            
+            
 
             Brush brush = new SolidBrush(color);
             Graphics g = Graphics.FromImage(image);
             g.FillPolygon(brush, points); // needs graphics object don't know how to get it
             pictureBox1.Invalidate();
+
+            
         }
 
         private void MessageReceived(object ss, MessageEventArgs ee) // root message get function to call other functions to parse messages
