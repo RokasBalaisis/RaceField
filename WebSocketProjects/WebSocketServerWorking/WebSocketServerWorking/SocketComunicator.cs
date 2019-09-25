@@ -45,8 +45,8 @@ namespace WebSocketServerWorking
         protected override void OnOpen()
         {
             string username = Context.CookieCollection["username"].Value;
-            Console.WriteLine(this.ID + " connected successfully");
             int id = ServerController.GetMapData(0).registerPlayer(this.ID, username, new Point(initialLoc[counter, 0], initialLoc[counter, 1]), colors[counter]);
+            Console.WriteLine(this.ID + ", id = " + id + " connected successfully");
             ServerController.GetMapData(0).UpdateClientsMap(Sessions);
             counter++;
 

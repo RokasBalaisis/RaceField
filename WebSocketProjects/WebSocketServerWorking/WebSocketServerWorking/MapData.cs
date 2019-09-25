@@ -16,10 +16,13 @@ namespace WebSocketServerWorking
         List<Player> players;
         private int idCounter = 0;
 
+        public MapData()
+        {
+            players = new List<Player>();
+        }
+
         public int registerPlayer(string ID, string username, Point pos, Color color)
         {
-            //if (players == null)
-            //    players = new List<Player>();
             players.Add(new Player(ID, idCounter++, username, color, pos));
             return idCounter - 1;
         }
