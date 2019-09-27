@@ -14,7 +14,7 @@ namespace WebSocketServerWorking
     {
         int[,] initialLoc = new int[,] //temporary
         {
-            { 200, 100 },
+            { 20, 10 },
             { 400, 300 },
             { 600, 10  },
             { 400, 200 },
@@ -31,21 +31,35 @@ namespace WebSocketServerWorking
         static int counter = 0;             //temporary
 
 
-        protected override void OnMessage(MessageEventArgs e)
+        protected override void OnMessage(MessageEventArgs e) 
         {
-            var msg = e.Data;
-            Console.WriteLine(msg);
+            Console.WriteLine(e.Data);
             JObject data = JObject.Parse(e.Data);
-            data["sender"] = ServerController.GetMapData(0).getPlayerDataByID(this.ID);
-            data["type"] = "message";
-            ServerController.GetMapData(0).SendAll(Sessions, data); // TODO: check if only message data is send  strip all other
-            Send(msg);
+            switch (data["type"].ToString())
+            {
+                case "message":
+                    ChatMessageReceived(data);
+                    break;
+                default:
+
+                    break;
+            }
+
         }
 
-        protected override void OnOpen()
+        protected void ChatMessageReceived(JObject data)
         {
-            string username = Context.CookieCollection["username"].Value;
-            int id = ServerController.GetMapData(0).registerPlayer(this.ID, username, new Point(initialLoc[counter, 0], initialLoc[counter, 1]), colors[counter]);
+            JObject message = new JObject();
+            message["message"] = data["message"].ToString();
+            message["sender"] = ServerController.GetMapData(0).GetPlayerTagByID(this.ID);
+            ServerController.GetMapData(0).SendAll(Sessions, message);
+            //Send(data.ToString()); // no need for this...
+        }
+
+        protected override void OnOpen() 
+        {
+            string username = Context.CookieCollection["username"].Value; // TODO seperate username and nickname
+            int id = ServerController.GetMapData(0).registerPlayer(this.ID, username, username, new Point(initialLoc[counter, 0], initialLoc[counter, 1]), colors[counter]);
             Console.WriteLine(this.ID + ", id = " + id + " connected successfully");
             ServerController.GetMapData(0).UpdateClientsMap(Sessions);
             counter++;
@@ -58,7 +72,7 @@ namespace WebSocketServerWorking
 
         protected override void OnClose(CloseEventArgs e)
         {
-            ServerController.GetMapData(0).unregisterPlayer(this.ID);
+            ServerController.GetMapData(0).UnregisterPlayer(this.ID);
             ServerController.GetMapData(0).UpdateClientsMap(Sessions);
             base.OnClose(e);
         }

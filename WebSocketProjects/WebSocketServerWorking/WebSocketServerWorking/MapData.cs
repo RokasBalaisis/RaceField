@@ -21,13 +21,13 @@ namespace WebSocketServerWorking
             players = new List<Player>();
         }
 
-        public int registerPlayer(string ID, string username, Point pos, Color color)
+        public int registerPlayer(string ID, string username, string nickname, Point pos, Color color)
         {
-            players.Add(new Player(ID, idCounter++, username, color, pos));
+            players.Add(new Player(ID, idCounter++, username, nickname, color, pos));
             return idCounter - 1;
         }
 
-        public void unregisterPlayer(string id)
+        public void UnregisterPlayer(string id)
         {
             for (int i = 0; i < players.Count; i++)
             {
@@ -39,7 +39,7 @@ namespace WebSocketServerWorking
             }
         }
 
-        public JObject getPlayersData()
+        public JObject GetPlayersData()
         {
             JObject data = new JObject();
             foreach (var player in players)
@@ -49,13 +49,33 @@ namespace WebSocketServerWorking
             return data;
         }
 
-        public JObject getPlayerDataByID(string ID)
+        public JObject GetPlayerPublicStatsByID(string ID)
+        {
+            Player player = _FindPlayer(ID);
+            if (player != null)
+            {
+                return player.GetMyPublicStats();
+            }
+            return null;
+        }
+
+        public JObject GetPlayerTagByID(string ID)
+        {
+            Player player = _FindPlayer(ID);
+            if (player != null)
+            {
+                return player.GetMyTag();
+            }
+            return null;
+        }
+
+        private Player _FindPlayer(string ID)
         {
             for (int i = 0; i < players.Count; i++)
             {
                 if (players[i].ID == ID)
                 {
-                    return players[i].GetMyPublicStats();
+                    return players[i];
                 }
             }
             return null;
@@ -73,9 +93,9 @@ namespace WebSocketServerWorking
         public void UpdateClientsMap(WebSocketSessionManager Sessions)
         {
             JObject data = new JObject();
-            data["players"] = getPlayersData();
+            data["players"] = GetPlayersData();
             data["playerCount"] = players.Count;
-            data["type"] = "mapupdate";
+            data["type"] = "mapUpdate";
             for (int i = 0; i < players.Count; i++)
             {
                 data["id"] = players[i].id;

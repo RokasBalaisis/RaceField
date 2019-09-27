@@ -24,6 +24,11 @@ namespace WebsocketClient
         [DllImport("user32.dll", EntryPoint = "HideCaret")]
         public static extern long HideCaret(IntPtr hwnd);
 
+        //current game information
+        public List<Obstacle> obstacles;
+        public List<Collectable> collectables;
+        public List<Player> players;
+
         public Form1()
         {
             InitializeComponent();
@@ -35,8 +40,7 @@ namespace WebsocketClient
         
         private void Form1_Load(object sender, EventArgs e)
         {
-            image = new Bitmap(pictureBox1.ClientSize.Width, pictureBox1.ClientSize.Height, System.Drawing.Imaging.PixelFormat.Format32bppArgb);
-            PlayingField_Paint();
+            PlayingField_destroy();
         }
         
         private void Form1_Resize(object sender, EventArgs e) // TODO: set default playing field ratio and hangle resizing all objects IF PAGE for e.g. MAXIMIZED IT SHOULD keep ratio to playingfield not window. and set it in the middle
@@ -121,6 +125,7 @@ namespace WebsocketClient
                 var content = InputMessageField.Text;
                 InputMessageField.Text = "";
                 JObject message = new JObject();
+                message["type"] = "message";
                 message["message"] = content;
                 client.Send(message.ToString());
                 e.Handled = true;
@@ -143,11 +148,11 @@ namespace WebsocketClient
             //TODO: add screen disabler - grey half transparent panel in background
             client.OnOpen += (ss, ee) =>
             {
-                listBox1.Items.Add(string.Format("Connected to {0} successfully ", host));
+                DebugLog(string.Format("Connected to {0} successfully ", host));
             };
 
             client.OnError += (ss, ee) =>
-               listBox1.Items.Add("Error: " + ee.Message);
+               DebugLog("Error: " + ee.Message);
 
             client.OnMessage += (ss, ee) =>
             {
@@ -156,86 +161,109 @@ namespace WebsocketClient
 
             client.OnClose += (ss, ee) =>
             {
-                listBox1.Items.Add(string.Format("Disconnected with {0}", host));
-                PlayingField_Paint(); // TODO: deprecated
+                DebugLog(string.Format("Disconnected with {0}", host));
+                PlayingField_destroy();
             };
-            client.SetCookie(new Cookie("username", usernameInput.Text));
+            client.SetCookie(new Cookie("username", usernameInput.Text)); // TODO maybe username not nickname
             client.Connect();
         }
 
-        private void button3_Click(object sender, EventArgs e)
+        private void DisconnectBTN_Click(object sender, EventArgs e)
         {
             client.Close();
-            PlayingField_Paint();
         }
 
-        private void PlayingField_Paint()
+        // paint map then connected to game
+        private void PlayingField_setup() // TODO paint map (put all objects on map)
         {
-
-            Graphics g = Graphics.FromImage(image);
-            g.FillRectangle(Brushes.Black, pictureBox1.ClientRectangle);
-            pictureBox1.Invalidate();
-            //player initial location should be received from server along with map size and data
+            // map data should be gained from server
         }
 
-        private void DrawPlayer(Point position, Color color) // TODO: remove and work with images
+        // draw map if disconnected from game or draw default if just turned on game
+        private void PlayingField_destroy() // TODO remove all game info, clear area and paint default map (put all objects on map)
+        {
+            // map data should be gained from server
+        }
+
+        // update objects on playing field and stats
+        // Param: data - changes of 
+        private void PlayingField_update(JObject data) // TODO code static object position update or new adding, drops add, player postition update, statistics update
         {
             
-            Point[] points = new Point[4];
-            points[0] = new Point(-5 + position.X, -5 + position.Y);
-            points[1] = new Point(-5 + position.X, 5 + position.Y);
-            points[2] = new Point(5 + position.X, 5 + position.Y);
-            points[3] = new Point(5 + position.X, -5 + position.Y);
+        }
 
-            Brush brush = new SolidBrush(color);
-            Graphics g = Graphics.FromImage(image);
-            g.FillPolygon(brush, points); // needs graphics object don't know how to get it
-            pictureBox1.Invalidate();
+        private void SpawnPlayer(Player player) // create player car on map
+        {
+            
         }
 
         private void MessageReceived(object ss, MessageEventArgs ee) // root message get function to call other functions to parse messages
         {
-            listBox1.Items.Add("Response: " + ee.Data);
+            DebugLog("Response: " + ee.Data);
             JObject data = JObject.Parse(ee.Data);
-            if (data["type"].ToString() == "message")
+            switch (data["type"].ToString())
             {
-                string text = data["message"].ToString();
-                Color color = Color.FromName(data["sender"]["color"].ToString());
-                TextingField.SelectedRtf = string.Format(@"{{\rtf1\ansi \b {0} \b0 }}", data["sender"]["username"] + ": ");
-                TextingField.SelectedRtf = string.Format(@"{{\rtf1\ansi \plain {0} \plain0 \par }}", text);
-                string[] lines = TextingField.Lines;    // Count the lines of rich text box
-                var start = TextingField.GetFirstCharIndexFromLine(lines.Count() - 2);  // Get the 1st char index of the appended text
-                var length = lines[lines.Count() - 2].Length; // Get the last char index of appended text
-
-                TextingField.Select(start, length);
-                TextingField.SelectionColor = color;
-
+                case "message":
+                    ChatMessageReceived(data);
+                    break;
+                case "mapUpdate":
+                    MapUpdateReceived(data);
+                    break;
+                default:
+                    DebugLog("ERROR undefined message received!!!");
+                    break;
             }
-            else
-            {//type mapupdate
-                PlayingField_Paint();
-                int playercount = Int16.Parse(data["playerCount"].ToString());
-                playerCounter.Text = "Players: " + playercount;
-                playerCounter.BringToFront();
-                int id = Int16.Parse(data["id"].ToString());
-                foreach (var player in (JObject)data["players"])
-                {
-                    string key = player.Key;
-                    int thisid = Int16.Parse(key);
-                    JToken value = player.Value;
-                    JToken location = value["location"];
-                    Point locationpoint = new Point(Int16.Parse(location["X"].ToString()), Int16.Parse(location["Y"].ToString()));
-                    Color color = Color.FromName(value["color"].ToString());
-                    if (id == thisid)
-                    {
-                        DrawPlayer(locationpoint, color);
-                    }
-                    else
-                    {
-                        DrawPlayer(locationpoint, color);
-                    }
-                }
+        }
+
+        private void ChatMessageReceived(JObject data)
+        {
+            string text = data["message"].ToString();
+            Color color = Color.FromName(data["sender"]["color"].ToString());
+            TextingField.SelectedRtf = string.Format(@"{{\rtf1\ansi \b {0} \b0 }}", data["sender"]["nickname"] + ": ");
+            TextingField.SelectedRtf = string.Format(@"{{\rtf1\ansi \plain {0} \plain0 \par }}", text);
+            string[] lines = TextingField.Lines;    // Count the lines of rich text box
+            var start = TextingField.GetFirstCharIndexFromLine(lines.Count() - 2);  // Get the 1st char index of the appended text
+            var length = lines[lines.Count() - 2].Length; // Get the last char index of appended text
+
+            TextingField.Select(start, length);
+            TextingField.SelectionColor = color;
+        }
+
+        private void MapUpdateReceived(JObject data) // received map changes data so apply to current localy saved game state
+        {
+            PlayingField_update((JObject) data["mapChanges"]);
+
+            int playercount = Int16.Parse(data["playerCount"].ToString());
+            playerCounter.Text = "Players: " + playercount;
+            playerCounter.BringToFront();
+            int id = Int16.Parse(data["id"].ToString());
+        }
+
+        private void MapSetupReceived(JObject data) // received data of all map so draw or update its up to client
+        {
+            //spawning obstacles
+            // TODO check obstacles list and add if none exists
+
+            //adding players
+            foreach (var player in (JObject)data["players"]) // TODO check if exists and update or create if not exists
+            {
+                string key = player.Key;
+                int thisid = Int16.Parse(key);
+                JToken value = player.Value;
+                int id = int.Parse(value["id"].ToString());
+                JToken location = value["location"];
+                Point locationpoint = new Point(Int16.Parse(location["X"].ToString()), Int16.Parse(location["Y"].ToString()));
+                Color color = Color.FromName(value["color"].ToString());
+                float angle = float.Parse(value["rotation"].ToString());
+
+                players.Add(new Player(id, locationpoint));
             }
+
+            //spawning player cars
+            // TODO check cars list and add if none exists
+            
+            //spawning packets
+            // TODO check collectables list and add if none exists
         }
 
         private void pictureBox1_Paint(object sender, PaintEventArgs e)
@@ -254,6 +282,13 @@ namespace WebsocketClient
         private void DBPanelCnnectBTN_Click(object sender, EventArgs e)
         {
             // TODO: connect to databse register if not exists or connect and get player prefs from DB
+        }
+
+        // TODO make anabstract class for logger that can be singleton
+        void DebugLog(string message)
+        {
+            DebugLogField.Select(DebugLogField.TextLength-1, DebugLogField.TextLength-1);
+            DebugLogField.SelectedRtf = string.Format(@"{{\rtf1\ansi \plain {0} \plain0 \par }}", message);
         }
     }
 }
