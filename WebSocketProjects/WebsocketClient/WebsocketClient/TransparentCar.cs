@@ -8,7 +8,7 @@ using System.Windows.Forms;
 
 namespace WebsocketClient
 {
-    class TransparentCar : TransparentPanel
+    public class TransparentCar : TransparentPanel
     {
         protected override void OnDraw()
         {
@@ -26,6 +26,7 @@ namespace WebsocketClient
 
             // Draws the two images
             //this.graphics.DrawImage(broculoImage, big);
+            this.graphics.RotateTransform(45);
             this.graphics.DrawImage(broculoImage, small);
         }
     }

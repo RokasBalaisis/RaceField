@@ -51,12 +51,9 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="testas.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="UIToolBox\test.cs">
-      <SubType>Component</SubType>
-    </Compile>
+    <Compile Include="Collectable.cs" />
+    <Compile Include="Obstacle.cs" />
+    <Compile Include="Player.cs" />
     <Compile Include="UIToolBox\TransparentTextBox.cs">
       <SubType>Component</SubType>
     </Compile>

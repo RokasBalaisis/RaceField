@@ -49,8 +49,17 @@ namespace WebsocketClient
         
         private void Form1_Load(object sender, EventArgs e)
         {
-            PlayingField_destroy();
+<<<<<<< HEAD
+            image = new Bitmap(pictureBox1.ClientSize.Width, pictureBox1.ClientSize.Height, System.Drawing.Imaging.PixelFormat.Format32bppArgb);
+                        
             GameRate_Tick(sender,e);
+
+           
+
+            PlayingField_Paint();
+=======
+            PlayingField_destroy();
+>>>>>>> ramunas
         }
         
         private void Form1_Resize(object sender, EventArgs e) // TODO: set default playing field ratio and hangle resizing all objects IF PAGE for e.g. MAXIMIZED IT SHOULD keep ratio to playingfield not window. and set it in the middle
@@ -143,6 +152,7 @@ namespace WebsocketClient
             timer.Interval = (100); // 10 secs
             timer.Tick += new EventHandler(timer_Tick);
             timer.Start();
+
         }
 
         private void timer_Tick(object sender, EventArgs e)
@@ -151,7 +161,13 @@ namespace WebsocketClient
             y += (speed * mod) * Math.Sin(Math.PI / 150 * angle);
 
             Point position = new Point(Convert.ToInt32(x),Convert.ToInt32(y));
-            //DrawPlayer(position, Color.Red); // TODO: make drawing and call it here
+
+            
+            
+            DrawPlayer(position, Color.Red);
+           
+
+
         }
 
         public Point RotatePoint(Point p1, Point p2, double angle)
@@ -248,16 +264,49 @@ namespace WebsocketClient
             // map data should be gained from server
         }
 
+<<<<<<< HEAD
+            Graphics g = Graphics.FromImage(image);
+            g.FillRectangle(Brushes.Black, pictureBox1.ClientRectangle);
+
+            pictureBox1.Invalidate();
+            //player initial location should be received from server along with map size and data
+=======
         // update objects on playing field and stats
         // Param: data - changes of 
         private void PlayingField_update(JObject data) // TODO code static object position update or new adding, drops add, player postition update, statistics update
         {
             
+>>>>>>> ramunas
         }
 
         private void SpawnPlayer(Player player) // create player car on map
         {
             
+<<<<<<< HEAD
+            Point[] points = new Point[4];
+            points[0] = new Point(-10 + position.X, -10 + position.Y);
+            points[1] = new Point(-10 + position.X, 10 + position.Y);
+            points[2] = new Point(10 + position.X, 10 + position.Y);
+            points[3] = new Point(10 + position.X, -10 + position.Y);
+
+            Point rotation = new Point(position.X, position.Y);
+
+            
+            for (int i = 0; i < points.Length; i++)
+            {
+                    points[i] = RotatePoint(points[i], rotation, angle);
+            }
+            
+            
+
+            Brush brush = new SolidBrush(color);
+            Graphics g = Graphics.FromImage(image);
+            g.FillPolygon(brush, points); // needs graphics object don't know how to get it
+            pictureBox1.Invalidate();
+
+            
+=======
+>>>>>>> ramunas
         }
 
         private void MessageReceived(object ss, MessageEventArgs ee) // root message get function to call other functions to parse messages

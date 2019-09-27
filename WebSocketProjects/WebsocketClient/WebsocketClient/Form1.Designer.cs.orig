@@ -55,6 +55,10 @@
             this.InputMessageField = new WebsocketClient.TransparentTextLog();
             this.transparentCar1 = new WebsocketClient.TransparentCar();
             this.TextingField = new WebsocketClient.TransparentTextLog();
+<<<<<<< HEAD
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
+=======
+>>>>>>> ramunas
             this.MainMenuPanel.SuspendLayout();
             this.DBPanel.SuspendLayout();
             this.SuspendLayout();
@@ -124,6 +128,20 @@
             this.playerCounter.Size = new System.Drawing.Size(0, 13);
             this.playerCounter.TabIndex = 10;
             // 
+<<<<<<< HEAD
+            // pictureBox1
+            // 
+            this.pictureBox1.BackColor = System.Drawing.Color.Transparent;
+            this.pictureBox1.Location = new System.Drawing.Point(12, 132);
+            this.pictureBox1.Margin = new System.Windows.Forms.Padding(2);
+            this.pictureBox1.Name = "pictureBox1";
+            this.pictureBox1.Size = new System.Drawing.Size(799, 308);
+            this.pictureBox1.TabIndex = 15;
+            this.pictureBox1.TabStop = false;
+            this.pictureBox1.Paint += new System.Windows.Forms.PaintEventHandler(this.pictureBox1_Paint);
+            // 
+=======
+>>>>>>> ramunas
             // usernameInput
             // 
             this.usernameInput.Location = new System.Drawing.Point(139, 88);
