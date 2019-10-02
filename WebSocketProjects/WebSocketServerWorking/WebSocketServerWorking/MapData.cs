@@ -12,8 +12,7 @@ namespace WebSocketServerWorking
 {
     public class MapData
     {
-        // TODO: rename methods with capital letters
-        List<Player> players;
+        public List<Player> players; // observers collection
         private int idCounter = 0;
 
         public MapData()
@@ -21,17 +20,18 @@ namespace WebSocketServerWorking
             players = new List<Player>();
         }
 
-        public int registerPlayer(string ID, string username, string nickname, Point pos, Color color)
+        public int RegisterPlayer(Player player) // observer register
         {
-            players.Add(new Player(ID, idCounter++, username, nickname, color, pos));
+            player.id = idCounter++;
+            players.Add(player);
             return idCounter - 1;
         }
 
-        public void UnregisterPlayer(string id)
+        public void UnregisterPlayer(Player player) // observer unregister
         {
             for (int i = 0; i < players.Count; i++)
             {
-                if (players[i].ID == id)
+                if (players[i].ID == player.ID)
                 {
                     players.RemoveAt(i);
                     break;
@@ -51,7 +51,7 @@ namespace WebSocketServerWorking
 
         public JObject GetPlayerPublicStatsByID(string ID)
         {
-            Player player = _FindPlayer(ID);
+            Player player = FindPlayer(ID);
             if (player != null)
             {
                 return player.GetMyPublicStats();
@@ -61,7 +61,7 @@ namespace WebSocketServerWorking
 
         public JObject GetPlayerTagByID(string ID)
         {
-            Player player = _FindPlayer(ID);
+            Player player = FindPlayer(ID);
             if (player != null)
             {
                 return player.GetMyTag();
@@ -69,7 +69,7 @@ namespace WebSocketServerWorking
             return null;
         }
 
-        private Player _FindPlayer(string ID)
+        public Player FindPlayer(string ID)
         {
             for (int i = 0; i < players.Count; i++)
             {
@@ -81,7 +81,7 @@ namespace WebSocketServerWorking
             return null;
         }
 
-        public void SendAll(WebSocketSessionManager Sessions, JObject data)
+        public void SendAll(WebSocketSessionManager Sessions, JObject data) // observer notifyAll()
         {
             for (int i = 0; i < players.Count; i++)
             {

@@ -16,16 +16,16 @@ namespace WebSocketServerWorking
         public string ID; //secret sesssion id
         public string username; // player username // should not be used for identification in client side
         public string nickname; // player nickname
-        public int id; // public player id
+        public int id = -1; // public player id 
         public int carModel; // id of car model
 
         //Settings
         Color color;
 
-        public Player(string id, int pubid, string username, string nickname, Color color, Point pos, int carModel = 0)
+        public Player(string id, string username, string nickname, Color color, Point pos, int carModel = 0)
         {
             ID = id;
-            this.id = pubid;
+            //this.id = pubid;
             this.username = username;
             this.nickname = nickname;
             location = pos;

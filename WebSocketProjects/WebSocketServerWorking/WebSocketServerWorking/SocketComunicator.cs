@@ -20,7 +20,7 @@ namespace WebSocketServerWorking
             { 400, 200 },
             { 500, 10 },
         };
-        Color[] colors = new Color[]
+        Color[] colors = new Color[]     //temporary
         {
             Color.Red,
             Color.Purple,
@@ -59,12 +59,12 @@ namespace WebSocketServerWorking
         protected override void OnOpen() 
         {
             string username = Context.CookieCollection["username"].Value; // TODO seperate username and nickname
-            int id = ServerController.GetMapData(0).registerPlayer(this.ID, username, username, new Point(initialLoc[counter, 0], initialLoc[counter, 1]), colors[counter]);
+            int id = ServerController.GetMapData(0).RegisterPlayer(new Player(this.ID, username, username, colors[counter], new Point(initialLoc[counter, 0], initialLoc[counter, 1])));
             Console.WriteLine(this.ID + ", id = " + id + " connected successfully");
             ServerController.GetMapData(0).UpdateClientsMap(Sessions);
             counter++;
 
-            if (counter == initialLoc.GetLength(0))
+            if (counter == initialLoc.GetLength(0)) //temporary
             {
                 counter = 0;
             }
@@ -72,7 +72,7 @@ namespace WebSocketServerWorking
 
         protected override void OnClose(CloseEventArgs e)
         {
-            ServerController.GetMapData(0).UnregisterPlayer(this.ID);
+            ServerController.GetMapData(0).UnregisterPlayer(ServerController.GetMapData(0).FindPlayer(this.ID));
             ServerController.GetMapData(0).UpdateClientsMap(Sessions);
             base.OnClose(e);
         }
