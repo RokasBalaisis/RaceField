@@ -26,7 +26,7 @@ namespace WebsocketClient
 
             // Draws the two images
             //this.graphics.DrawImage(broculoImage, big);
-            this.graphics.RotateTransform(45);
+            //this.graphics.RotateTransform(45); //grafikos pasukimui
             this.graphics.DrawImage(broculoImage, small);
         }
     }

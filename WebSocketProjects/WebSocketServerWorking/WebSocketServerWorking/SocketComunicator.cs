@@ -56,7 +56,7 @@ namespace WebSocketServerWorking
             //Send(data.ToString()); // no need for this...
         }
 
-        protected override void OnOpen() 
+        protected override void OnOpen()
         {
             string username = Context.CookieCollection["username"].Value; // TODO seperate username and nickname
             int id = ServerController.GetMapData(0).RegisterPlayer(new Player(this.ID, username, username, colors[counter], new Point(initialLoc[counter, 0], initialLoc[counter, 1])));
