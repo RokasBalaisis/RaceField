@@ -11,6 +11,7 @@ using Newtonsoft.Json.Linq;
 using System.Runtime.InteropServices;
 using WebSocketSharp;
 using WebSocketSharp.Net;
+using System.Diagnostics;
 
 namespace WebsocketClient
 {
@@ -65,7 +66,8 @@ namespace WebsocketClient
             GameRate_Tick(sender,e);
 
             setMoveAlgorithm(new MoveStop()); // Initializing first time as stationary
-
+            CarController carController = new CarController();
+            carController.MakeSlowCar();
         }
         
         private void Form1_Resize(object sender, EventArgs e) // TODO: set default playing field ratio and hangle resizing all objects IF PAGE for e.g. MAXIMIZED IT SHOULD keep ratio to playingfield not window. and set it in the middle
