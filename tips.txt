@@ -1,0 +1,14 @@
+singleton - db
+observer update map notifications
+facotry - objektai ir masinos, paketai -- nelabai tinka nes turi buti daugiau bendro tarp objektu, gal kokiu kliuciu skirtingu... arba ne paketai.. gali buti checkpoint(galbut irgi tiktu) arba life pack arba speed pack
+
+startegy judejimo greitis....( juda greit letai, i sona arba stovi), kviecia ta pati metoda bet skiriasi judejimo strategija.. 
+
+
+strategy
+factory
+
+observer - server side klientu informavimui apie mapo pasikeitimus
+strategy - judejimui iketurias puses arba judejimui letai normaliai, ir tt 
+builder - sudelioti daikta is kitu daiktu - pasirinktinai susirinkti daikta
+reikia jau daryti klasiu diagrama...

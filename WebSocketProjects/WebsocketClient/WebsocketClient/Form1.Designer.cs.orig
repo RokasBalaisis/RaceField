@@ -55,10 +55,6 @@
             this.InputMessageField = new WebsocketClient.TransparentTextLog();
             this.transparentCar1 = new WebsocketClient.TransparentCar();
             this.TextingField = new WebsocketClient.TransparentTextLog();
-<<<<<<< HEAD
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
-=======
->>>>>>> ramunas
             this.MainMenuPanel.SuspendLayout();
             this.DBPanel.SuspendLayout();
             this.SuspendLayout();
@@ -123,25 +119,12 @@
             // 
             this.playerCounter.AutoSize = true;
             this.playerCounter.ForeColor = System.Drawing.Color.Black;
-            this.playerCounter.Location = new System.Drawing.Point(640, 9);
+            this.playerCounter.Location = new System.Drawing.Point(1180, 9);
             this.playerCounter.Name = "playerCounter";
-            this.playerCounter.Size = new System.Drawing.Size(0, 13);
+            this.playerCounter.Size = new System.Drawing.Size(62, 13);
             this.playerCounter.TabIndex = 10;
+            this.playerCounter.Text = "playercount";
             // 
-<<<<<<< HEAD
-            // pictureBox1
-            // 
-            this.pictureBox1.BackColor = System.Drawing.Color.Transparent;
-            this.pictureBox1.Location = new System.Drawing.Point(12, 132);
-            this.pictureBox1.Margin = new System.Windows.Forms.Padding(2);
-            this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(799, 308);
-            this.pictureBox1.TabIndex = 15;
-            this.pictureBox1.TabStop = false;
-            this.pictureBox1.Paint += new System.Windows.Forms.PaintEventHandler(this.pictureBox1_Paint);
-            // 
-=======
->>>>>>> ramunas
             // usernameInput
             // 
             this.usernameInput.Location = new System.Drawing.Point(139, 88);
@@ -194,7 +177,6 @@
             this.DBPanel.Name = "DBPanel";
             this.DBPanel.Size = new System.Drawing.Size(383, 238);
             this.DBPanel.TabIndex = 21;
-            this.DBPanel.Visible = false;
             // 
             // DBPanelCnnectBTN
             // 
@@ -260,9 +242,9 @@
             // DebugLogField
             // 
             this.DebugLogField.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.DebugLogField.Location = new System.Drawing.Point(12, 6);
+            this.DebugLogField.Location = new System.Drawing.Point(12, 9);
             this.DebugLogField.Name = "DebugLogField";
-            this.DebugLogField.Size = new System.Drawing.Size(988, 195);
+            this.DebugLogField.Size = new System.Drawing.Size(988, 192);
             this.DebugLogField.TabIndex = 26;
             this.DebugLogField.Text = "";
             // 
@@ -279,10 +261,15 @@
             // 
             // transparentCar1
             // 
-            this.transparentCar1.Location = new System.Drawing.Point(53, 436);
+            this.transparentCar1.Location = new System.Drawing.Point(51, 375);
             this.transparentCar1.Name = "transparentCar1";
-            this.transparentCar1.Size = new System.Drawing.Size(100, 51);
+<<<<<<< HEAD
+            this.transparentCar1.Size = new System.Drawing.Size(102, 51);
+=======
+            this.transparentCar1.Size = new System.Drawing.Size(124, 61);
+>>>>>>> development
             this.transparentCar1.TabIndex = 23;
+            this.transparentCar1.Paint += new System.Windows.Forms.PaintEventHandler(this.TransparentCar1_Paint);
             // 
             // TextingField
             // 
