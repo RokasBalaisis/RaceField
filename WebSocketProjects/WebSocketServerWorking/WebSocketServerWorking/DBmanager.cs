@@ -4,6 +4,9 @@ using MySql.Data.MySqlClient;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
+using System.Text.RegularExpressions;
 
 namespace WebSocketServerWorking
 {
@@ -15,8 +18,10 @@ namespace WebSocketServerWorking
         }
 
         MySqlConnection cnn;
+
         private const string ConnectionString = @"Data Source=remotemysql.com; Port=3306;Initial Catalog=nt62qrWRGL;User ID=nt62qrWRGL;Password=JGyJoOraKI";
         private string sql = "";
+
         MySqlCommand command;
         MySqlDataReader sqlDataReader;
         
@@ -27,6 +32,7 @@ namespace WebSocketServerWorking
 
         private void StartConnection(string sql)
         {
+
             cnn = new MySqlConnection(ConnectionString);
             cnn.Open();
             command = new MySqlCommand(sql, cnn);
@@ -53,5 +59,6 @@ namespace WebSocketServerWorking
             }
             CloseConnection();
         }
+
     }
 }
