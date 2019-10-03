@@ -261,10 +261,11 @@
             // 
             // transparentCar1
             // 
-            this.transparentCar1.Location = new System.Drawing.Point(53, 436);
+            this.transparentCar1.Location = new System.Drawing.Point(51, 375);
             this.transparentCar1.Name = "transparentCar1";
-            this.transparentCar1.Size = new System.Drawing.Size(100, 51);
+            this.transparentCar1.Size = new System.Drawing.Size(124, 61);
             this.transparentCar1.TabIndex = 23;
+            this.transparentCar1.Paint += new System.Windows.Forms.PaintEventHandler(this.TransparentCar1_Paint);
             // 
             // TextingField
             // 
