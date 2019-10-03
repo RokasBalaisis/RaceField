@@ -27,6 +27,8 @@ namespace WebsocketClient
         public static int mod = 0;
         public static double x = 100;
         public static double y = 100;
+
+        public static Form1 form;
         
 
         [DllImport("user32.dll", EntryPoint = "HideCaret")]
@@ -35,12 +37,12 @@ namespace WebsocketClient
         //current game information
         public List<Obstacle> obstacles;
         public List<Collectable> collectables;
-        public List<Player> players;
+        public List<Player> players; // remake to be able to acce player by their id ... maybe
 
         public Form1()
         {
             InitializeComponent();
-
+            form = this;
         }
 
         private WebSocket client;
@@ -51,6 +53,7 @@ namespace WebsocketClient
         {
             PlayingField_destroy();
             GameRate_Tick(sender,e);
+
         }
         
         private void Form1_Resize(object sender, EventArgs e) // TODO: set default playing field ratio and hangle resizing all objects IF PAGE for e.g. MAXIMIZED IT SHOULD keep ratio to playingfield not window. and set it in the middle
@@ -250,14 +253,20 @@ namespace WebsocketClient
 
         // update objects on playing field and stats
         // Param: data - changes of 
-        private void PlayingField_update(JObject data) // TODO code static object position update or new adding, drops add, player postition update, statistics update
+        private void PlayingField_update(JArray data) // TODO code static object position update or new adding, drops add, player postition update, statistics update
         {
             
         }
 
         private void SpawnPlayer(Player player) // create player car on map
         {
-            
+            TransparentCar transparentCar2 = new TransparentCar();
+            transparentCar2.Location = new System.Drawing.Point(100, 100);
+            transparentCar2.Name = "transparentCar2";
+            transparentCar2.Size = new System.Drawing.Size(102, 51);
+            transparentCar2.TabIndex = 23;
+            this.Controls.Add(transparentCar2);
+           
         }
 
         private void MessageReceived(object ss, MessageEventArgs ee) // root message get function to call other functions to parse messages
@@ -271,6 +280,9 @@ namespace WebsocketClient
                     break;
                 case "mapUpdate":
                     MapUpdateReceived(data);
+                    break;
+                case "mapSetup":
+                    MapSetupReceived(data);
                     break;
                 default:
                     DebugLog("ERROR undefined message received!!!");
@@ -294,16 +306,16 @@ namespace WebsocketClient
 
         private void MapUpdateReceived(JObject data) // received map changes data so apply to current localy saved game state
         {
-            PlayingField_update((JObject) data["mapChanges"]);
-
-            int playercount = Int16.Parse(data["playerCount"].ToString());
-            playerCounter.Text = "Players: " + playercount;
-            playerCounter.BringToFront();
-            int id = Int16.Parse(data["id"].ToString());
+            PlayingField_update((JArray) data["mapChanges"]);
+            //parse changes array here not give to other methods
         }
 
         private void MapSetupReceived(JObject data) // received data of all map so draw or update its up to client
         {
+            //setting statistic
+            int playercount = Int16.Parse(data["playerCount"].ToString());
+            playerCounter.Text = "Players: " + playercount;
+            playerCounter.BringToFront();
             //spawning obstacles
             // TODO check obstacles list and add if none exists
 
@@ -319,7 +331,20 @@ namespace WebsocketClient
                 Color color = Color.FromName(value["color"].ToString());
                 float angle = float.Parse(value["rotation"].ToString());
 
-                players.Add(new Player(id, locationpoint));
+                Player newplayer = new Player(id); // not smart to create new player each time
+                newplayer.position = locationpoint;
+
+                int idx = players.IndexOf(newplayer);
+                if (idx == -1) // create new
+                {
+                    idx = players.Count;
+                    players.Add(newplayer);
+                    SpawnPlayer(newplayer);
+                } // update existing
+                else
+                {
+                    players[idx].position = newplayer.position;
+                }
             }
 
             //spawning player cars
@@ -350,7 +375,7 @@ namespace WebsocketClient
         // TODO make anabstract class for logger that can be singleton
         void DebugLog(string message)
         {
-            DebugLogField.Select(DebugLogField.TextLength-1, DebugLogField.TextLength-1);
+            DebugLogField.Select(DebugLogField.TextLength, DebugLogField.TextLength);
             DebugLogField.SelectedRtf = string.Format(@"{{\rtf1\ansi \plain {0} \plain0 \par }}", message);
         }
     }

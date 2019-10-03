@@ -12,24 +12,9 @@ namespace WebSocketServerWorking
 {
     public class SocketComunicator : WebSocketBehavior
     {
-        int[,] initialLoc = new int[,] //temporary
-        {
-            { 20, 10 },
-            { 400, 300 },
-            { 600, 10  },
-            { 400, 200 },
-            { 500, 10 },
-        };
-        Color[] colors = new Color[]     //temporary
-        {
-            Color.Red,
-            Color.Purple,
-            Color.GreenYellow,
-            Color.Honeydew,
-            Color.Brown,
-        };
-        static int counter = 0;             //temporary
-
+        //stuff for getting Sessions object
+        public bool connectedToMap = false;
+        MapData mapData = null;
 
         protected override void OnMessage(MessageEventArgs e) 
         {
@@ -52,29 +37,28 @@ namespace WebSocketServerWorking
             JObject message = new JObject();
             message["message"] = data["message"].ToString();
             message["sender"] = ServerController.GetMapData(0).GetPlayerTagByID(this.ID);
-            ServerController.GetMapData(0).SendAll(Sessions, message);
-            //Send(data.ToString()); // no need for this...
+            mapData.SendAll(message);
         }
 
         protected override void OnOpen()
         {
-            string username = Context.CookieCollection["username"].Value; // TODO seperate username and nickname
-            int id = ServerController.GetMapData(0).RegisterPlayer(new Player(this.ID, username, username, colors[counter], new Point(initialLoc[counter, 0], initialLoc[counter, 1])));
-            Console.WriteLine(this.ID + ", id = " + id + " connected successfully");
-            ServerController.GetMapData(0).UpdateClientsMap(Sessions);
-            counter++;
-
-            if (counter == initialLoc.GetLength(0)) //temporary
+            if (!connectedToMap) // conenect sessions object to map
             {
-                counter = 0;
+                mapData = ServerController.GetMapData(0);
+                connectedToMap = mapData.ConnectSessions(Sessions);
             }
+            string username = Context.CookieCollection["username"].Value; // TODO seperate username and nickname
+            int id = ServerController.GetMapData(0).RegisterPlayer(new Player(this.ID, username, username));
+            Console.WriteLine(this.ID + ", id = " + id + " connected successfully");
+            mapData.UpdateClientsFull();
         }
 
         protected override void OnClose(CloseEventArgs e)
         {
-            ServerController.GetMapData(0).UnregisterPlayer(ServerController.GetMapData(0).FindPlayer(this.ID));
-            ServerController.GetMapData(0).UpdateClientsMap(Sessions);
+            mapData.UnregisterPlayer(mapData.FindPlayer(this.ID));
+            mapData.UpdateClientsPartial();
             base.OnClose(e);
         }
+
     }
 }

@@ -12,7 +12,7 @@ namespace WebSocketServerWorking
 {
     public class Player
     {
-        public Point location { get; private set; } // user location should be changed via method after all checks if distance speed ok
+        public Point location { get; set; } // user location should be changed via method after all checks if distance speed ok
         public string ID; //secret sesssion id
         public string username; // player username // should not be used for identification in client side
         public string nickname; // player nickname
@@ -20,17 +20,14 @@ namespace WebSocketServerWorking
         public int carModel; // id of car model
 
         //Settings
-        Color color;
+        public Color color;
 
-        public Player(string id, string username, string nickname, Color color, Point pos, int carModel = 0)
+        public Player(string id, string username, string nickname)
         {
             ID = id;
             //this.id = pubid;
             this.username = username;
             this.nickname = nickname;
-            location = pos;
-            this.color = color;
-            this.carModel = carModel;
         }
 
         /*

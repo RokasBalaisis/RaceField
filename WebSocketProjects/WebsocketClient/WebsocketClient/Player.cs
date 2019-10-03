@@ -13,13 +13,24 @@ namespace WebsocketClient
         public TransparentCar car;
         public Point position;
 
-        public Player(int id, Point position)
+        public Player(int id)
         {
             this.id = id;
-            this.position = position;
+            //this.position = position;
             car = new TransparentCar();
             car.Location = position;
             car.Invalidate();
+        }
+
+        public override int GetHashCode()
+        {
+            return id.GetHashCode();
+        }
+
+        public override bool Equals(object obj)
+        {
+
+            return id.Equals(((Player)obj).id);
         }
     }
 }
