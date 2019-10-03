@@ -35,13 +35,21 @@ namespace WebsocketClient
 
         //current game information
         public List<Obstacle> obstacles;
-        public List<Collectable> collectables;
         public List<Player> players;
+
+        public Factory factory;
+        public List<Collectable> collectables;
+        public const int CollectablesOnMapCount = 5;
 
         public Form1()
         {
             InitializeComponent();
+            factory = new CollectableFactory();
 
+            for (int i = 0; i < CollectablesOnMapCount; i++)
+            {
+                collectables.Add(factory.GetCollectable(Collectable.Type.Bomb));
+            }
         }
 
         private WebSocket client;
