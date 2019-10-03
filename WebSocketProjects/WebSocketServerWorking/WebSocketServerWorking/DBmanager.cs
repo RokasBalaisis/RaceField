@@ -12,27 +12,28 @@ namespace WebSocketServerWorking
 {
     public class DBmanager
     {
-        static private DBmanager dBmanager;
-        MySqlConnection cnn;
-        String connectionString = @"Data Source=remotemysql.com; Port=3306;Initial Catalog=nt62qrWRGL;User ID=nt62qrWRGL;Password=JGyJoOraKI";
-        String sql = "";
-        MySqlCommand command;
-        MySqlDataReader sqlDataReader;
-       
-        public DBmanager() { }
-
-        public static DBmanager GetDBmanager()
-        { //TOFO: make it thread safe
-            if(dBmanager == null)
-            {
-                dBmanager = new DBmanager();
-            }
-            return dBmanager;
+        private static class DatabaseManagerHolder
+        {
+            public static DBmanager instance = new DBmanager();
         }
 
-        private void StartConnection(String sql)
+        MySqlConnection cnn;
+
+        private const string ConnectionString = @"Data Source=remotemysql.com; Port=3306;Initial Catalog=nt62qrWRGL;User ID=nt62qrWRGL;Password=JGyJoOraKI";
+        private string sql = "";
+
+        MySqlCommand command;
+        MySqlDataReader sqlDataReader;
+        
+        public static DBmanager GetDBmanager()
         {
-            cnn = new MySqlConnection(connectionString);
+            return DatabaseManagerHolder.instance;
+        }
+
+        private void StartConnection(string sql)
+        {
+
+            cnn = new MySqlConnection(ConnectionString);
             cnn.Open();
             command = new MySqlCommand(sql, cnn);
             sqlDataReader = command.ExecuteReader();
