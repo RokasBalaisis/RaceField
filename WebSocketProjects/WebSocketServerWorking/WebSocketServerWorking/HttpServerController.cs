@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Configuration;
@@ -38,8 +38,6 @@ namespace WebSocketServerWorking
 
         public void StartServer(int port)
         {
-/*
-            var db = new DBmanager();//DBmanager.GetDBmanager();
             var httpsrv = new HttpServer(port);
             httpsrv.RootPath = ConfigurationManager.AppSettings["DocumentRootPath"];
             httpsrv.OnGet += (sender, e) => {
@@ -50,10 +48,8 @@ namespace WebSocketServerWorking
                 if (path == "/users")
                 {
                     var sql = "SELECT * from user";
-                    Console.WriteLine("test fired");
-                    
-                    //var result = db.(sql, "users");
-                    //var resultBytes = Encoding.UTF8.GetBytes(result.ToString());
+                    var result = GetRequest(sql, "users");
+                    var resultBytes = Encoding.UTF8.GetBytes(result.ToString());
                     res.ContentType = "application/json";
                     res.WriteContent(resultBytes);
                 }
@@ -66,38 +62,34 @@ namespace WebSocketServerWorking
                 Console.WriteLine("Listening on port {0}, and providing WebSocket services:", httpsrv.Port);
                 foreach (var path in httpsrv.WebSocketServices.Paths)
                     Console.WriteLine("- {0}", path);
-            }*/
+            }
         }
 
 
 
-        //public JObject GetRequest(string sql, string jsonName)
-        //{
-        //    DBmanager.GetDBmanager().
-        //    StartConnection(sql);
-        //    var columnCount = sqlDataReader.FieldCount;
-        //    JObject result = new JObject();
-        //    JArray array = new JArray();
-        //    while (sqlDataReader.Read())
-        //    {
-        //        JObject entry = new JObject();
-        //        for (int i = 0; i < columnCount; i++)
-        //        {
-        //            if (sqlDataReader.GetValue(i).GetType() == typeof(int))
-        //                entry.Add(sqlDataReader.GetName(i), int.Parse(sqlDataReader.GetValue(i).ToString()));
-        //            else
-        //                entry.Add(sqlDataReader.GetName(i), sqlDataReader.GetValue(i).ToString());
-        //        }
-        //        array.Add(entry);
-        //        result[jsonName] = array;
-        //    }
-        //    return result;
-        //}
+        public JObject GetRequest(string sql, string jsonName)
+        {
+            var dbMan = DBmanager.GetDBmanager();
+            var sqlDataReader = dbMan.StartConnection(sql);
+            var columnCount = sqlDataReader.FieldCount;
+            JObject result = new JObject();
+            JArray array = new JArray();
+            while (sqlDataReader.Read())
+            {
+                JObject entry = new JObject();
+                for (int i = 0; i < columnCount; i++)
+                {
+                    if (sqlDataReader.GetValue(i).GetType() == typeof(int))
+                        entry.Add(sqlDataReader.GetName(i), int.Parse(sqlDataReader.GetValue(i).ToString()));
+                    else
+                        entry.Add(sqlDataReader.GetName(i), sqlDataReader.GetValue(i).ToString());
+                }
+                array.Add(entry);
+                result[jsonName] = array;
+            }
+            return result;
+        }
 
     }
-
-
-
-
-
 }
+
