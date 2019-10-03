@@ -47,7 +47,7 @@ namespace WebsocketClient
 
             for (int i = 0; i < CollectablesOnMapCount; i++)
             {
-                collectables.Add(factory.GetCollectable());
+                collectables.Add(factory.GetCollectable(Collectable.Type.Bomb));
             }
         }
 
@@ -360,11 +360,6 @@ namespace WebsocketClient
         {
             DebugLogField.Select(DebugLogField.TextLength-1, DebugLogField.TextLength-1);
             DebugLogField.SelectedRtf = string.Format(@"{{\rtf1\ansi \plain {0} \plain0 \par }}", message);
-        }
-
-        private void transparentCar1_Paint(object sender, PaintEventArgs e)
-        {
-
         }
     }
 }
