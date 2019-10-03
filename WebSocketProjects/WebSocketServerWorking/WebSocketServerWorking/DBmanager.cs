@@ -17,11 +17,12 @@ namespace WebSocketServerWorking
             public static DBmanager instance = new DBmanager();
         }
 
-        MySqlConnection cnn;
+        
 
         private const string ConnectionString = @"Data Source=remotemysql.com; Port=3306;Initial Catalog=nt62qrWRGL;User ID=nt62qrWRGL;Password=JGyJoOraKI";
         private string sql = "";
 
+        MySqlConnection cnn;
         MySqlCommand command;
         MySqlDataReader sqlDataReader;
         
@@ -30,21 +31,23 @@ namespace WebSocketServerWorking
             return DatabaseManagerHolder.instance;
         }
 
-        private void StartConnection(string sql)
+        public MySqlDataReader StartConnection(string sql)
         {
 
             cnn = new MySqlConnection(ConnectionString);
             cnn.Open();
             command = new MySqlCommand(sql, cnn);
             sqlDataReader = command.ExecuteReader();
+            return sqlDataReader;
         }
 
-        private void CloseConnection()
+        public void CloseConnection()
         {
             sqlDataReader.Close();
             command.Dispose();
             cnn.Close();
         }
+
 
         // connect user or register if no such user in database
         // TODO: pass username and password to this method and try connecting - getting user data
