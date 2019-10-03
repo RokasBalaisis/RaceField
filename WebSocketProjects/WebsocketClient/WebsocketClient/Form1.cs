@@ -353,5 +353,8 @@ namespace WebsocketClient
             DebugLogField.Select(DebugLogField.TextLength-1, DebugLogField.TextLength-1);
             DebugLogField.SelectedRtf = string.Format(@"{{\rtf1\ansi \plain {0} \plain0 \par }}", message);
         }
+
+
+        
     }
 }
