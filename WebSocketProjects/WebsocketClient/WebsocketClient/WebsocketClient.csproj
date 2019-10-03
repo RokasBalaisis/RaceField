@@ -5,7 +5,7 @@
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{86082666-249E-4DCA-968C-B9693DBFDD74}</ProjectGuid>
-    <OutputType>WinExe</OutputType>
+    <OutputType>Exe</OutputType>
     <RootNamespace>WebsocketClient</RootNamespace>
     <AssemblyName>WebsocketClient</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
@@ -32,6 +32,9 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject />
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL" />
     <Reference Include="System" />
@@ -52,9 +55,13 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Bomb.cs" />
+    <Compile Include="Car.cs" />
+    <Compile Include="CarBuilderDirector.cs" />
+    <Compile Include="CarController.cs" />
     <Compile Include="Collectable.cs" />
     <Compile Include="CollectableFactory.cs" />
     <Compile Include="Factory.cs" />
+    <Compile Include="ICarBuilder.cs" />
     <Compile Include="MoveFaster.cs" />
     <Compile Include="MoveAlgorithm.cs" />
     <Compile Include="MoveTurn.cs" />
@@ -62,6 +69,7 @@
     <Compile Include="MoveStop.cs" />
     <Compile Include="Obstacle.cs" />
     <Compile Include="Player.cs" />
+    <Compile Include="SlowCarBuilder.cs" />
     <Compile Include="SpeedBoost.cs" />
     <Compile Include="UIToolBox\TransparentTextBox.cs">
       <SubType>Component</SubType>
