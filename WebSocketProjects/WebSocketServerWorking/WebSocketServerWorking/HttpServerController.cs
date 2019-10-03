@@ -38,8 +38,8 @@ namespace WebSocketServerWorking
 
         public void StartServer(int port)
         {
-
-            var db = DBmanager.GetDBmanager();
+/*
+            var db = new DBmanager();//DBmanager.GetDBmanager();
             var httpsrv = new HttpServer(port);
             httpsrv.RootPath = ConfigurationManager.AppSettings["DocumentRootPath"];
             httpsrv.OnGet += (sender, e) => {
@@ -51,8 +51,9 @@ namespace WebSocketServerWorking
                 {
                     var sql = "SELECT * from user";
                     Console.WriteLine("test fired");
-                    //var result = db.GetRequest(sql, "users");
-                    var resultBytes = Encoding.UTF8.GetBytes(result.ToString());
+                    
+                    //var result = db.(sql, "users");
+                    //var resultBytes = Encoding.UTF8.GetBytes(result.ToString());
                     res.ContentType = "application/json";
                     res.WriteContent(resultBytes);
                 }
@@ -65,7 +66,7 @@ namespace WebSocketServerWorking
                 Console.WriteLine("Listening on port {0}, and providing WebSocket services:", httpsrv.Port);
                 foreach (var path in httpsrv.WebSocketServices.Paths)
                     Console.WriteLine("- {0}", path);
-            }
+            }*/
         }
 
 

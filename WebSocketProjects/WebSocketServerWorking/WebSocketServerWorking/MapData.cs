@@ -7,31 +7,65 @@ using WebSocketSharp;
 using WebSocketSharp.Server;
 using System.Drawing;
 using Newtonsoft.Json.Linq;
+using System.Threading;
 
 namespace WebSocketServerWorking
 {
     public class MapData
     {
-        // TODO: rename methods with capital letters
-        List<Player> players;
+        int tickCounter = 0;
+        int timeForMapUpdate = 100;
+        WebSocketSessionManager sessions = null;
+        bool sessionConnected = false;
+        List<DataChange> changesCache;
+
+        int[,] initialLoc = new int[,] //temporary
+        {
+            { 20, 10 },
+            { 400, 300 },
+            { 600, 10  },
+            { 400, 200 },
+            { 500, 10 },
+        };
+        Color[] colors = new Color[]     //temporary
+        {
+            Color.Red,
+            Color.Purple,
+            Color.GreenYellow,
+            Color.Honeydew,
+            Color.Brown,
+        };
+        static int counter = 0;             //temporary
+        
+        
+        public List<Player> players; // observers collection
         private int idCounter = 0;
 
         public MapData()
         {
+            changesCache = new List<DataChange>();
             players = new List<Player>();
         }
 
-        public int registerPlayer(string ID, string username, string nickname, Point pos, Color color)
+        public int RegisterPlayer(Player player) // observer register
         {
-            players.Add(new Player(ID, idCounter++, username, nickname, color, pos));
+            player.color = colors[counter];
+            player.location = new Point(initialLoc[counter, 0], initialLoc[counter, 1]);
+            counter++;
+            if (counter == initialLoc.GetLength(0)) //temporary
+            {
+                counter = 0;
+            }
+            player.id = idCounter++;
+            players.Add(player);
             return idCounter - 1;
         }
 
-        public void UnregisterPlayer(string id)
+        public void UnregisterPlayer(Player player) // observer unregister
         {
             for (int i = 0; i < players.Count; i++)
             {
-                if (players[i].ID == id)
+                if (players[i].ID == player.ID)
                 {
                     players.RemoveAt(i);
                     break;
@@ -51,7 +85,7 @@ namespace WebSocketServerWorking
 
         public JObject GetPlayerPublicStatsByID(string ID)
         {
-            Player player = _FindPlayer(ID);
+            Player player = FindPlayer(ID);
             if (player != null)
             {
                 return player.GetMyPublicStats();
@@ -61,7 +95,7 @@ namespace WebSocketServerWorking
 
         public JObject GetPlayerTagByID(string ID)
         {
-            Player player = _FindPlayer(ID);
+            Player player = FindPlayer(ID);
             if (player != null)
             {
                 return player.GetMyTag();
@@ -69,7 +103,7 @@ namespace WebSocketServerWorking
             return null;
         }
 
-        private Player _FindPlayer(string ID)
+        public Player FindPlayer(string ID)
         {
             for (int i = 0; i < players.Count; i++)
             {
@@ -81,26 +115,68 @@ namespace WebSocketServerWorking
             return null;
         }
 
-        public void SendAll(WebSocketSessionManager Sessions, JObject data)
+        public void SendAll(JObject data) // observer notifyAll()
         {
             for (int i = 0; i < players.Count; i++)
             {
-                data["id"] = players[i].id;
-                Sessions.SendTo(data.ToString(), players[i].ID);
+                sessions.SendTo(data.ToString(), players[i].ID);
             }
         }
 
-        public void UpdateClientsMap(WebSocketSessionManager Sessions)
+        public void UpdateClientsFull()
         {
             JObject data = new JObject();
             data["players"] = GetPlayersData();
             data["playerCount"] = players.Count;
-            data["type"] = "mapUpdate";
+            data["type"] = "mapSetup";
             for (int i = 0; i < players.Count; i++)
             {
-                data["id"] = players[i].id;
-                Sessions.SendTo(data.ToString(), players[i].ID);
+                data["myData"] = players[i].GetMyStats();
+                sessions.SendTo(data.ToString(), players[i].ID);
             }
+        }
+
+        public void UpdateClientsPartial()
+        {
+            // update clients and change full map data with those changes
+            JObject data = new JObject();
+            data["type"] = "mapUpdate";
+            JArray changes = new JArray();
+            data["changesCount"] = changes.Count;
+            for(int i = 0; i < changesCache.Count; i++)
+            {
+                changes.Add(changesCache[i].ToString());
+            }
+            data["mapChanges"] = changes;
+            for (int i = 0; i < players.Count; i++) // for now possible to use SendAll()
+            {
+                sessions.SendTo(data.ToString(), players[i].ID);
+            }
+        }
+
+        // TODO implement method to accept and parse changes from client and store them in changeCache list
+
+        public void MapTick(Object o)
+        {
+            if(tickCounter > timeForMapUpdate)
+            { // send full map data
+                UpdateClientsFull();
+                tickCounter = 0;
+            }
+            else
+            { // send only changes
+                UpdateClientsPartial();
+            }
+
+            tickCounter++;
+        }
+
+        public bool ConnectSessions(WebSocketSessionManager _sessions)
+        {
+            sessions = _sessions;
+            sessionConnected = true;
+            Timer t = new Timer(MapTick, null, 0, 2000);
+            return sessionConnected;
         }
     }
 }

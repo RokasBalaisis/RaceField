@@ -119,10 +119,11 @@
             // 
             this.playerCounter.AutoSize = true;
             this.playerCounter.ForeColor = System.Drawing.Color.Black;
-            this.playerCounter.Location = new System.Drawing.Point(640, 9);
+            this.playerCounter.Location = new System.Drawing.Point(1180, 9);
             this.playerCounter.Name = "playerCounter";
-            this.playerCounter.Size = new System.Drawing.Size(0, 13);
+            this.playerCounter.Size = new System.Drawing.Size(62, 13);
             this.playerCounter.TabIndex = 10;
+            this.playerCounter.Text = "playercount";
             // 
             // usernameInput
             // 
@@ -176,7 +177,6 @@
             this.DBPanel.Name = "DBPanel";
             this.DBPanel.Size = new System.Drawing.Size(383, 238);
             this.DBPanel.TabIndex = 21;
-            this.DBPanel.Visible = false;
             // 
             // DBPanelCnnectBTN
             // 
@@ -242,9 +242,9 @@
             // DebugLogField
             // 
             this.DebugLogField.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.DebugLogField.Location = new System.Drawing.Point(12, 6);
+            this.DebugLogField.Location = new System.Drawing.Point(12, 9);
             this.DebugLogField.Name = "DebugLogField";
-            this.DebugLogField.Size = new System.Drawing.Size(988, 195);
+            this.DebugLogField.Size = new System.Drawing.Size(988, 192);
             this.DebugLogField.TabIndex = 26;
             this.DebugLogField.Text = "";
             // 
