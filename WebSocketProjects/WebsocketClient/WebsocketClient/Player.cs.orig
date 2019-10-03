@@ -17,8 +17,13 @@ namespace WebsocketClient
         public int angle;
         public int mod;
 
-        private MoveAlgorithm moveAlgorithm;
+<<<<<<< HEAD
         public Player(int id)
+=======
+        private MoveAlgorithm moveAlgorithm;
+        
+        public Player(int id, Point position)
+>>>>>>> development
         {
             this.id = id;
             //this.position = position;
@@ -27,6 +32,18 @@ namespace WebsocketClient
             car.Invalidate();
         }
 
+<<<<<<< HEAD
+        public override int GetHashCode()
+        {
+            return id.GetHashCode();
+        }
+
+        public override bool Equals(object obj)
+        {
+
+            return id.Equals(((Player)obj).id);
+        }
+=======
         private void setMoveAlgorithm (MoveAlgorithm algorithm)
         {
             this.moveAlgorithm = algorithm;
@@ -56,15 +73,6 @@ namespace WebsocketClient
             moveAlgorithm.Move();
         }
 
-        public override int GetHashCode()
-        {
-            return id.GetHashCode();
-        }
-
-        public override bool Equals(object obj)
-        {
-
-            return id.Equals(((Player)obj).id);
-        }
+>>>>>>> development
     }
 }

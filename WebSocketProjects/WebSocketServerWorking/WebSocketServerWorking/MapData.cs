@@ -37,7 +37,7 @@ namespace WebSocketServerWorking
         };
         static int counter = 0;             //temporary
         
-
+        
         public List<Player> players; // observers collection
         private int idCounter = 0;
 

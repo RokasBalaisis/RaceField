@@ -81,6 +81,10 @@ namespace WebSocketServerWorking
                         Console.WriteLine("************************************");
                         break;
 
+                    case "http-server-start":
+                        HttpServerController.Instance.StartServer(8080);
+                        break;
+
                     default:
                         Console.WriteLine("Unknown Command: \"" + command + "\"");
                         Console.WriteLine("To list available commands, use command \"help\"");
