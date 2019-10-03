@@ -22,11 +22,12 @@ namespace WebsocketClient
         public static bool isLeftPressed = false;
         public static bool isRightPressed = false;
 
-        public static int speed = 15;
+        public static int speed = 20;
         public static int angle = 0;
-        public static int mod = 0;
+        public static double mod = 0;
         public static double x = 100;
-        public static double y = 100;
+        public static double y = 100;        
+        private MoveAlgorithm moveAlgorithm;
         
 
         [DllImport("user32.dll", EntryPoint = "HideCaret")]
@@ -51,6 +52,9 @@ namespace WebsocketClient
         {
             PlayingField_destroy();
             GameRate_Tick(sender,e);
+
+            setMoveAlgorithm(new MoveStop()); // Initializing first time as stationary
+
         }
         
         private void Form1_Resize(object sender, EventArgs e) // TODO: set default playing field ratio and hangle resizing all objects IF PAGE for e.g. MAXIMIZED IT SHOULD keep ratio to playingfield not window. and set it in the middle
@@ -79,23 +83,32 @@ namespace WebsocketClient
                 else if (e.KeyCode == Keys.Up)
                 {
                     isUpPressed = true;
-                    mod = 1;
+                    
+                    setMoveAlgorithm(new MoveFaster());
 
                 }
                 else if (e.KeyCode == Keys.Down)
                 {
                     isDownPressed = true;
-                    mod = -1;
+                    
+                    setMoveAlgorithm(new MoveSlower());
                 }
                 else if (e.KeyCode == Keys.Left)
                 {
                     isLeftPressed = true;
-                    angle -= 10;
+                    //angle -= 10;                    
+                    setMoveAlgorithm(new MoveTurn(isLeftPressed, isRightPressed));
                 }
                 else if (e.KeyCode == Keys.Right)
                 {
-                    isRightPressed = true;
-                    angle += 10;
+                    isRightPressed = true;                    
+                    //angle += 10;
+                    setMoveAlgorithm(new MoveTurn(isLeftPressed, isRightPressed));
+
+                }
+                else if (e.KeyCode == Keys.Z)
+                {
+                    setMoveAlgorithm(new MoveStop());
                 }
             }
         }
@@ -121,16 +134,44 @@ namespace WebsocketClient
                 else if (e.KeyCode == Keys.Left)
                 {
                     isLeftPressed = false;
+
+                    //after turning setting move algorithm to previous
+                    if (mod > 0)
+                    {
+                        setMoveAlgorithm(new MoveFaster());
+                    }
+                    else if (mod == 0)
+                    {
+                        setMoveAlgorithm(new MoveStop());
+                    }
+                    else if (mod < 0)
+                    {
+                        setMoveAlgorithm(new MoveSlower());
+                    }
                 }
                 else if (e.KeyCode == Keys.Right)
                 {
                     isRightPressed = false;
+
+                    //after turning setting move algorithm to previous
+                    if (mod > 0)
+                    {
+                        setMoveAlgorithm(new MoveFaster());
+                    }
+                    else if (mod == 0)
+                    {
+                        setMoveAlgorithm(new MoveStop());
+                    }
+                    else if (mod < 0)
+                    {
+                        setMoveAlgorithm(new MoveSlower());
+                    }
                 }
 
-                if(e.KeyCode == Keys.Up || e.KeyCode == Keys.Down)
+                /*if(e.KeyCode == Keys.Up || e.KeyCode == Keys.Down)
                 {
                     mod = 0;
-                }
+                }*/
 
             }
         }
@@ -151,8 +192,22 @@ namespace WebsocketClient
             y += (speed * mod) * Math.Sin(Math.PI / 150 * angle);
 
             Point position = new Point(Convert.ToInt32(x),Convert.ToInt32(y));
+
+            transparentCar1.Location = position;
             //DrawPlayer(position, Color.Red); // TODO: make drawing and call it here
+
+            
+            moveAlgorithm.Move();
+            
         }
+
+        //sets desired strategy pattern for movement (speeding, slowing, turning, or stopped)
+        private void setMoveAlgorithm(MoveAlgorithm algorithm)
+        {
+            moveAlgorithm = algorithm;
+        }
+
+
 
         public Point RotatePoint(Point p1, Point p2, double angle)
         {
@@ -352,6 +407,11 @@ namespace WebsocketClient
         {
             DebugLogField.Select(DebugLogField.TextLength-1, DebugLogField.TextLength-1);
             DebugLogField.SelectedRtf = string.Format(@"{{\rtf1\ansi \plain {0} \plain0 \par }}", message);
+        }
+
+        private void TransparentCar1_Paint(object sender, PaintEventArgs e)
+        {
+
         }
     }
 }

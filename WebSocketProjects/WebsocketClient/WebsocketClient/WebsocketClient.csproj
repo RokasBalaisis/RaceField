@@ -52,6 +52,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Collectable.cs" />
+    <Compile Include="MoveFaster.cs" />
+    <Compile Include="MoveAlgorithm.cs" />
+    <Compile Include="MoveTurn.cs" />
+    <Compile Include="MoveSlower.cs" />
+    <Compile Include="MoveStop.cs" />
     <Compile Include="Obstacle.cs" />
     <Compile Include="Player.cs" />
     <Compile Include="UIToolBox\TransparentTextBox.cs">
