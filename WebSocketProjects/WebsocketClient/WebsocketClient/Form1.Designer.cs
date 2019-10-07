@@ -53,7 +53,6 @@
             this.MainMenuTitle = new System.Windows.Forms.Label();
             this.DebugLogField = new WebsocketClient.TransparentTextLog();
             this.InputMessageField = new WebsocketClient.TransparentTextLog();
-            this.transparentCar1 = new WebsocketClient.TransparentCar();
             this.TextingField = new WebsocketClient.TransparentTextLog();
             this.MainMenuPanel.SuspendLayout();
             this.DBPanel.SuspendLayout();
@@ -242,10 +241,12 @@
             // DebugLogField
             // 
             this.DebugLogField.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.DebugLogField.Location = new System.Drawing.Point(12, 9);
+            this.DebugLogField.Enabled = false;
+            this.DebugLogField.Location = new System.Drawing.Point(12, -1);
             this.DebugLogField.Name = "DebugLogField";
+            this.DebugLogField.ReadOnly = true;
             this.DebugLogField.Size = new System.Drawing.Size(988, 192);
-            this.DebugLogField.TabIndex = 26;
+            this.DebugLogField.TabIndex = 1;
             this.DebugLogField.Text = "";
             // 
             // InputMessageField
@@ -258,14 +259,6 @@
             this.InputMessageField.TabIndex = 24;
             this.InputMessageField.Text = "";
             this.InputMessageField.KeyDown += new System.Windows.Forms.KeyEventHandler(this.MessageInput_KeyDown);
-            // 
-            // transparentCar1
-            // 
-            this.transparentCar1.Location = new System.Drawing.Point(51, 375);
-            this.transparentCar1.Name = "transparentCar1";
-            this.transparentCar1.Size = new System.Drawing.Size(124, 61);
-            this.transparentCar1.TabIndex = 23;
-            this.transparentCar1.Paint += new System.Windows.Forms.PaintEventHandler(this.TransparentCar1_Paint);
             // 
             // TextingField
             // 
@@ -290,7 +283,6 @@
             this.Controls.Add(this.DebugLogField);
             this.Controls.Add(this.MainMenuPanel);
             this.Controls.Add(this.InputMessageField);
-            this.Controls.Add(this.transparentCar1);
             this.Controls.Add(this.TextingField);
             this.Controls.Add(this.playerCounter);
             this.DoubleBuffered = true;
@@ -325,7 +317,6 @@
         private System.ComponentModel.BackgroundWorker backgroundWorker1;
         private TransparentTextLog TextingField;
         private System.Windows.Forms.Timer GameRate;
-        private TransparentCar transparentCar1;
         private TransparentTextLog InputMessageField;
         private System.Windows.Forms.Panel MainMenuPanel;
         private System.Windows.Forms.Label MainMenuTitle;

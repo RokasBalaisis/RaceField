@@ -25,6 +25,9 @@ namespace WebSocketServerWorking
                 case "message":
                     ChatMessageReceived(data);
                     break;
+                case "updateLocation":
+                    UpdateLocationMessageReceived(data);
+                    break;
                 default:
 
                     break;
@@ -35,9 +38,16 @@ namespace WebSocketServerWorking
         protected void ChatMessageReceived(JObject data)
         {
             JObject message = new JObject();
+            message["type"] = "message";
             message["message"] = data["message"].ToString();
             message["sender"] = ServerController.GetMapData(0).GetPlayerTagByID(this.ID);
             mapData.SendAll(message);
+        }
+
+        protected void UpdateLocationMessageReceived(JObject data)
+        {
+            data["id"] = mapData.GetPlayerTagByID(this.ID)["id"];
+            mapData.UpdatePlayerLocation(data);
         }
 
         protected override void OnOpen()

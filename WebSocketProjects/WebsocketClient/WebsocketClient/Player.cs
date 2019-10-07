@@ -16,15 +16,19 @@ namespace WebsocketClient
         public int speed;
         public int angle;
         public int mod;
+        public Color color;
 
         private MoveAlgorithm moveAlgorithm;
         public Player(int id)
         {
             this.id = id;
             //this.position = position;
+        }
+
+        public void initializeCar()
+        {
             car = new TransparentCar();
             car.Location = position;
-            car.Invalidate();
         }
 
         private void setMoveAlgorithm (MoveAlgorithm algorithm)

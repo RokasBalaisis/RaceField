@@ -67,7 +67,13 @@
 + {Root}
 	+ type
 		+ message // chat message
+		+ updateLocation // location update
 	+ message // if type = message
 		+ [string value]
+	+ location 
+		+ X
+			+ [int value]
+		+ Y
+			+ [int value]
 
 #### Other objects:

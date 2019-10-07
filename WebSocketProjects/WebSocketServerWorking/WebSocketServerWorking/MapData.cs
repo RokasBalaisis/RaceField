@@ -58,6 +58,7 @@ namespace WebSocketServerWorking
             }
             player.id = idCounter++;
             players.Add(player);
+            UpdateClientsFull();
             return idCounter - 1;
         }
 
@@ -134,9 +135,10 @@ namespace WebSocketServerWorking
                 data["myData"] = players[i].GetMyStats();
                 sessions.SendTo(data.ToString(), players[i].ID);
             }
+            changesCache = new List<DataChange>();  // TODO make thread safe 
         }
 
-        public void UpdateClientsPartial()
+        public void UpdateClientsPartial() // TODO make thread safe changesCache working/clearing 
         {
             // update clients and change full map data with those changes
             JObject data = new JObject();
@@ -145,13 +147,33 @@ namespace WebSocketServerWorking
             data["changesCount"] = changes.Count;
             for(int i = 0; i < changesCache.Count; i++)
             {
-                changes.Add(changesCache[i].ToString());
+                changes.Add(changesCache[i].change);
             }
             data["mapChanges"] = changes;
-            for (int i = 0; i < players.Count; i++) // for now possible to use SendAll()
+            changesCache = new List<DataChange>();  // TODO make thread safe 
+            SendAll(data);
+        }
+
+        public void UpdatePlayerLocation(JObject data) // TODO check if position really changed 
+        {
+            for (int i = 0; i < changesCache.Count; i++)
             {
-                sessions.SendTo(data.ToString(), players[i].ID);
+                if (changesCache[i].change.ContainsKey("location"))
+                {
+                    changesCache.RemoveAt(i);
+                    break;
+                }
             }
+            int pubid = int.Parse(data["id"].ToString());
+            for (int i = 0; i < players.Count; i++) // TODO make easier way to get player by pubid
+            {
+                if(players[i].id == pubid)
+                {
+                    players[i].location = new Point(int.Parse(data["location"]["X"].ToString()), int.Parse(data["location"]["Y"].ToString()));
+                    break;
+                }
+            }
+            changesCache.Add(new DataChange(data));
         }
 
         // TODO implement method to accept and parse changes from client and store them in changeCache list
@@ -165,7 +187,10 @@ namespace WebSocketServerWorking
             }
             else
             { // send only changes
-                UpdateClientsPartial();
+                if(changesCache.Count != 0)
+                {
+                    UpdateClientsPartial();
+                }
             }
 
             tickCounter++;

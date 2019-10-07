@@ -43,6 +43,19 @@ namespace WebsocketClient
         public List<Collectable> collectables;
         public const int CollectablesOnMapCount = 5;
         public List<Player> players; // remake to be able to acce player by their id ... maybe
+        public Player me;
+
+        public Player GetPlayerById(int id)
+        {
+            for (int i = 0; i < players.Count; i++)
+            {
+                if(players[i].id == id)
+                {
+                    return players[i];
+                }
+            }
+            return null;
+        }
 
         public Form1()
         {
@@ -199,17 +212,25 @@ namespace WebsocketClient
             timer.Start();
         }
 
-        private void timer_Tick(object sender, EventArgs e)
+        private void timer_Tick(object sender, EventArgs e) // TODO remove this and transfer all code to GameRate_Tick // this is overkill
         {
             x += (speed * mod) * Math.Cos(Math.PI / 150 * angle);
             y += (speed * mod) * Math.Sin(Math.PI / 150 * angle);
 
             Point position = new Point(Convert.ToInt32(x),Convert.ToInt32(y));
+            if(me != null)
+            {
+                me.car.Location = position;
 
-            transparentCar1.Location = position;
+                JObject message = new JObject();
+                message["type"] = "updateLocation";
+                message["location"] = new JObject();
+                message["location"]["X"] = position.X;
+                message["location"]["Y"] = position.Y;
+                client.Send(message.ToString());
+            }
             //DrawPlayer(position, Color.Red); // TODO: make drawing and call it here
 
-            
             moveAlgorithm.Move();
             
         }
@@ -289,7 +310,17 @@ namespace WebsocketClient
 
                 client.OnMessage += (ss, ee) =>
                 {
-                    MessageReceived(ss, ee);
+                    if (this.InvokeRequired)
+                    {
+                        this.BeginInvoke((MethodInvoker)delegate ()
+                        {
+                            MessageReceived(ss, ee);
+                        });
+                    }
+                    else
+                    {
+                        MessageReceived(ss, ee);
+                    }
                 };
 
                 client.OnClose += (ss, ee) =>
@@ -329,13 +360,8 @@ namespace WebsocketClient
 
         private void SpawnPlayer(Player player) // create player car on map
         {
-            TransparentCar transparentCar2 = new TransparentCar();
-            transparentCar2.Location = new System.Drawing.Point(100, 100);
-            transparentCar2.Name = "transparentCar2";
-            transparentCar2.Size = new System.Drawing.Size(102, 51);
-            transparentCar2.TabIndex = 23;
-            this.Controls.Add(transparentCar2);
-           
+            player.initializeCar();
+            this.Controls.Add(player.car);
         }
 
         private void MessageReceived(object ss, MessageEventArgs ee) // root message get function to call other functions to parse messages
@@ -362,7 +388,8 @@ namespace WebsocketClient
         private void ChatMessageReceived(JObject data)
         {
             string text = data["message"].ToString();
-            Color color = Color.FromName(data["sender"]["color"].ToString());
+
+            Color color = GetPlayerById(int.Parse(data["sender"]["id"].ToString())).color;
             TextingField.SelectedRtf = string.Format(@"{{\rtf1\ansi \b {0} \b0 }}", data["sender"]["nickname"] + ": ");
             TextingField.SelectedRtf = string.Format(@"{{\rtf1\ansi \plain {0} \plain0 \par }}", text);
             string[] lines = TextingField.Lines;    // Count the lines of rich text box
@@ -375,7 +402,24 @@ namespace WebsocketClient
 
         private void MapUpdateReceived(JObject data) // received map changes data so apply to current localy saved game state
         {
-            PlayingField_update((JArray) data["mapChanges"]);
+            //PlayingField_update((JArray) data["mapChanges"]);
+
+            foreach(var change in (JArray)data["mapChanges"])
+            {
+                if(change["type"].ToString() == "updateLocation")
+                {
+                    int pubid = int.Parse(change["id"].ToString());
+                    Point newpos = new Point(int.Parse(change["location"]["X"].ToString()), int.Parse(change["location"]["Y"].ToString()));
+                    Player newplayer = new Player(pubid); // not smart to create new player each time
+                    int index = players.IndexOf(newplayer);
+                    if(index > 0)
+                    {
+                        players[index].position = newpos;
+                        players[index].car.Location = newpos;
+                        
+                    }
+                }
+            }
             //parse changes array here not give to other methods
         }
 
@@ -385,6 +429,8 @@ namespace WebsocketClient
             int playercount = Int16.Parse(data["playerCount"].ToString());
             playerCounter.Text = "Players: " + playercount;
             playerCounter.BringToFront();
+            //setting my data
+            int myid = int.Parse(data["myData"]["id"].ToString());
             //spawning obstacles
             // TODO check obstacles list and add if none exists
 
@@ -394,25 +440,32 @@ namespace WebsocketClient
                 string key = player.Key;
                 int thisid = Int16.Parse(key);
                 JToken value = player.Value;
-                int id = int.Parse(value["id"].ToString());
+                int id = thisid;// int.Parse(key);
                 JToken location = value["location"];
                 Point locationpoint = new Point(Int16.Parse(location["X"].ToString()), Int16.Parse(location["Y"].ToString()));
                 Color color = Color.FromName(value["color"].ToString());
-                float angle = float.Parse(value["rotation"].ToString());
+                //float angle = float.Parse(value["rotation"].ToString());
 
                 Player newplayer = new Player(id); // not smart to create new player each time
                 newplayer.position = locationpoint;
+                newplayer.color = color;
 
                 int idx = players.IndexOf(newplayer);
                 if (idx == -1) // create new
                 {
+                    DebugLog("NEW PLAYER ADDED");
                     idx = players.Count;
                     players.Add(newplayer);
                     SpawnPlayer(newplayer);
+                    if(id == myid)
+                    {
+                        me = newplayer;
+                    }
                 } // update existing
                 else
                 {
                     players[idx].position = newplayer.position;
+                    players[idx].car.Location = players[idx].position;
                 }
             }
 
@@ -448,9 +501,5 @@ namespace WebsocketClient
             DebugLogField.SelectedRtf = string.Format(@"{{\rtf1\ansi \plain {0} \plain0 \par }}", message);
         }
 
-        private void TransparentCar1_Paint(object sender, PaintEventArgs e)
-        {
-
-        }
     }
 }
