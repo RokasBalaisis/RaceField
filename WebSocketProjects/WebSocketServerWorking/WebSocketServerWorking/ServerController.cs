@@ -9,9 +9,9 @@ namespace WebSocketServerWorking
 {
     public class ServerController
     {
-        static MapData[] currentMapData = new MapData[1];
+        static MapController[] currentMapData = new MapController[1];
 
-        public static MapData GetMapData(int id)
+        public static MapController GetMapData(int id)
         {
             return currentMapData[id];
         }
@@ -19,7 +19,7 @@ namespace WebSocketServerWorking
         public static void Main(string[] args)
         {
             //for now only one map will be on
-            currentMapData[0] = new MapData();
+            currentMapData[0] = new MapController();
 
             ConsoleHelpers.SetInitialWindowSize();
             ConsoleHelpers.PrintLogo();
