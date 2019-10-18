@@ -406,17 +406,19 @@ namespace WebsocketClient
 
             foreach(var change in (JArray)data["mapChanges"])
             {
-                if(change["type"].ToString() == "updateLocation")
+                if(change["type"].ToString() == "updateLocation") // TODO create static constants with API names
                 {
                     int pubid = int.Parse(change["id"].ToString());
                     Point newpos = new Point(int.Parse(change["location"]["X"].ToString()), int.Parse(change["location"]["Y"].ToString()));
                     Player newplayer = new Player(pubid); // not smart to create new player each time
                     int index = players.IndexOf(newplayer);
-                    if(index > 0)
+                    if (index > 0)
                     {
+                        Console.WriteLine("Location changed for: " + change["id"].ToString());
+                        Console.WriteLine(players[index].car.Location.ToString());
+                        Console.WriteLine(newpos.ToString());
                         players[index].position = newpos;
                         players[index].car.Location = newpos;
-                        
                     }
                 }
             }
@@ -459,6 +461,8 @@ namespace WebsocketClient
                     SpawnPlayer(newplayer);
                     if(id == myid)
                     {
+                        x = newplayer.position.X; // TODO this variable should be in player object not form
+                        y = newplayer.position.Y; // TODO this variable should be in player object not form 
                         me = newplayer;
                     }
                 } // update existing
@@ -499,6 +503,7 @@ namespace WebsocketClient
         {
             DebugLogField.Select(DebugLogField.TextLength, DebugLogField.TextLength);
             DebugLogField.SelectedRtf = string.Format(@"{{\rtf1\ansi \plain {0} \plain0 \par }}", message);
+            DebugLogField.ScrollToCaret();
         }
 
     }

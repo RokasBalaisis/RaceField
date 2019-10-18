@@ -12,6 +12,7 @@ namespace WebsocketClient
     {
         protected override void OnDraw()
         {
+            Console.WriteLine("Redraw"); // TODO redraw happens to scarecally to work properly
             // Gets the image from the global resources
             Image broculoImage = global::WebsocketClient.Properties.Resources.car_blue;
 

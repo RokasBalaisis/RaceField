@@ -35,6 +35,7 @@ namespace WebSocketServerWorking
         public MapState(MapController mapController)
         {
             this.mapController = mapController;
+            players = new List<Player>();
         }
 
         public int RegisterPlayer(Player player) // observer register
