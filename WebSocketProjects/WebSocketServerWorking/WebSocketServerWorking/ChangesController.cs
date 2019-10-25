@@ -21,6 +21,7 @@ namespace WebSocketServerWorking
         public ChangesController(MapState mapState)
         {
             this.mapState = mapState;
+            changesCache = new List<DataChange>();
         }
 
         public int GetChangesCount()
@@ -28,12 +29,12 @@ namespace WebSocketServerWorking
             return changesCache.Count;
         }
 
-        public void UpdatePlayerLocation(JObject data) // TODO check if position really changed 
+        public void UpdatePlayerLocation(JObject data) // TODO check if position really changed and if it chenged legally not cheating
         {
             // remove one location change for same object if exists
             for (int i = 0; i < changesCache.Count; i++)
             {
-                if (changesCache[i].change.ContainsKey("location"))
+                if (changesCache[i].change["type"].ToString() == "updateLocation" && changesCache[i].change["id"].ToString() == data["id"].ToString())
                 {
                     changesCache.RemoveAt(i);
                     break;
@@ -64,6 +65,8 @@ namespace WebSocketServerWorking
                 changes.Add(flushingCache[i].change);
             }
             flushingCache = null;
+            Console.WriteLine("Siunciama informacija");
+            Console.WriteLine(changes.ToString());
             return changes;
         }
 

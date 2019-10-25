@@ -13,12 +13,13 @@ namespace WebSocketServerWorking
 {
     public class MapController
     {
+        static int timeForMapUpdate = 100;
         MapState mapState;
         public ChangesController changesController;
         int tickCounter = 0;
-        int timeForMapUpdate = 100;
         WebSocketSessionManager sessions = null;
         bool sessionConnected = false;
+        Timer gameTimer;
         
         public MapController()
         {
@@ -96,13 +97,16 @@ namespace WebSocketServerWorking
 
         public void MapTick(Object o)
         {
+            Console.WriteLine("Calling tick " + tickCounter);
             if(tickCounter > timeForMapUpdate)
             { // send full map data
+                Console.WriteLine("full update");
                 UpdateClientsFull();
                 tickCounter = 0;
             }
             else
             { // send only changes
+                Console.WriteLine("partial update");
                 if(changesController.GetChangesCount() != 0)
                 {
                     UpdateClientsPartial();
@@ -116,7 +120,7 @@ namespace WebSocketServerWorking
         {
             sessions = _sessions;
             sessionConnected = true;
-            Timer t = new Timer(MapTick, null, 0, 2000);
+            gameTimer = new Timer(MapTick, null, 0, 1000);
             return sessionConnected;
         }
     }

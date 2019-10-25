@@ -18,7 +18,7 @@ namespace WebSocketServerWorking
 
         protected override void OnMessage(MessageEventArgs e) 
         {
-            Console.WriteLine(e.Data);
+            //Console.WriteLine(e.Data);
             JObject data = JObject.Parse(e.Data);
             switch (data["type"].ToString())
             {
