@@ -23,7 +23,7 @@ namespace WebSocketServerWorking
 
             ConsoleHelpers.SetInitialWindowSize();
             ConsoleHelpers.PrintLogo();
-            var ip = "127.0.0.1";
+            var ip = "0.0.0.0";//"127.0.0.1";
             var port = 8080;
             var wssv = new WebSocketServer(System.Net.IPAddress.Parse(ip), port);
             ServerCommands.StartCommandListener(wssv);

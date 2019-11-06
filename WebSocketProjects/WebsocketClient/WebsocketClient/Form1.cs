@@ -69,7 +69,7 @@ namespace WebsocketClient
             }
         }
 
-        private WebSocket client;
+        private WebSocketAdapter client;
         const string host_begin = "ws://";
         Bitmap image;
         
@@ -227,7 +227,7 @@ namespace WebsocketClient
                 message["location"] = new JObject();
                 message["location"]["X"] = position.X;
                 message["location"]["Y"] = position.Y;
-                client.Send(message.ToString());
+                client.Send(message);
             }
             //DrawPlayer(position, Color.Red); // TODO: make drawing and call it here
 
@@ -268,8 +268,6 @@ namespace WebsocketClient
             return (Math.PI / 180) * angle;
         }
 
-
-
         private void MessageInput_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.KeyValue == 13)
@@ -279,7 +277,7 @@ namespace WebsocketClient
                 JObject message = new JObject();
                 message["type"] = "message";
                 message["message"] = content;
-                client.Send(message.ToString());
+                client.Send(message);
                 e.Handled = true;
                 e.SuppressKeyPress = true;
             }
@@ -295,48 +293,60 @@ namespace WebsocketClient
             if (!isConnected)
             {
                 string host = host_begin + IPinput.Text + ":" + PortInput.Text;
-                client = new WebSocket(host);
+                client = new WebSocketAdapter(host, this);
 
                 MainMenuPanel.Visible = false;
                 //TODO: add screen disabler - grey half transparent panel in background
-                client.OnOpen += (ss, ee) =>
-                {
-                    isConnected = true;
-                    DebugLog(string.Format("Connected to {0} successfully ", host));
-                };
+                client.SetOnOpen(OnOpen);
+                client.SetOnError(OnError);
+                client.SetOnMessageReceived(MessageReceived);
+                client.SetOnClose(OnClose);
+                client.SetCookie("username", usernameInput.Text); // TODO maybe username not nickname
+                client.Start();
+            }
+        }
+        private void OnOpen()
+        {
+            isConnected = true;
+            DebugLog(string.Format("Connected to {0} successfully ", client.Url()));
+        }
 
-                client.OnError += (ss, ee) =>
-                   DebugLog("Error: " + ee.Message);
+        private void OnError(string message)
+        {
+            DebugLog("Error: " + message);
+        }
 
-                client.OnMessage += (ss, ee) =>
-                {
-                    if (this.InvokeRequired)
-                    {
-                        this.BeginInvoke((MethodInvoker)delegate ()
-                        {
-                            MessageReceived(ss, ee);
-                        });
-                    }
-                    else
-                    {
-                        MessageReceived(ss, ee);
-                    }
-                };
+        private void OnClose()
+        {
+            isConnected = false;
+            DebugLog(string.Format("Disconnected with {0}", client.Url()));
+            PlayingField_destroy();
+        }
 
-                client.OnClose += (ss, ee) =>
-                {
-                    isConnected = false;
-                    DebugLog(string.Format("Disconnected with {0}", host));
-                    PlayingField_destroy();
-                };
-                client.SetCookie(new Cookie("username", usernameInput.Text)); // TODO maybe username not nickname
-                client.Connect();
+        private void MessageReceived(string dataString) // Facade // root message get function to call other functions to parse messages
+        {
+            DebugLog("Response: " + dataString);
+            JObject data = JObject.Parse(dataString);
+            switch (data["type"].ToString())
+            {
+                case "message":
+                    ChatMessageReceived(data);
+                    break;
+                case "mapUpdate":
+                    MapUpdateReceived(data);
+                    break;
+                case "mapSetup":
+                    MapSetupReceived(data);
+                    break;
+                default:
+                    DebugLog("ERROR undefined message received!!!");
+                    break;
             }
         }
 
         private void DisconnectBTN_Click(object sender, EventArgs e)
         {
-            client.Close();
+            client.Stop();
         }
 
         // paint map then connected to game
@@ -362,27 +372,6 @@ namespace WebsocketClient
         {
             player.initializeCar();
             this.Controls.Add(player.car);
-        }
-
-        private void MessageReceived(object ss, MessageEventArgs ee) // root message get function to call other functions to parse messages
-        {
-            DebugLog("Response: " + ee.Data);
-            JObject data = JObject.Parse(ee.Data);
-            switch (data["type"].ToString())
-            {
-                case "message":
-                    ChatMessageReceived(data);
-                    break;
-                case "mapUpdate":
-                    MapUpdateReceived(data);
-                    break;
-                case "mapSetup":
-                    MapSetupReceived(data);
-                    break;
-                default:
-                    DebugLog("ERROR undefined message received!!!");
-                    break;
-            }
         }
 
         private void ChatMessageReceived(JObject data)
@@ -505,6 +494,5 @@ namespace WebsocketClient
             DebugLogField.SelectedRtf = string.Format(@"{{\rtf1\ansi \plain {0} \plain0 \par }}", message);
             DebugLogField.ScrollToCaret();
         }
-
     }
 }

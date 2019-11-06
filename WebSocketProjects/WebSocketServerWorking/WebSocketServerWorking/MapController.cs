@@ -11,7 +11,7 @@ using System.Threading;
 
 namespace WebSocketServerWorking
 {
-    public class MapController
+    public class MapController // Fasadas
     {
         static int timeForMapUpdate = 100;
         MapState mapState;
@@ -120,7 +120,7 @@ namespace WebSocketServerWorking
         {
             sessions = _sessions;
             sessionConnected = true;
-            gameTimer = new Timer(MapTick, null, 0, 1000);
+            gameTimer = new Timer(MapTick, null, 0, 10);
             return sessionConnected;
         }
     }

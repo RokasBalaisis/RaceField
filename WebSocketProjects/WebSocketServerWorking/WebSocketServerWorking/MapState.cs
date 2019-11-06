@@ -51,6 +51,7 @@ namespace WebSocketServerWorking
             players.Add(player);
             return idCounter - 1;
         }
+
         public void UnregisterPlayer(Player player) // observer unregister
         {
             for (int i = 0; i < players.Count; i++)
