@@ -1,4 +1,4 @@
-﻿namespace WebsocketClient
+﻿namespace WebSocketServerWorking.Collectables
 {
     class CollectableFactory : Factory
     {

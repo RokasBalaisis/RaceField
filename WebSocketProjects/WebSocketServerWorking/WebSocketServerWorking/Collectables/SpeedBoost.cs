@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace WebsocketClient
+namespace WebSocketServerWorking.Collectables
 {
     class SpeedBoost : Collectable
     {
@@ -9,6 +9,7 @@ namespace WebsocketClient
             durationMilliseconds = duration;
             this.strength = strength;
         }
+
         public override void ApplyEffect()
         {
             throw new NotImplementedException();

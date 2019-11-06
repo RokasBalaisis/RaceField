@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace WebsocketClient
+namespace WebSocketServerWorking.Collectables
 {
     class Bomb : Collectable
     {

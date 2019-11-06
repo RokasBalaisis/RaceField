@@ -1,4 +1,4 @@
-﻿namespace WebsocketClient
+﻿namespace WebSocketServerWorking.Collectables
 {
     public abstract class Collectable
     {
