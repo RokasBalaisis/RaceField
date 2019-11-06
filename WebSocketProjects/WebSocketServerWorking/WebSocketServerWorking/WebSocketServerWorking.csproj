@@ -69,13 +69,15 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ChangesController.cs" />
     <Compile Include="ConsoleHelpers.cs" />
     <Compile Include="DataChange.cs" />
     <Compile Include="DBmanager.cs" />
     <Compile Include="HttpServerController.cs" />
+    <Compile Include="MapState.cs" />
     <Compile Include="ServerController.cs" />
     <Compile Include="SocketComunicator.cs" />
-    <Compile Include="MapData.cs" />
+    <Compile Include="MapController.cs" />
     <Compile Include="Player.cs" />
     <Compile Include="ServerCommands.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
