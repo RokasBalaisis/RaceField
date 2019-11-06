@@ -11,7 +11,7 @@ using System.Threading;
 
 namespace WebSocketServerWorking
 {
-    public class MapController
+    public class MapController // Fasadas
     {
         static int timeForMapUpdate = 100;
         MapState mapState;
