@@ -19,8 +19,9 @@ namespace WebSocketServerWorking
         int tickCounter = 0;
         WebSocketSessionManager sessions = null;
         bool sessionConnected = false;
-        Timer gameTimer;
-        
+        //Timer gameTimer;
+        TimerAdapter gameTimer;
+
         public MapController()
         {
             mapState = new MapState(this);
@@ -120,7 +121,8 @@ namespace WebSocketServerWorking
         {
             sessions = _sessions;
             sessionConnected = true;
-            gameTimer = new Timer(MapTick, null, 0, 10);
+            gameTimer = new TimerAdapter(MapTick, 10);
+            //gameTimer = new Timer(MapTick, null, 0, 10);
             return sessionConnected;
         }
     }
