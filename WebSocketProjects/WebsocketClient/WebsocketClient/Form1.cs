@@ -77,9 +77,28 @@ namespace WebsocketClient
             GameRate_Tick(sender,e);
 
             CarController carController = new CarController();
-            carController.MakeSlowCar();
+            Car slowCar = carController.MakeSlowCar();
+
+            var modifyCar = new Car_ModifySpeed();
+            Console.WriteLine(slowCar);
+            Execute(slowCar, modifyCar, new CarCommand(slowCar, CarAction.IncreaseSpeed, 2019));
+            Execute(slowCar, modifyCar, new CarCommand(slowCar, CarAction.IncreaseSpeed, 1));
+            Execute(slowCar, modifyCar, new CarCommand(slowCar, CarAction.IncreaseSpeed, 2));
+            Execute(slowCar, modifyCar, new CarCommand(slowCar, CarAction.IncreaseSpeed, 3));
+            Console.WriteLine(slowCar);
+            modifyCar.UndoActions();
+            Console.WriteLine(slowCar);
+            //Console.WriteLine(slowCar);
+            //Execute(slowCar, modifyCar, new CarCommand(slowCar, CarAction.DecreaseSpeed, 2019));
+            //Console.WriteLine(slowCar);
         }
         
+        private static void Execute(Car car, Car_ModifySpeed modifySpeed, ICommand carCommand)
+        {
+            modifySpeed.SetCommand(carCommand);
+            modifySpeed.Invoke();
+        }
+
         private void Form1_Resize(object sender, EventArgs e) // TODO: set default playing field ratio and hangle resizing all objects IF PAGE for e.g. MAXIMIZED IT SHOULD keep ratio to playingfield not window. and set it in the middle
         {
             Control control = (Control)sender;
@@ -106,7 +125,11 @@ namespace WebsocketClient
                 }
                 else
                 {
-                    myPlayer.KeyDown(sender, e);
+                    if (myPlayer != null)
+                    {
+                        myPlayer.KeyDown(sender, e);
+                    }
+                    
                 }
             }
         }
@@ -119,7 +142,11 @@ namespace WebsocketClient
             }
             else
             {
-                myPlayer.KeyUp(sender, e);
+                if (myPlayer != null)
+                {
+                    myPlayer.KeyUp(sender, e);
+                }
+                
             }
         }
 
