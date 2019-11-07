@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using WebsocketClient.Bridge;
 
 namespace WebsocketClient
 {
@@ -19,11 +20,12 @@ namespace WebsocketClient
         public static int angle = 0;
         public static double mod = 0;
 
-        public Player player;
+        public Player player;        
 
         public MyPlayer(Player player)
         {
             this.player = player;            
+            
         }
 
 
@@ -44,11 +46,12 @@ namespace WebsocketClient
 
 
         public void KeyDown(object sender, KeyEventArgs e)
-        {
+        {            
+
             if (e.KeyCode == Keys.Up)
             {
                 isUpPressed = true;
-                setMoveAlgorithm(new MoveFaster());
+                setMoveAlgorithm(new MoveFaster());   
 
             }
             else if (e.KeyCode == Keys.Down)
@@ -61,14 +64,14 @@ namespace WebsocketClient
             else if (e.KeyCode == Keys.Left)
             {
                 isLeftPressed = true;
-                setMoveAlgorithm(new MoveTurn(isLeftPressed, isRightPressed));
+                setMoveAlgorithm(new MoveTurn(isLeftPressed, isRightPressed, isDownPressed));
 
 
             }
             else if (e.KeyCode == Keys.Right)
             {
                 isRightPressed = true;
-                setMoveAlgorithm(new MoveTurn(isLeftPressed, isRightPressed));
+                setMoveAlgorithm(new MoveTurn(isLeftPressed, isRightPressed, isDownPressed));
 
 
 
@@ -160,10 +163,10 @@ namespace WebsocketClient
 
         }
 
-
         private void setMoveAlgorithm(MoveAlgorithm algorithm)
         {
             player.setMoveAlgorithm(algorithm);
+            player.setImplementor(new BoostedSpeed());
         }
 
 

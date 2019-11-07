@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Drawing;
+using WebsocketClient.Bridge;
 
 namespace WebsocketClient
 {
@@ -23,7 +24,7 @@ namespace WebsocketClient
         public Player(int id)
         {
             this.id = id;
-            //this.position = position;
+            //this.position = position;            
         }
 
         public void initializeCar()
@@ -35,6 +36,11 @@ namespace WebsocketClient
         public void setMoveAlgorithm (MoveAlgorithm algorithm)
         {
             this.moveAlgorithm = algorithm;
+        }
+
+        public void setImplementor(Iimplementor implementor)
+        {
+            this.moveAlgorithm.mode = implementor;
         }
 
         public void Move()

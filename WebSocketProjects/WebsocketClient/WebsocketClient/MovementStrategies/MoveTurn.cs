@@ -11,14 +11,16 @@ namespace WebsocketClient
     {
         private bool isRightPressed;
         private bool isLeftPressed;
+        private bool isDownPressed;
 
-        public MoveTurn(bool isLeftPressed, bool isRightPressed)
+        public MoveTurn(bool isLeftPressed, bool isRightPressed, bool isDownPressed)
         {
             this.isLeftPressed = isLeftPressed;
             this.isRightPressed = isRightPressed;
+            this.isDownPressed = isDownPressed;
         }
 
-        public void Move()
+        public override void Move()
         {          
             //if (isLeftPressed == true && isRightPressed == false)
             //{
@@ -28,15 +30,31 @@ namespace WebsocketClient
             //{
             //    Form1.angle += 10;
             //}
+            if(!isDownPressed)
+            {
+                if (isLeftPressed == true && isRightPressed == false)
+                {
+                    MyPlayer.angle -= 10;
+                }
+                else if (isRightPressed == true && isLeftPressed == false)
+                {
+                    MyPlayer.angle += 10;
+                }
+            }
+            else
+            {
+                if (isLeftPressed == true && isRightPressed == false)
+                {
+                    MyPlayer.angle += 10;
+                }
+                else if (isRightPressed == true && isLeftPressed == false)
+                {
+                    MyPlayer.angle -= 10;
+                }
+            }
+            
 
-            if (isLeftPressed == true && isRightPressed == false)
-            {
-                MyPlayer.angle -= 10;
-            }
-            else if (isRightPressed == true && isLeftPressed == false)
-            {
-                MyPlayer.angle += 10;
-            }
+
         }
     }
 }
