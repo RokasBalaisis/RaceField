@@ -15,13 +15,15 @@ namespace WebSocketServerWorking
     public class ServerCommands
     {
 
-        public static void StartCommandListener(WebSocketServer wssv)
+        public static void StartCommandListener(WebSocketServer wssv, string[] args)
         {
+            string first_command = args.Length < 0 ? args[0] : "";
             string command;
             bool exit = false;
             while (!exit)
             {
-                command = Console.ReadLine();
+                command = first_command != "" ? first_command : Console.ReadLine();
+                first_command = "";
                 switch (command)
                 {
                     case "clear":
