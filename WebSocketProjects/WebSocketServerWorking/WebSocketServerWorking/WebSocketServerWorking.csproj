@@ -74,7 +74,7 @@
     <Compile Include="Collectables\Collectable.cs" />
     <Compile Include="Collectables\CollectableFactory.cs" />
     <Compile Include="Collectables\Factory.cs" />
-    <Compile Include="Collectables\Prototype.cs" />
+    <Compile Include="Collectables\IPrototype.cs" />
     <Compile Include="Collectables\SpeedBoost.cs" />
     <Compile Include="ConsoleHelpers.cs" />
     <Compile Include="DataChange.cs" />
