@@ -7,15 +7,9 @@ using System.Windows.Forms;
 
 namespace WebsocketClient
 {
-    class MoveFaster : MoveAlgorithm
+    public interface MoveAlgorithm
     {
-        
-        public void Move()
-        {
-            if (Form1.mod <= 0.9)
-            {
-                Form1.mod += 0.1;
-            }
-        }
+        void Move();
+
     }
 }
