@@ -17,7 +17,7 @@ namespace WebSocketServerWorking
 
         public static void StartCommandListener(WebSocketServer wssv, string[] args)
         {
-            string first_command = args.Length < 0 ? args[0] : "";
+            string first_command = args.Length > 0 ? args[0] : "";
             string command;
             bool exit = false;
             while (!exit)
