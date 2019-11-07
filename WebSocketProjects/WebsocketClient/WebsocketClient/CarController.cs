@@ -9,7 +9,7 @@ namespace WebsocketClient
 {
     public class CarController
     {
-        public void MakeSlowCar()
+        public Car MakeSlowCar()
         {
             var builder = new SlowCarBuilder();
             var director = new CarBuilderDirector(builder);
@@ -22,6 +22,7 @@ namespace WebsocketClient
             Console.WriteLine("Handling:{0}", slowCar.Handling);
             Console.WriteLine("Acceleration:{0}", slowCar.Acceleration);
             Console.WriteLine("Speed:{0}", slowCar.Speed);
+            return slowCar;
         }
     }
 }

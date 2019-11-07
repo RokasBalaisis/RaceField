@@ -36,7 +36,7 @@ namespace WebsocketClient
 
         public void SetSpeed()
         {
-            Speed = 0.425f;
+            Speed = 1.5000000f;
         }
 
         public Car BuildCar()

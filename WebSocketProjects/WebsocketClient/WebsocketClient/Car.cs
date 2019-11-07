@@ -25,5 +25,27 @@ namespace WebsocketClient
             Acceleration = acceleration;
             Speed = speed;
         }
+
+        public void IncreaseSpeed(float amount)
+        {
+            Speed += amount;
+            Console.WriteLine($"The speed for the {Id}: {Model} has been increased by {amount}.");
+        }
+
+        public bool DecreaseSpeed(float amount)
+        {
+            if(amount < Speed)
+            {
+                Speed -= amount;
+                Console.WriteLine($"The speed for the {Id}: {Model} has been decreased by {amount}");
+                return true;
+            }
+            return false;
+        }
+
+        public override string ToString()
+        {
+            return $"Current speed  for the {Id}: {Model}  is {Speed}.";
+        }
     }
 }
