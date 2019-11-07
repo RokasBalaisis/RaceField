@@ -34,7 +34,12 @@ namespace WebSocketServerWorking
             get{ return instance; }
         }
 
-
+        public void SeedTable(string sql)
+        {
+            var dbMan = DBmanager.GetDBmanager();
+                var sqlDataReader = dbMan.StartConnection(sql);
+                dbMan.CloseConnection();
+        }
 
         public void StartServer(int port)
         {
@@ -43,17 +48,21 @@ namespace WebSocketServerWorking
             httpsrv.OnGet += (sender, e) => {
                 var req = e.Request;
                 var res = e.Response;
-
                 var path = req.RawUrl;
-                if (path == "/users")
+                switch(path)
                 {
-                    var sql = "SELECT * from user";
-                    var result = GetRequest(sql, "users");
-                    var resultBytes = Encoding.UTF8.GetBytes(result.ToString());
-                    res.ContentType = "application/json";
-                    res.WriteContent(resultBytes);
-                }
+                    case "/users":
+                        var sql = "SELECT * from user";
+                        res.ContentType = "application/json";
+                        res.WriteContent(Encoding.UTF8.GetBytes(GetRequest(sql, "users").ToString()));
+                        break;
 
+                    default:
+                        res.ContentType = "application/json";
+                        res.StatusCode = 404;
+                        res.WriteContent(Encoding.UTF8.GetBytes(NotFoundError().ToString()));
+                        break;
+                }
             };
 
             httpsrv.Start();
@@ -87,6 +96,13 @@ namespace WebSocketServerWorking
                 array.Add(entry);
                 result[jsonName] = array;
             }
+            return result;
+        }
+
+        public JObject NotFoundError()
+        {
+            JObject result = new JObject();
+            result.Add("error", "404 Page not found");
             return result;
         }
 

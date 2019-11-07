@@ -4,18 +4,17 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using WebsocketClient.Bridge;
 
 namespace WebsocketClient
 {
-    class MoveFaster : MoveAlgorithm
-    {
+    public abstract class MoveAlgorithm
+    {       
+
+        public Iimplementor mode;
+
+        public abstract void Move();
         
-        public void Move()
-        {
-            if (Form1.mod <= 0.9)
-            {
-                Form1.mod += 0.1;
-            }
-        }
+
     }
 }

@@ -74,8 +74,11 @@ namespace WebSocketServerWorking
                     case "help":
                         Console.WriteLine("*****List of available commands*****");
                         Console.WriteLine("clear - clear the console");
+                        Console.WriteLine("http-server-start - starts HTTP server");
                         Console.WriteLine("players data  - lists public data of connected players");
                         Console.WriteLine("start - start the Websocket Server");
+                        Console.WriteLine("seed-users-table - seeds users table with test data");
+                        Console.WriteLine("clear-users-table - empties users table");
                         Console.WriteLine("stop  - stop the Websocket Server");
                         Console.WriteLine("exit  - exit the application");
                         Console.WriteLine("************************************");
@@ -84,6 +87,21 @@ namespace WebSocketServerWorking
                     case "http-server-start":
                         HttpServerController.Instance.StartServer(8080);
                         break;
+
+                    case "seed-users-table":
+                        Random r = new Random();
+                        for (int c = 0; c < 100; c++)             
+                            HttpServerController.Instance.SeedTable("INSERT into user(username, nickname, password, car_model, credits) VALUES ('test" + c.ToString() + "', 'nickname" + c.ToString() + "', 'password" + c.ToString() + "'," + c.ToString() + "," + r.Next() + ")");
+                        Console.WriteLine("Users table has been seeded");
+                        break;
+
+                    case "clear-users-table":
+                        HttpServerController.Instance.SeedTable("TRUNCATE user");
+                        Console.WriteLine("Users table has been reset");
+                        break;
+                   /* case "http-server-stop":
+                        HttpServerController.Instance.
+                        break;*/
 
                     default:
                         Console.WriteLine("Unknown Command: \"" + command + "\"");

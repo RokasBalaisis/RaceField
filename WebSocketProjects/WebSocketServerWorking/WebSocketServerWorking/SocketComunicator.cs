@@ -16,7 +16,7 @@ namespace WebSocketServerWorking
         public bool connectedToMap = false;
         MapController mapController = null;
 
-        protected override void OnMessage(MessageEventArgs e) 
+        protected override void OnMessage(MessageEventArgs e)
         {
             //Console.WriteLine(e.Data);
             JObject data = JObject.Parse(e.Data);
@@ -32,7 +32,6 @@ namespace WebSocketServerWorking
 
                     break;
             }
-
         }
 
         protected void ChatMessageReceived(JObject data)

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Drawing;
+using WebsocketClient.Bridge;
 
 namespace WebsocketClient
 {
@@ -19,10 +20,11 @@ namespace WebsocketClient
         public Color color;
 
         private MoveAlgorithm moveAlgorithm;
+
         public Player(int id)
         {
             this.id = id;
-            //this.position = position;
+            //this.position = position;            
         }
 
         public void initializeCar()
@@ -31,32 +33,18 @@ namespace WebsocketClient
             car.Location = position;
         }
 
-        private void setMoveAlgorithm (MoveAlgorithm algorithm)
+        public void setMoveAlgorithm (MoveAlgorithm algorithm)
         {
             this.moveAlgorithm = algorithm;
         }
 
-        public void Move()
+        public void setImplementor(Iimplementor implementor)
         {
-            // TODO: apply conditions to if's
+            this.moveAlgorithm.mode = implementor;
+        }
 
-            //if()
-            //{
-            //    setMoveAlgorithm(new MoveSlow());
-            //}
-            //else if ()
-            //{
-            //    setMoveAlgorithm(new MoveFast());
-            //}
-            //else if ()
-            //{
-            //    setMoveAlgorithm(new MoveSideways());
-            //}
-            //else if ()
-            //{
-            //    setMoveAlgorithm(new MoveStop());
-            //}
-
+        public void Move()
+        {            
             moveAlgorithm.Move();
         }
 

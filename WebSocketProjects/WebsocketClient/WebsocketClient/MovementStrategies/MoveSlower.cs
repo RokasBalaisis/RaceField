@@ -10,11 +10,16 @@ namespace WebsocketClient
     class MoveSlower : MoveAlgorithm
     {       
 
-        public void Move()
+        public override void Move()
         {
-            if (Form1.mod >= -0.9)
+            //if (Form1.mod >= -0.9)
+            //{
+            //    Form1.mod -= 0.1;
+            //}
+            
+            if (MyPlayer.mod >= -0.9 * mode.getSpeedModifier())
             {
-                Form1.mod -= 0.1;
+                MyPlayer.mod -= 0.1 * mode.getSpeedModifier();
             }
         }
     }
