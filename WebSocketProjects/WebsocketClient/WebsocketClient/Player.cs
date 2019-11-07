@@ -19,6 +19,7 @@ namespace WebsocketClient
         public Color color;
 
         private MoveAlgorithm moveAlgorithm;
+
         public Player(int id)
         {
             this.id = id;
@@ -31,32 +32,13 @@ namespace WebsocketClient
             car.Location = position;
         }
 
-        private void setMoveAlgorithm (MoveAlgorithm algorithm)
+        public void setMoveAlgorithm (MoveAlgorithm algorithm)
         {
             this.moveAlgorithm = algorithm;
         }
 
         public void Move()
-        {
-            // TODO: apply conditions to if's
-
-            //if()
-            //{
-            //    setMoveAlgorithm(new MoveSlow());
-            //}
-            //else if ()
-            //{
-            //    setMoveAlgorithm(new MoveFast());
-            //}
-            //else if ()
-            //{
-            //    setMoveAlgorithm(new MoveSideways());
-            //}
-            //else if ()
-            //{
-            //    setMoveAlgorithm(new MoveStop());
-            //}
-
+        {            
             moveAlgorithm.Move();
         }
 
