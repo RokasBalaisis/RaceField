@@ -2,12 +2,12 @@
 
 namespace WebSocketServerWorking.Collectables
 {
-    class SpeedBoost : Collectable
+    class SpeedBoost : Collectable, IPrototype
     {
-        public SpeedBoost(int duration = 1, double strength = 0.5)
+        public SpeedBoost(int durationMilliseconds = 5000, double effectStrength = 0.2)
         {
-            durationMilliseconds = duration;
-            this.strength = strength;
+            duration = duration;
+            this.effectStrength = effectStrength;
         }
 
         public override void ApplyEffect()
@@ -18,6 +18,16 @@ namespace WebSocketServerWorking.Collectables
         public override void RemoveEffect()
         {
             throw new NotImplementedException();
+        }
+
+        public void ChangeVariant()
+        {
+            throw new NotImplementedException();
+        }
+
+        public IPrototype Clone()
+        {
+            return (IPrototype) MemberwiseClone();
         }
     }
 }
