@@ -18,17 +18,12 @@ namespace WebsocketClient
     public partial class Form1 : Form //     !!!!!!!! ! WARNING ! !!!!!!!!    must be first class in this file
     {
         public static bool isMessaging = false;
-        public static bool isUpPressed = false;
-        public static bool isDownPressed = false;
-        public static bool isLeftPressed = false;
-        public static bool isRightPressed = false;
-
-        public static int speed = 20;
-        public static int angle = 0;
-        public static double mod = 0;
+        
+        public bool algoset = false; 
+        
         public static double x = 200;
-        public static double y = 200;        
-        private MoveAlgorithm moveAlgorithm;
+        public static double y = 200;       
+        
 
         public static bool isConnected = false;
         
@@ -44,6 +39,9 @@ namespace WebsocketClient
         public const int CollectablesOnMapCount = 5;
         public List<Player> players; // remake to be able to acce player by their id ... maybe
         public Player me;
+
+        //public List<MyPlayer> myPlayers;
+        public MyPlayer myPlayer;
 
         public Player GetPlayerById(int id)
         {
@@ -69,7 +67,7 @@ namespace WebsocketClient
             }
         }
 
-        private WebSocket client;
+        private WebSocketAdapter client;
         const string host_begin = "ws://";
         Bitmap image;
         
@@ -78,7 +76,6 @@ namespace WebsocketClient
             PlayingField_destroy();
             GameRate_Tick(sender,e);
 
-            setMoveAlgorithm(new MoveStop()); // Initializing first time as stationary
             CarController carController = new CarController();
             carController.MakeSlowCar();
         }
@@ -95,7 +92,7 @@ namespace WebsocketClient
         }
 
         private void Form1_KeyDown(object sender, KeyEventArgs e)
-        {
+        {            
             if (isMessaging)
             {
             }
@@ -105,100 +102,24 @@ namespace WebsocketClient
                 {
                     isMessaging = true;
                     InputMessageField.Focus();
-                }
-                else if (e.KeyCode == Keys.Up)
-                {
-                    isUpPressed = true;
-                    
-                    setMoveAlgorithm(new MoveFaster());
 
                 }
-                else if (e.KeyCode == Keys.Down)
+                else
                 {
-                    isDownPressed = true;
-                    
-                    setMoveAlgorithm(new MoveSlower());
-                }
-                else if (e.KeyCode == Keys.Left)
-                {
-                    isLeftPressed = true;
-                    //angle -= 10;                    
-                    setMoveAlgorithm(new MoveTurn(isLeftPressed, isRightPressed));
-                }
-                else if (e.KeyCode == Keys.Right)
-                {
-                    isRightPressed = true;                    
-                    //angle += 10;
-                    setMoveAlgorithm(new MoveTurn(isLeftPressed, isRightPressed));
-
-                }
-                else if (e.KeyCode == Keys.Z)
-                {
-                    setMoveAlgorithm(new MoveStop());
+                    myPlayer.KeyDown(sender, e);
                 }
             }
         }
 
         private void Form1_KeyUp(object sender, KeyEventArgs e)
-        {
+        {            
             if (isMessaging)
             {
 
             }
             else
             {
-                if (e.KeyCode == Keys.Up)
-                {
-                    isUpPressed = false;
-                    
-                }
-                else if (e.KeyCode == Keys.Down)
-                {
-                    isDownPressed = false;
-                    
-                }
-                else if (e.KeyCode == Keys.Left)
-                {
-                    isLeftPressed = false;
-
-                    //after turning setting move algorithm to previous
-                    if (mod > 0)
-                    {
-                        setMoveAlgorithm(new MoveFaster());
-                    }
-                    else if (mod == 0)
-                    {
-                        setMoveAlgorithm(new MoveStop());
-                    }
-                    else if (mod < 0)
-                    {
-                        setMoveAlgorithm(new MoveSlower());
-                    }
-                }
-                else if (e.KeyCode == Keys.Right)
-                {
-                    isRightPressed = false;
-
-                    //after turning setting move algorithm to previous
-                    if (mod > 0)
-                    {
-                        setMoveAlgorithm(new MoveFaster());
-                    }
-                    else if (mod == 0)
-                    {
-                        setMoveAlgorithm(new MoveStop());
-                    }
-                    else if (mod < 0)
-                    {
-                        setMoveAlgorithm(new MoveSlower());
-                    }
-                }
-
-                /*if(e.KeyCode == Keys.Up || e.KeyCode == Keys.Down)
-                {
-                    mod = 0;
-                }*/
-
+                myPlayer.KeyUp(sender, e);
             }
         }
 
@@ -214,34 +135,45 @@ namespace WebsocketClient
 
         private void timer_Tick(object sender, EventArgs e) // TODO remove this and transfer all code to GameRate_Tick // this is overkill
         {
-            x += (speed * mod) * Math.Cos(Math.PI / 150 * angle);
-            y += (speed * mod) * Math.Sin(Math.PI / 150 * angle);
+            //x += (speed * mod) * Math.Cos(Math.PI / 150 * angle);
+            //y += (speed * mod) * Math.Sin(Math.PI / 150 * angle);
+
+
+            if(myPlayer != null)
+            {
+                x += (myPlayer.getSpeed() * myPlayer.getMod()) * Math.Cos(Math.PI / 150 * myPlayer.getAngle());
+                y += (myPlayer.getSpeed() * myPlayer.getMod()) * Math.Sin(Math.PI / 150 * myPlayer.getAngle());
+            }
+            
 
             Point position = new Point(Convert.ToInt32(x),Convert.ToInt32(y));
-            if(me != null)
+
+            if (me != null)
             {
                 me.car.Location = position;
+
+                myPlayer.player.car.Location = position;
 
                 JObject message = new JObject();
                 message["type"] = "updateLocation";
                 message["location"] = new JObject();
                 message["location"]["X"] = position.X;
                 message["location"]["Y"] = position.Y;
-                client.Send(message.ToString());
+                client.Send(message);
             }
-            //DrawPlayer(position, Color.Red); // TODO: make drawing and call it here
 
-            moveAlgorithm.Move();
-            
+            //moveAlgorithm.Move();
+
+            if(myPlayer != null)
+            {
+                if(!algoset)
+                {
+                    myPlayer.player.setMoveAlgorithm(new MoveStop());
+                    algoset = true;
+                }
+                myPlayer.Move();                
+            }   
         }
-
-        //sets desired strategy pattern for movement (speeding, slowing, turning, or stopped)
-        private void setMoveAlgorithm(MoveAlgorithm algorithm)
-        {
-            moveAlgorithm = algorithm;
-        }
-
-
 
         public Point RotatePoint(Point p1, Point p2, double angle)
         {
@@ -268,8 +200,6 @@ namespace WebsocketClient
             return (Math.PI / 180) * angle;
         }
 
-
-
         private void MessageInput_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.KeyValue == 13)
@@ -279,7 +209,7 @@ namespace WebsocketClient
                 JObject message = new JObject();
                 message["type"] = "message";
                 message["message"] = content;
-                client.Send(message.ToString());
+                client.Send(message);
                 e.Handled = true;
                 e.SuppressKeyPress = true;
             }
@@ -295,48 +225,60 @@ namespace WebsocketClient
             if (!isConnected)
             {
                 string host = host_begin + IPinput.Text + ":" + PortInput.Text;
-                client = new WebSocket(host);
+                client = new WebSocketAdapter(host, this);
 
                 MainMenuPanel.Visible = false;
                 //TODO: add screen disabler - grey half transparent panel in background
-                client.OnOpen += (ss, ee) =>
-                {
-                    isConnected = true;
-                    DebugLog(string.Format("Connected to {0} successfully ", host));
-                };
+                client.SetOnOpen(OnOpen);
+                client.SetOnError(OnError);
+                client.SetOnMessageReceived(MessageReceived);
+                client.SetOnClose(OnClose);
+                client.SetCookie("username", usernameInput.Text); // TODO maybe username not nickname
+                client.Start();
+            }
+        }
+        private void OnOpen()
+        {
+            isConnected = true;
+            DebugLog(string.Format("Connected to {0} successfully ", client.Url()));
+        }
 
-                client.OnError += (ss, ee) =>
-                   DebugLog("Error: " + ee.Message);
+        private void OnError(string message)
+        {
+            DebugLog("Error: " + message);
+        }
 
-                client.OnMessage += (ss, ee) =>
-                {
-                    if (this.InvokeRequired)
-                    {
-                        this.BeginInvoke((MethodInvoker)delegate ()
-                        {
-                            MessageReceived(ss, ee);
-                        });
-                    }
-                    else
-                    {
-                        MessageReceived(ss, ee);
-                    }
-                };
+        private void OnClose()
+        {
+            isConnected = false;
+            DebugLog(string.Format("Disconnected with {0}", client.Url()));
+            PlayingField_destroy();
+        }
 
-                client.OnClose += (ss, ee) =>
-                {
-                    isConnected = false;
-                    DebugLog(string.Format("Disconnected with {0}", host));
-                    PlayingField_destroy();
-                };
-                client.SetCookie(new Cookie("username", usernameInput.Text)); // TODO maybe username not nickname
-                client.Connect();
+        private void MessageReceived(string dataString) // Facade // root message get function to call other functions to parse messages
+        {
+            DebugLog("Response: " + dataString);
+            JObject data = JObject.Parse(dataString);
+            switch (data["type"].ToString())
+            {
+                case "message":
+                    ChatMessageReceived(data);
+                    break;
+                case "mapUpdate":
+                    MapUpdateReceived(data);
+                    break;
+                case "mapSetup":
+                    MapSetupReceived(data);
+                    break;
+                default:
+                    DebugLog("ERROR undefined message received!!!");
+                    break;
             }
         }
 
         private void DisconnectBTN_Click(object sender, EventArgs e)
         {
-            client.Close();
+            client.Stop();
         }
 
         // paint map then connected to game
@@ -363,28 +305,7 @@ namespace WebsocketClient
             player.initializeCar();
             this.Controls.Add(player.car);
         }
-
-        private void MessageReceived(object ss, MessageEventArgs ee) // root message get function to call other functions to parse messages
-        {
-            DebugLog("Response: " + ee.Data);
-            JObject data = JObject.Parse(ee.Data);
-            switch (data["type"].ToString())
-            {
-                case "message":
-                    ChatMessageReceived(data);
-                    break;
-                case "mapUpdate":
-                    MapUpdateReceived(data);
-                    break;
-                case "mapSetup":
-                    MapSetupReceived(data);
-                    break;
-                default:
-                    DebugLog("ERROR undefined message received!!!");
-                    break;
-            }
-        }
-
+               
         private void ChatMessageReceived(JObject data)
         {
             string text = data["message"].ToString();
@@ -448,9 +369,11 @@ namespace WebsocketClient
                 Color color = Color.FromName(value["color"].ToString());
                 //float angle = float.Parse(value["rotation"].ToString());
 
+                
                 Player newplayer = new Player(id); // not smart to create new player each time
                 newplayer.position = locationpoint;
                 newplayer.color = color;
+
 
                 int idx = players.IndexOf(newplayer);
                 if (idx == -1) // create new
@@ -464,6 +387,10 @@ namespace WebsocketClient
                         x = newplayer.position.X; // TODO this variable should be in player object not form
                         y = newplayer.position.Y; // TODO this variable should be in player object not form 
                         me = newplayer;
+
+                        myPlayer = new MyPlayer(me);                       
+                        
+                        
                     }
                 } // update existing
                 else
@@ -495,16 +422,15 @@ namespace WebsocketClient
 
         private void DBPanelCnnectBTN_Click(object sender, EventArgs e)
         {
-            // TODO: connect to databse register if not exists or connect and get player prefs from DB
+            // TODO: connect to database register if not exists or connect and get player prefs from DB
         }
 
         // TODO make anabstract class for logger that can be singleton
         void DebugLog(string message)
         {
-            DebugLogField.Select(DebugLogField.TextLength, DebugLogField.TextLength);
-            DebugLogField.SelectedRtf = string.Format(@"{{\rtf1\ansi \plain {0} \plain0 \par }}", message);
-            DebugLogField.ScrollToCaret();
+            //DebugLogField.Select(DebugLogField.TextLength, DebugLogField.TextLength);
+            //DebugLogField.SelectedRtf = string.Format(@"{{\rtf1\ansi \plain {0} \plain0 \par }}", message);
+            //DebugLogField.ScrollToCaret();
         }
-
     }
 }

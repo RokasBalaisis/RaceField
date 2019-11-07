@@ -20,14 +20,23 @@ namespace WebsocketClient
 
         public void Move()
         {          
+            //if (isLeftPressed == true && isRightPressed == false)
+            //{
+            //    Form1.angle -= 10;                
+            //}
+            //else if (isRightPressed == true && isLeftPressed == false)
+            //{
+            //    Form1.angle += 10;
+            //}
+
             if (isLeftPressed == true && isRightPressed == false)
             {
-                Form1.angle -= 10;                
+                MyPlayer.angle -= 10;
             }
             else if (isRightPressed == true && isLeftPressed == false)
             {
-                Form1.angle += 10;
-            } 
+                MyPlayer.angle += 10;
+            }
         }
     }
 }

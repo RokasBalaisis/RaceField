@@ -62,11 +62,12 @@
     <Compile Include="CollectableFactory.cs" />
     <Compile Include="Factory.cs" />
     <Compile Include="ICarBuilder.cs" />
-    <Compile Include="MoveFaster.cs" />
-    <Compile Include="MoveAlgorithm.cs" />
-    <Compile Include="MoveTurn.cs" />
-    <Compile Include="MoveSlower.cs" />
-    <Compile Include="MoveStop.cs" />
+    <Compile Include="MovementStrategies\MoveFaster.cs" />
+    <Compile Include="MovementStrategies\MoveAlgorithm.cs" />
+    <Compile Include="MovementStrategies\MoveTurn.cs" />
+    <Compile Include="MovementStrategies\MoveSlower.cs" />
+    <Compile Include="MovementStrategies\MoveStop.cs" />
+    <Compile Include="MyPlayer.cs" />
     <Compile Include="Obstacle.cs" />
     <Compile Include="Player.cs" />
     <Compile Include="SlowCarBuilder.cs" />
@@ -95,6 +96,7 @@
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="UIToolBox\win32.cs" />
+    <Compile Include="WebSocketAdapter.cs" />
     <EmbeddedResource Include="Form1.resx">
       <DependentUpon>Form1.cs</DependentUpon>
     </EmbeddedResource>
@@ -125,5 +127,6 @@
   <ItemGroup>
     <None Include="Resources\car_blue.png" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -64,7 +64,7 @@ namespace WebSocketServerWorking
             {
                 changes.Add(flushingCache[i].change);
             }
-            flushingCache = null;
+            flushingCache = new List<DataChange>();
             Console.WriteLine("Siunciama informacija");
             Console.WriteLine(changes.ToString());
             return changes;
