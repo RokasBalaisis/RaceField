@@ -7,6 +7,7 @@ using WebSocketSharp;
 using WebSocketSharp.Server;
 using System.Drawing;
 using Newtonsoft.Json.Linq;
+using WebSocketServerWorking.Collectables;
 
 namespace WebSocketServerWorking
 {
@@ -28,6 +29,8 @@ namespace WebSocketServerWorking
             //this.id = pubid;
             this.username = username;
             this.nickname = nickname;
+            CollectableFactory f = new CollectableFactory();
+            Collectable a = f.GetCollectable(Collectable.Type.Bomb);
         }
 
         /*

@@ -70,6 +70,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ChangesController.cs" />
+    <Compile Include="Collectables\Bomb.cs" />
+    <Compile Include="Collectables\Collectable.cs" />
+    <Compile Include="Collectables\CollectableFactory.cs" />
+    <Compile Include="Collectables\Factory.cs" />
+    <Compile Include="Collectables\IPrototype.cs" />
+    <Compile Include="Collectables\SpeedBoost.cs" />
     <Compile Include="ConsoleHelpers.cs" />
     <Compile Include="DataChange.cs" />
     <Compile Include="DBmanager.cs" />
@@ -89,5 +95,6 @@
   <ItemGroup>
     <WCFMetadata Include="Connected Services\" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
