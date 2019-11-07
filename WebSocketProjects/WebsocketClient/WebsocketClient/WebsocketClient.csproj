@@ -54,7 +54,6 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
-
     <Compile Include="Bomb.cs" />
     <Compile Include="Bridge\Iimplementor.cs" />
     <Compile Include="Bridge\NormalSpeed.cs" />
@@ -65,7 +64,6 @@
     <Compile Include="CarBuilderDirector.cs" />
     <Compile Include="CarCommand.cs" />
     <Compile Include="CarController.cs" />
-
     <Compile Include="Car_ModifySpeed.cs" />
     <Compile Include="Collectable.cs" />
     <Compile Include="CollectableFactory.cs" />
