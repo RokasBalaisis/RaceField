@@ -9,7 +9,7 @@ namespace WebsocketClient
 {
     class MoveStop : MoveAlgorithm
     {       
-        public void Move()
+        public override void Move()
         {
             //if (Form1.mod == 0)
             //{
@@ -28,13 +28,13 @@ namespace WebsocketClient
             {
                 MyPlayer.mod = 0;
             }
-            else if (MyPlayer.mod > 0.1)
+            else if (MyPlayer.mod > 0.1 * mode.getSpeedModifier())
             {
-                MyPlayer.mod -= 0.1;
+                MyPlayer.mod -= 0.1 * mode.getSpeedModifier();
             }
-            else if (MyPlayer.mod < -0.1)
+            else if (MyPlayer.mod < -0.1 * mode.getSpeedModifier())
             {
-                MyPlayer.mod += 0.1;
+                MyPlayer.mod += 0.1 * mode.getSpeedModifier();
             }
         }
     }

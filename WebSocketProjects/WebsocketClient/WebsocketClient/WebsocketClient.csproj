@@ -55,6 +55,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Bomb.cs" />
+    <Compile Include="Bridge\Iimplementor.cs" />
+    <Compile Include="Bridge\NormalSpeed.cs" />
+    <Compile Include="Bridge\SlimedSpeed.cs" />
+    <Compile Include="Bridge\BoostedSpeed.cs" />
     <Compile Include="Car.cs" />
     <Compile Include="CarAction.cs" />
     <Compile Include="CarBuilderDirector.cs" />
@@ -76,6 +80,7 @@
     <Compile Include="Player.cs" />
     <Compile Include="SlowCarBuilder.cs" />
     <Compile Include="SpeedBoost.cs" />
+    <Compile Include="SpeedPowerUpStrategies\SpeedPowerUpAlgorithm.cs" />
     <Compile Include="UIToolBox\TransparentTextBox.cs">
       <SubType>Component</SubType>
     </Compile>

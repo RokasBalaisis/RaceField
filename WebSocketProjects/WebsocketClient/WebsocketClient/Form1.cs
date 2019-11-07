@@ -125,7 +125,11 @@ namespace WebsocketClient
                 }
                 else
                 {
-                    myPlayer.KeyDown(sender, e);
+                    if (myPlayer != null)
+                    {
+                        myPlayer.KeyDown(sender, e);
+                    }
+                    
                 }
             }
         }
@@ -138,7 +142,11 @@ namespace WebsocketClient
             }
             else
             {
-                myPlayer.KeyUp(sender, e);
+                if (myPlayer != null)
+                {
+                    myPlayer.KeyUp(sender, e);
+                }
+                
             }
         }
 
