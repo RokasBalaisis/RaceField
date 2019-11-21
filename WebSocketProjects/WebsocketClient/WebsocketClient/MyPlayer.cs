@@ -51,34 +51,40 @@ namespace WebsocketClient
             if (e.KeyCode == Keys.Up)
             {
                 isUpPressed = true;
-                setMoveAlgorithm(new MoveFaster());   
+                //setMoveAlgorithm(new MoveFaster());   
+                player.setState("Faster");
+                
 
             }
             else if (e.KeyCode == Keys.Down)
             {
                 isDownPressed = true;
-                setMoveAlgorithm(new MoveSlower());
+                //setMoveAlgorithm(new MoveSlower());
+                player.setState("Slower");
 
 
             }
             else if (e.KeyCode == Keys.Left)
             {
                 isLeftPressed = true;
-                setMoveAlgorithm(new MoveTurn(isLeftPressed, isRightPressed, isDownPressed));
+                //setMoveAlgorithm(new MoveTurn(isLeftPressed, isRightPressed, isDownPressed));
+                player.setTurnState(isLeftPressed, isRightPressed, isDownPressed);
 
 
             }
             else if (e.KeyCode == Keys.Right)
             {
                 isRightPressed = true;
-                setMoveAlgorithm(new MoveTurn(isLeftPressed, isRightPressed, isDownPressed));
+                //setMoveAlgorithm(new MoveTurn(isLeftPressed, isRightPressed, isDownPressed));
+                player.setTurnState(isLeftPressed, isRightPressed, isDownPressed);
 
 
 
             }
             else if (e.KeyCode == Keys.Space)
             {
-                setMoveAlgorithm(new MoveStop());
+                //setMoveAlgorithm(new MoveStop());
+                player.setState("Stop");
             }
         }
 
@@ -87,14 +93,16 @@ namespace WebsocketClient
             if (e.KeyCode == Keys.Up)
             {
                 isUpPressed = false;
-                setMoveAlgorithm(new MoveStop());
+                //setMoveAlgorithm(new MoveStop());
+                player.setState("Stop");
 
 
             }
             else if (e.KeyCode == Keys.Down)
             {
                 isDownPressed = false;
-                setMoveAlgorithm(new MoveStop());
+                //setMoveAlgorithm(new MoveStop());
+                player.setState("Stop");
 
             }
             else if (e.KeyCode == Keys.Left)
@@ -104,20 +112,24 @@ namespace WebsocketClient
                 //after turning setting move algorithm to previous
                 if (mod > 0.01)
                 {
-                    setMoveAlgorithm(new MoveFaster());
+                    //setMoveAlgorithm(new MoveFaster());
+                    player.setState("Faster");
                 }
                 else if (mod == 0)
                 {
-                    setMoveAlgorithm(new MoveStop());
+                    //setMoveAlgorithm(new MoveStop());
+                    player.setState("Stop");
                 }
                 else if (mod < -0.01)
                 {
-                    setMoveAlgorithm(new MoveSlower());
+                    //setMoveAlgorithm(new MoveSlower());
+                    player.setState("Slower");
                 }
 
                 if (!isUpPressed && !isDownPressed)
                 {
-                    setMoveAlgorithm(new MoveStop());
+                    //setMoveAlgorithm(new MoveStop());
+                    player.setState("Stop");
                 }
 
             }
@@ -128,31 +140,37 @@ namespace WebsocketClient
                 //after turning setting move algorithm to previous
                 if (mod > 0.01)
                 {
-                    setMoveAlgorithm(new MoveFaster());
+                    //setMoveAlgorithm(new MoveFaster());
+                    player.setState("Faster");
                 }
                 else if (mod == 0)
                 {
-                    setMoveAlgorithm(new MoveStop());
+                    //setMoveAlgorithm(new MoveStop());
+                    player.setState("Stop");
                 }
                 else if (mod < -0.01)
                 {
-                    setMoveAlgorithm(new MoveSlower());
+                    //setMoveAlgorithm(new MoveSlower());
+                    player.setState("Slower");
                 }
 
                 if (!isUpPressed && !isDownPressed)
                 {
-                    setMoveAlgorithm(new MoveStop());
+                    //setMoveAlgorithm(new MoveStop());
+                    player.setState("Stop");
                 }
             }
             else if (e.KeyCode == Keys.Space)
             {
                 if (isUpPressed)
                 {
-                    setMoveAlgorithm(new MoveFaster());
+                    //setMoveAlgorithm(new MoveFaster());
+                    player.setState("Faster");
                 }
                 else if (isDownPressed)
-                {
-                    setMoveAlgorithm(new MoveSlower());
+                {                    
+                    //setMoveAlgorithm(new MoveSlower());
+                    player.setState("Slower");
                 }
             }
 
@@ -168,7 +186,7 @@ namespace WebsocketClient
             player.setMoveAlgorithm(algorithm);
             player.setImplementor(new BoostedSpeed());
         }
-
+     
 
         public void Move()
         {            
