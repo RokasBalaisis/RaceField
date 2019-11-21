@@ -20,7 +20,7 @@ namespace WebSocketServerWorking
         WebSocketSessionManager sessions = null;
         bool sessionConnected = false;
         Timer gameTimer;
-        
+
         public MapController()
         {
             mapState = new MapState(this);

@@ -68,8 +68,13 @@
     <Compile Include="Collectable.cs" />
     <Compile Include="CollectableFactory.cs" />
     <Compile Include="Factory.cs" />
+    <Compile Include="Iterator\Aggregate.cs" />
+    <Compile Include="Iterator\GameObjectsIterator.cs" />
+    <Compile Include="Iterator\GameObjectsAggregate.cs" />
     <Compile Include="ICarBuilder.cs" />
     <Compile Include="ICommand.cs" />
+    <Compile Include="Iterator\IterableViewObject.cs" />
+    <Compile Include="Iterator\Iterator.cs" />
     <Compile Include="MovementStrategies\MoveFaster.cs" />
     <Compile Include="MovementStrategies\MoveAlgorithm.cs" />
     <Compile Include="MovementStrategies\MoveTurn.cs" />

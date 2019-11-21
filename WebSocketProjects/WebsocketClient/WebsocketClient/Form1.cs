@@ -18,6 +18,9 @@ namespace WebsocketClient
     public partial class Form1 : Form //     !!!!!!!! ! WARNING ! !!!!!!!!    must be first class in this file
     {
         public static bool isMessaging = false;
+        private int prevWidth;
+        private int prevHeight;
+        private double ratio;
         
         public bool algoset = false; 
         
@@ -33,11 +36,11 @@ namespace WebsocketClient
 
         //current game information
         public List<Obstacle> obstacles;
+        public List<Collectable> collectables;
+        public List<Player> players; // remake to be able to access player by their id ... maybe
 
         public Factory factory;
-        public List<Collectable> collectables;
         public const int CollectablesOnMapCount = 5;
-        public List<Player> players; // remake to be able to acce player by their id ... maybe
         public Player me;
 
         //public List<MyPlayer> myPlayers;
@@ -61,10 +64,14 @@ namespace WebsocketClient
             factory = new CollectableFactory();
             players = new List<Player>();
             collectables = new List<Collectable>();
+            obstacles = new List<Obstacle>();
             for (int i = 0; i < CollectablesOnMapCount; i++)
             {
                 collectables.Add(factory.GetCollectable(Collectable.Type.Bomb));
             }
+            prevWidth = this.Size.Width;
+            prevHeight = this.Size.Height;
+            ratio = (double) prevHeight / prevWidth;
         }
 
         private WebSocketAdapter client;
@@ -104,9 +111,42 @@ namespace WebsocketClient
             Control control = (Control)sender;
 
             // Ensure the Form remains square (Height = Width). 
-            if (control.Size.Height != control.Size.Width)
+            /*int nextWidth = prevWidth;
+            int nextHeight = prevHeight;
+            if (prevWidth != control.Size.Width)
             {
-                control.Size = new Size(control.Size.Width, control.Size.Width);
+                nextWidth = control.Size.Width;
+                nextHeight = (int) ((double)control.Size.Width * ration);
+            }
+            else if (prevHeight != control.Size.Height)
+            {
+                nextHeight = control.Size.Height;
+                nextWidth = (int)((double)control.Size.Height / ration);
+            }
+
+            if(prevHeight != nextHeight || prevWidth != nextWidth)
+            {
+                control.Size = new Size(nextWidth, nextHeight);
+                prevWidth = nextWidth;
+                prevHeight = nextHeight;
+            }*/
+
+            if (prevHeight != control.Size.Height || prevWidth != control.Size.Width)
+            {
+                prevWidth = control.Size.Width;
+                prevHeight = control.Size.Height;
+                ratio = prevWidth / prevHeight;
+                Aggregate aggregate = new GameObjectsAggregate(obstacles, collectables, players);
+                GameIterator gameIterator = aggregate.CreateIterator();
+                IterableViewObject first = gameIterator.First();
+                if(first != null)
+                {
+                    first.SetRatio(ratio);
+                    while (gameIterator.HasNext())
+                    {
+                        gameIterator.Next().SetRatio(ratio);
+                    }
+                }
             }
         }
 
