@@ -6,11 +6,8 @@ using System.Threading.Tasks;
 
 namespace WebsocketClient
 {
-    public class Obstacle : IterableViewObject
+    public interface IterableViewObject
     {
-        public void SetRatio(double ratio)
-        {
-            //throw new NotImplementedException();
-        }
+        void SetRatio(double ratio);
     }
 }

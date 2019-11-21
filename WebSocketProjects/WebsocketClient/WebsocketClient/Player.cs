@@ -9,7 +9,7 @@ using WebsocketClient.State;
 
 namespace WebsocketClient
 {
-    public class Player
+    public class Player: IterableViewObject
     {
         public int id;
         public TransparentCar car;
@@ -85,6 +85,11 @@ namespace WebsocketClient
         {
 
             return id.Equals(((Player)obj).id);
+        }
+
+        public void SetRatio(double ratio)
+        {
+            //throw new NotImplementedException();
         }
     }
 }

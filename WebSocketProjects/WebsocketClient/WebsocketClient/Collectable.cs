@@ -1,6 +1,6 @@
 ﻿namespace WebsocketClient
 {
-    public abstract class Collectable
+    public abstract class Collectable: IterableViewObject
     {
         public enum Type
         {
@@ -16,5 +16,10 @@
 
         // make collectable ineffective
         public abstract void RemoveEffect();
+
+        public void SetRatio(double ratio)
+        {
+            //throw new System.NotImplementedException();
+        }
     }
 }
