@@ -81,6 +81,12 @@
     <Compile Include="SlowCarBuilder.cs" />
     <Compile Include="SpeedBoost.cs" />
     <Compile Include="SpeedPowerUpStrategies\SpeedPowerUpAlgorithm.cs" />
+    <Compile Include="State\MoveFasterState.cs" />
+    <Compile Include="State\MoveSlowerState.cs" />
+    <Compile Include="State\MoveState.cs" />
+    <Compile Include="State\MoveStateContext.cs" />
+    <Compile Include="State\MoveStopState.cs" />
+    <Compile Include="State\MoveTurnState.cs" />
     <Compile Include="UIToolBox\TransparentTextBox.cs">
       <SubType>Component</SubType>
     </Compile>
