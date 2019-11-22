@@ -12,12 +12,7 @@ namespace WebSocketServerWorking.Collectables
 
         public int duration { get; protected set; } // duration in milliseconds of the collectable item effect
 
-        public double
-            effectStrength
-        {
-            get;
-            protected set;
-        } // effectStrength could be bigger for better performing players, decrease over time, etc.
+        public double effectStrength { get; protected set; } // effectStrength could be bigger for better performing players, decrease over time, etc.
 
         protected string spriteName; // name of the sprite resource used to represent collectable on the map
 
@@ -30,6 +25,7 @@ namespace WebSocketServerWorking.Collectables
         // make collectable ineffective
         public abstract void RemoveEffect();
 
+        // TODO check if timer actually works and calls EffectExpired() when disposed after using() block
         // use picked up collectable item, stop using it after timer expires
         public void PickUp()
         {
