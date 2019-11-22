@@ -31,14 +31,14 @@ namespace WebSocketServerWorking
             return DatabaseManagerHolder.instance;
         }
 
-        public MySqlDataReader StartConnection(string sql)
+        public (MySqlDataReader, string) StartConnection(string sql)
         {
 
             cnn = new MySqlConnection(ConnectionString);
             cnn.Open();
             command = new MySqlCommand(sql, cnn);
             sqlDataReader = command.ExecuteReader();
-            return sqlDataReader;
+            return (sqlDataReader, cnn.GetSchema().TableName);
         }
 
         public void CloseConnection()

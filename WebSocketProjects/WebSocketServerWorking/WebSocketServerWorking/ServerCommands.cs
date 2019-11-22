@@ -17,6 +17,7 @@ namespace WebSocketServerWorking
 
         public static void StartCommandListener(WebSocketServer wssv, string[] args)
         {
+            HttpServerMiddleware httpServerMiddleware = new HttpServerMiddleware();
             string first_command = args.Length > 0 ? args[0] : "";
             string command;
             bool exit = false;
@@ -76,7 +77,9 @@ namespace WebSocketServerWorking
                     case "help":
                         Console.WriteLine("*****List of available commands*****");
                         Console.WriteLine("clear - clear the console");
+                        Console.WriteLine("custom-sql-query - writes custom SQL query to database");
                         Console.WriteLine("http-server-start - starts HTTP server");
+                        Console.WriteLine("http-server-stop - stops HTTP server");
                         Console.WriteLine("players data  - lists public data of connected players");
                         Console.WriteLine("start - start the Websocket Server");
                         Console.WriteLine("seed-users-table - seeds users table with test data");
@@ -87,23 +90,45 @@ namespace WebSocketServerWorking
                         break;
 
                     case "http-server-start":
-                        HttpServerController.Instance.StartServer(8080);
+                        if (HttpServerController.Instance.GetServerStatus() == true)
+                        {
+                            Console.WriteLine("Http server was already started.");
+                        }
+                        else
+                        {
+                            HttpServerController.Instance.StartServer(8080);
+                        }                            
+                        break;
+
+                    case "http-server-stop":
+                        if (HttpServerController.Instance.GetServerStatus())
+                        {
+                            HttpServerController.Instance.StopServer();
+                            Console.WriteLine("Http server has been stopped successfully");
+                        }
+                        else
+                            Console.WriteLine("Http server is not started yet.");
                         break;
 
                     case "seed-users-table":
                         Random r = new Random();
-                        for (int c = 0; c < 100; c++)             
-                            HttpServerController.Instance.SeedTable("INSERT into user(username, nickname, password, car_model, credits) VALUES ('test" + c.ToString() + "', 'nickname" + c.ToString() + "', 'password" + c.ToString() + "'," + c.ToString() + "," + r.Next() + ")");
+                        for (int c = 0; c < 100; c++)
+                            httpServerMiddleware.SendRequest("INSERT into user(username, nickname, password, car_model, credits) VALUES ('test" + c.ToString() + "', 'nickname" + c.ToString() + "', 'password" + c.ToString() + "'," + c.ToString() + "," + r.Next() + ")");
                         Console.WriteLine("Users table has been seeded");
                         break;
 
                     case "clear-users-table":
-                        HttpServerController.Instance.SeedTable("TRUNCATE user");
+                        httpServerMiddleware.SendRequest("TRUNCATE user");
                         Console.WriteLine("Users table has been reset");
                         break;
-                   /* case "http-server-stop":
-                        HttpServerController.Instance.
-                        break;*/
+
+                    case "custom-sql-query":
+                        Console.WriteLine("Please write new SQL query: ");
+                        string query = Console.ReadLine();
+                        httpServerMiddleware.SendRequest(query);
+                        foreach(string s in httpServerMiddleware.ReturnResponse())
+                            Console.WriteLine(s);
+                        break;
 
                     default:
                         Console.WriteLine("Unknown Command: \"" + command + "\"");

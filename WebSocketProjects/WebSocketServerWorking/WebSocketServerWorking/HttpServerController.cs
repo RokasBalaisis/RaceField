@@ -17,6 +17,8 @@ namespace WebSocketServerWorking
 {
     public sealed class HttpServerController
     {
+        private HttpServer httpsrv = null;
+        private bool serverStatus = false;
         private static readonly HttpServerController instance = new HttpServerController();
         // Explicit static constructor to tell C# compiler
         // not to mark type as beforefieldinit
@@ -34,64 +36,95 @@ namespace WebSocketServerWorking
             get{ return instance; }
         }
 
-        public void SeedTable(string sql)
+        public List<string> InitializeConnection(string sql)
         {
+            List<string> result = new List<string>();
             var dbMan = DBmanager.GetDBmanager();
-                var sqlDataReader = dbMan.StartConnection(sql);
-                dbMan.CloseConnection();
+            string tableName = dbMan.StartConnection(sql).Item2;
+            dbMan.CloseConnection();
+            var sqlDataReader = dbMan.StartConnection(sql).Item1;
+            result.Add("*********************************");
+            result.Add(tableName);
+            while (sqlDataReader.Read())
+            {
+                result.Add("*********************************");
+                for (int i=0; i < sqlDataReader.FieldCount; i++)
+                {
+                    result.Add(sqlDataReader.GetName(i) + ": " + sqlDataReader[i] + " ");
+                }
+                result.Add("*********************************");
+            }
+                Console.WriteLine("Query has been completed successfully");
+            dbMan.CloseConnection();
+            return result;
+        }
+
+        public bool GetServerStatus()
+        {
+            return serverStatus;
         }
 
         public void StartServer(int port)
         {
-            var httpsrv = new HttpServer(port);
-            httpsrv.RootPath = ConfigurationManager.AppSettings["DocumentRootPath"];
-            httpsrv.OnGet += (sender, e) => {
-                var req = e.Request;
-                var res = e.Response;
-                var path = req.RawUrl;
-                switch(path)
-                {
-                    case "/users":
-                        var sql = "SELECT * from user";
-                        res.ContentType = "application/json";
-                        res.WriteContent(Encoding.UTF8.GetBytes(GetRequest(sql, "users").ToString()));
-                        break;
-
-                    default:
-                        res.ContentType = "application/json";
-                        res.StatusCode = 404;
-                        res.WriteContent(Encoding.UTF8.GetBytes(NotFoundError().ToString()));
-                        break;
-                }
-            };
-
-            httpsrv.Start();
-            if (httpsrv.IsListening)
+            if(!serverStatus)
             {
-                Console.WriteLine("Listening on port {0}, and providing WebSocket services:", httpsrv.Port);
-                foreach (var path in httpsrv.WebSocketServices.Paths)
-                    Console.WriteLine("- {0}", path);
+                serverStatus = true;
+                httpsrv = new HttpServer(port);
+                httpsrv.RootPath = ConfigurationManager.AppSettings["DocumentRootPath"];
+                httpsrv.OnGet += (sender, e) => {
+                    var req = e.Request;
+                    var res = e.Response;
+                    var path = req.RawUrl;
+                    switch (path)
+                    {
+                        case "/users":
+                            var sql = "SELECT * from user";
+                            res.ContentType = "application/json";
+                            res.WriteContent(Encoding.UTF8.GetBytes(GetRequest(sql, "users").ToString()));
+                            break;
+
+                        default:
+                            res.ContentType = "application/json";
+                            res.StatusCode = 404;
+                            res.WriteContent(Encoding.UTF8.GetBytes(NotFoundError().ToString()));
+                            break;
+                    }
+                };
+
+                httpsrv.Start();
+                if (httpsrv.IsListening)
+                {
+                    Console.WriteLine("Listening on port {0}, and providing WebSocket services:", httpsrv.Port);
+                    foreach (var path in httpsrv.WebSocketServices.Paths)
+                        Console.WriteLine("- {0}", path);
+                }
             }
         }
 
-
+        public void StopServer()
+        {
+            if(serverStatus)
+                httpsrv.Stop();
+            httpsrv = null;
+            serverStatus = false;
+        }
 
         public JObject GetRequest(string sql, string jsonName)
         {
             var dbMan = DBmanager.GetDBmanager();
             var sqlDataReader = dbMan.StartConnection(sql);
-            var columnCount = sqlDataReader.FieldCount;
+            var columnCount = sqlDataReader.Item1.FieldCount;
             JObject result = new JObject();
             JArray array = new JArray();
-            while (sqlDataReader.Read())
+            while (sqlDataReader.Item1.Read())
             {
                 JObject entry = new JObject();
                 for (int i = 0; i < columnCount; i++)
                 {
-                    if (sqlDataReader.GetValue(i).GetType() == typeof(int))
-                        entry.Add(sqlDataReader.GetName(i), int.Parse(sqlDataReader.GetValue(i).ToString()));
+                    if (sqlDataReader.Item1.GetValue(i).GetType() == typeof(int))
+                        entry.Add(sqlDataReader.Item1.GetName(i), int.Parse(sqlDataReader.Item1.GetValue(i).ToString()));
                     else
-                        entry.Add(sqlDataReader.GetName(i), sqlDataReader.GetValue(i).ToString());
+                        entry.Add(sqlDataReader.Item1.GetName(i), sqlDataReader.Item1.GetValue(i).ToString());
                 }
                 array.Add(entry);
                 result[jsonName] = array;
