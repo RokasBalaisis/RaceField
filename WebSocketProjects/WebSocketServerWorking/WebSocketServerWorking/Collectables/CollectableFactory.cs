@@ -1,16 +1,15 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace WebSocketServerWorking.Collectables
 {
     class CollectableFactory : Factory
     {
-        private readonly Bomb _bomb;
-        private readonly SpeedBoost _speedBoost;
+        private Dictionary<Collectable.Type, Collectable> _currentCollectables;
 
         public CollectableFactory()
         {
-            _bomb = (Bomb) GetCollectable(Collectable.Type.Bomb);
-            _speedBoost = (SpeedBoost) GetCollectable(Collectable.Type.SpeedBoost);
+            _currentCollectables = new Dictionary<Collectable.Type, Collectable>();
         }
 
         public override Collectable GetCollectable(Collectable.Type type)
@@ -20,32 +19,20 @@ namespace WebSocketServerWorking.Collectables
 
         public Collectable GetCollectable(Collectable.Type type, Bomb.Variant bombVariant)
         {
-            switch (type)
-            {
-                case Collectable.Type.Bomb:
-                    try
-                    {
-                        var temp = (Bomb) _bomb.Clone();
-                        temp.ChangeVariant(bombVariant);
-                        return  temp;
-                    }
-                    catch (NullReferenceException)
-                    {
-                        return new Bomb(bombVariant);
-                    }
-                case Collectable.Type.SpeedBoost:
-                    try
-                    {
-                        var temp = (SpeedBoost) _speedBoost.Clone();
-                        return  temp;
-                    }
-                    catch (NullReferenceException)
-                    {
-                        return new SpeedBoost();
-                    }
-                default:
-                    throw new ArgumentOutOfRangeException(nameof(type), type, "Unknown type of collectable");
-            }
+            if (!_currentCollectables.ContainsKey(type))
+                switch (type)
+                {
+                    case Collectable.Type.Bomb:
+                        _currentCollectables[type] = new Bomb(bombVariant);
+                        break;
+                    case Collectable.Type.SpeedBoost:
+                        _currentCollectables[type] = new SpeedBoost();
+                        break;
+                    default:
+                        throw new ArgumentOutOfRangeException(nameof(type), type, "Unknown type of collectable");
+                }
+
+            return _currentCollectables[type];
         }
     }
 }
