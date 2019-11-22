@@ -6,11 +6,10 @@ using System.Threading.Tasks;
 
 namespace WebsocketClient
 {
-    public class Obstacle : IterableViewObject
+    public interface GameIterator
     {
-        public void SetRatio(double ratio)
-        {
-            //throw new NotImplementedException();
-        }
+        IterableViewObject First();
+        IterableViewObject Next();
+        bool HasNext();
     }
 }
