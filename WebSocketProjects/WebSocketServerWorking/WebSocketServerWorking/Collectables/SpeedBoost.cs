@@ -10,6 +10,11 @@ namespace WebSocketServerWorking.Collectables
             this.effectStrength = effectStrength;
         }
 
+        public override void Animate()
+        {
+            throw new NotImplementedException();
+        }
+
         public override void ApplyEffect()
         {
             throw new NotImplementedException();

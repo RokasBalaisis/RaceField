@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace WebSocketServerWorking.Collectables
 {
@@ -42,6 +41,11 @@ namespace WebSocketServerWorking.Collectables
         public Bomb(Variant var, int durationMilliseconds = 0, double strength = 0.0)
         {
             ChangeVariant(var, durationMilliseconds, strength);
+        }
+        
+        public override void Animate()
+        {
+            throw new NotImplementedException();
         }
 
         public override void ApplyEffect()
