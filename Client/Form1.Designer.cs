@@ -29,7 +29,6 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
             this.ConnectBTN = new System.Windows.Forms.Button();
             this.DisconnectBTN = new System.Windows.Forms.Button();
             this.saveFileDialog1 = new System.Windows.Forms.SaveFileDialog();
@@ -231,10 +230,10 @@
             // MainMenuTitle
             // 
             this.MainMenuTitle.AutoSize = true;
-            this.MainMenuTitle.Font = new System.Drawing.Font("Lucida Handwriting", 15F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.MainMenuTitle.Font = new System.Drawing.Font("Microsoft Sans Serif", 15F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.MainMenuTitle.Location = new System.Drawing.Point(432, 33);
             this.MainMenuTitle.Name = "MainMenuTitle";
-            this.MainMenuTitle.Size = new System.Drawing.Size(144, 27);
+            this.MainMenuTitle.Size = new System.Drawing.Size(125, 25);
             this.MainMenuTitle.TabIndex = 0;
             this.MainMenuTitle.Text = "MAIN MENU";
             // 
@@ -277,7 +276,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(128)))), ((int)(((byte)(128)))), ((int)(((byte)(255)))));
-            this.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("$this.BackgroundImage")));
+            this.BackgroundImage = global::WebsocketClient.Properties.Resources.background1;
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.ClientSize = new System.Drawing.Size(1264, 681);
             this.Controls.Add(this.DebugLogField);
