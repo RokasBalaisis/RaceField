@@ -76,6 +76,7 @@
     <Compile Include="Iterator\IterableViewObject.cs" />
     <Compile Include="Iterator\Iterator.cs" />
     <Compile Include="Log\ConsoleLogger.cs" />
+    <Compile Include="Log\DataBaseLogger.cs" />
     <Compile Include="Log\EmailLogger.cs" />
     <Compile Include="Log\GameLogger.cs" />
     <Compile Include="Log\Logger.cs" />
