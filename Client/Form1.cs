@@ -504,6 +504,7 @@ namespace WebsocketClient
             //DebugLogField.Select(DebugLogField.TextLength, DebugLogField.TextLength);
             //DebugLogField.SelectedRtf = string.Format(@"{{\rtf1\ansi \plain {0} \plain0 \par }}", message);
             //DebugLogField.ScrollToCaret();
+            
         }
     }
 }
