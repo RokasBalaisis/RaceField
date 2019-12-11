@@ -8,7 +8,7 @@ using System.Windows.Forms;
 
 namespace WebsocketClient
 {
-    class TransparentTextLog : TransparentRichTextField
+    public class TransparentTextLog : TransparentRichTextField
     {
         protected override void OnDraw()
         {

@@ -75,6 +75,11 @@
     <Compile Include="ICommand.cs" />
     <Compile Include="Iterator\IterableViewObject.cs" />
     <Compile Include="Iterator\Iterator.cs" />
+    <Compile Include="Log\ConsoleLogger.cs" />
+    <Compile Include="Log\EmailLogger.cs" />
+    <Compile Include="Log\GameLogger.cs" />
+    <Compile Include="Log\Logger.cs" />
+    <Compile Include="Log\LoggerBase.cs" />
     <Compile Include="Memento.cs" />
     <Compile Include="MovementStrategies\MoveFaster.cs" />
     <Compile Include="MovementStrategies\MoveAlgorithm.cs" />
