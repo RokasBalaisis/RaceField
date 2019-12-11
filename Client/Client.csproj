@@ -75,6 +75,7 @@
     <Compile Include="ICommand.cs" />
     <Compile Include="Iterator\IterableViewObject.cs" />
     <Compile Include="Iterator\Iterator.cs" />
+    <Compile Include="Memento.cs" />
     <Compile Include="MovementStrategies\MoveFaster.cs" />
     <Compile Include="MovementStrategies\MoveAlgorithm.cs" />
     <Compile Include="MovementStrategies\MoveTurn.cs" />

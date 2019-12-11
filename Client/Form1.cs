@@ -9,8 +9,8 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using Newtonsoft.Json.Linq;
 using System.Runtime.InteropServices;
-using WebSocketSharp;
-using WebSocketSharp.Net;
+//using WebSocketSharp;
+//using WebSocketSharp.Net;
 using System.Diagnostics;
 
 namespace WebsocketClient
@@ -21,6 +21,8 @@ namespace WebsocketClient
         private int prevWidth;
         private int prevHeight;
         private double ratio;
+
+        private Memento playerInitialState;
         
         public bool algoset = false; 
         
@@ -392,9 +394,9 @@ namespace WebsocketClient
         {
             //PlayingField_update((JArray) data["mapChanges"]);
 
-            foreach(var change in (JArray)data["mapChanges"])
+            foreach (var change in (JArray)data["mapChanges"])
             {
-                if(change["type"].ToString() == "updateLocation") // TODO create static constants with API names
+                if (change["type"].ToString() == "updateLocation") // TODO create static constants with API names
                 {
                     int pubid = int.Parse(change["id"].ToString());
                     Point newpos = new Point(int.Parse(change["location"]["X"].ToString()), int.Parse(change["location"]["Y"].ToString()));
@@ -408,6 +410,10 @@ namespace WebsocketClient
                         players[index].position = newpos;
                         players[index].car.Location = newpos;
                     }
+                }
+                else if (change["type"].ToString() == "respawn")
+                {
+                    myPlayer.SetMemento(playerInitialState);
                 }
             }
             //parse changes array here not give to other methods
@@ -455,8 +461,8 @@ namespace WebsocketClient
                         y = newplayer.position.Y; // TODO this variable should be in player object not form 
                         me = newplayer;
 
-                        myPlayer = new MyPlayer(me);                       
-                        
+                        myPlayer = new MyPlayer(me);
+                        playerInitialState = myPlayer.CreateMemento();
                         
                     }
                 } // update existing

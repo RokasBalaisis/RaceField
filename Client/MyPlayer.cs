@@ -9,7 +9,7 @@ using WebsocketClient.Bridge;
 
 namespace WebsocketClient
 {
-    public class MyPlayer
+    public class MyPlayer  
     {
         private bool isUpPressed = false;
         private bool isDownPressed = false;
@@ -20,14 +20,30 @@ namespace WebsocketClient
         public static int angle = 0;
         public static double mod = 0;
 
+        private int health = 100;
+
         public Player player;        
 
         public MyPlayer(Player player)
         {
-            this.player = player;            
-            
+            this.player = player;
         }
 
+        public Memento CreateMemento()
+        {
+            Memento memento = new Memento();
+            memento.setState(health, player.position, player.angle, player.mod);
+            return memento;
+        }
+
+        public void SetMemento(Memento memento)
+        {
+            Tuple<int, Point, int, int> state = memento.getState();
+            health = state.Item1;
+            player.position = state.Item2;
+            player.angle = state.Item3;
+            player.mod = state.Item4;
+        }
 
         public int getSpeed()
         {
