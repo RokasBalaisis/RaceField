@@ -1,6 +1,6 @@
 ﻿namespace WebSocketServerWorking.Collectables
 {
-    class DurationLongVisitor
+    public class DurationLongVisitor : Visitor
     {
         private const double Modifier = 5;
 

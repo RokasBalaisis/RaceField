@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using WebSocketServerWorking.Collectables;
 using WebSocketSharp.Server;
 
 namespace WebSocketServerWorking
@@ -18,6 +19,13 @@ namespace WebSocketServerWorking
 
         public static void Main(string[] args)
         {
+            CollectableFactory f = new CollectableFactory();
+            for (int i = 0; i < 10; i++)
+            {
+                var c = f.GetRandomCollectable();
+                Console.WriteLine("{0,6} {1,6} {2,10} {3}", c.duration.ToString(), c.effectStrength.ToString(), c.spriteName, c.GetType());
+            }
+
             //for now only one map will be on
             currentMapData[0] = new MapController();
 

@@ -7,6 +7,14 @@ namespace WebSocketServerWorking.Collectables
     {
         private Dictionary<Collectable.Type, Collectable> _currentCollectables;
 
+        Random random = new Random();
+
+        public DurationLongVisitor durationLongVisitor = new DurationLongVisitor();
+        public DurationShortVisitor durationShortVisitor = new DurationShortVisitor();
+        public StrengthHighVisitor strengthHighVisitor = new StrengthHighVisitor();
+        public StrengthLowVisitor strengthLowVisitor = new StrengthLowVisitor();
+        public SpriteVisitor spriteVisitor = new SpriteVisitor();
+
         public CollectableFactory()
         {
             _currentCollectables = new Dictionary<Collectable.Type, Collectable>();
@@ -33,6 +41,57 @@ namespace WebSocketServerWorking.Collectables
                 }
 
             return _currentCollectables[type];
+        }
+
+        public Collectable GetRandomCollectable()
+        {
+            dynamic c = GetCollectable(random.Next(2) > 0 ? Collectable.Type.Bomb : Collectable.Type.SpeedBoost);
+            c = Convert.ChangeType(c, c.GetType());
+
+            double duration = 0;
+            double strength = 0;
+
+            switch (random.Next(3))
+            {
+                case 0:
+                    duration = c.modify(durationShortVisitor);
+                    break;
+                case 1:
+                    duration = c.duration;
+                    break;
+                case 2:
+                    duration = c.modify(durationLongVisitor);
+                    break;
+            }
+
+            switch (random.Next(3))
+            {
+                case 0:
+                    strength = c.modify(strengthLowVisitor);
+                    break;
+                case 1:
+                    strength = c.effectStrength;
+                    break;
+                case 2:
+                    strength = c.modify(strengthHighVisitor);
+                    break;
+            }
+
+            dynamic newCollectable = null;
+
+            switch (c)
+            {
+                case Bomb b:
+                    newCollectable = new Bomb(Bomb.Variant.Custom, (int) duration, strength);
+                    newCollectable.ChangeSprite((int) b.modify(spriteVisitor));
+                    break;
+                case SpeedBoost s:
+                    newCollectable = new SpeedBoost((int) duration, strength);
+                    newCollectable.ChangeSprite((int) s.modify(spriteVisitor));
+                    break;
+            }
+
+            return newCollectable;
         }
     }
 }

@@ -1,6 +1,6 @@
 ﻿namespace WebSocketServerWorking.Collectables
 {
-    class SpriteVisitor : Visitor
+    public class SpriteVisitor : Visitor
     {
         public double visit(Bomb bomb)
         {

@@ -31,8 +31,6 @@ namespace WebSocketServerWorking
             this.nickname = nickname;
             CollectableFactory f = new CollectableFactory();
             Collectable a = f.GetCollectable(Collectable.Type.Bomb);
-
-            a.
         }
 
         /*

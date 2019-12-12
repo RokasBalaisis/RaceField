@@ -2,6 +2,6 @@
 {
     interface Visitable
     {
-        void modify(Visitor visitor);
+        double modify(Visitor visitor);
     }
 }

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace WebSocketServerWorking.Collectables
 {
-    class Bomb : Collectable, Visitable
+    public class Bomb : Collectable, Visitable
     {
         public enum Variant // variants of bombs that are allowed
         {
@@ -71,9 +71,9 @@ namespace WebSocketServerWorking.Collectables
                 spriteName = spriteNameList[spriteIndex];
         }
 
-        public void modify(Visitor visitor)
+        public double modify(Visitor visitor)
         {
-            visitor.visit(this);
+            return visitor.visit(this);
         }
     }
 }

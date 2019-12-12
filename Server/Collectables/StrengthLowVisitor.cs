@@ -1,17 +1,17 @@
 ﻿namespace WebSocketServerWorking.Collectables
 {
-    class StrengthLowVisitor : Visitor
+    public class StrengthLowVisitor : Visitor
     {
-        private const double Modifier = 0.3;
+        private const double Modifier = 0.7;
 
         public double visit(Bomb bomb)
         {
-            return bomb.duration * Modifier;
+            return bomb.effectStrength * Modifier;
         }
 
         public double visit(SpeedBoost speedBoost)
         {
-            return speedBoost.duration * Modifier;
+            return speedBoost.effectStrength * Modifier;
         }
     }
 }

@@ -36,7 +36,7 @@ namespace WebSocketServerWorking.Collectables
             protected set;
         } // effectStrength could be bigger for better performing players, decrease over time, etc.
 
-        protected string spriteName; // name of the sprite resource used to represent collectable on the map
+        public string spriteName; // name of the sprite resource used to represent collectable on the map
 
         // draw animation 
         public abstract void Animate();

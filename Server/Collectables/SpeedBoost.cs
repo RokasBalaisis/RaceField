@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace WebSocketServerWorking.Collectables
 {
-    class SpeedBoost : Collectable, Visitable
+    public class SpeedBoost : Collectable, Visitable
     {
         public static List<string> spriteNameList = new List<string>
         {
@@ -50,9 +50,9 @@ namespace WebSocketServerWorking.Collectables
                 spriteName = spriteNameList[spriteIndex];
         }
 
-        public void modify(Visitor visitor)
+        public double modify(Visitor visitor)
         {
-            visitor.visit(this);
+            return visitor.visit(this);
         }
     }
 }
