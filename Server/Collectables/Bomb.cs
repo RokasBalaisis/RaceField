@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace WebSocketServerWorking.Collectables
 {
-    class Bomb : Collectable, IPrototype
+    class Bomb : Collectable, Visitable
     {
         public enum Variant // variants of bombs that are allowed
         {
@@ -14,23 +14,7 @@ namespace WebSocketServerWorking.Collectables
             Custom
         }
 
-        List<int> durationList = new List<int>
-        {
-            100,
-            300,
-            800,
-            5000
-        };
-
-        List<double> effectStrengthList = new List<double>
-        {
-            0.2,
-            0.4,
-            0.8,
-            2
-        };
-
-        List<string> spriteNameList = new List<string>
+        public static List<string> spriteNameList = new List<string>
         {
             "light",
             "medium",
@@ -42,7 +26,7 @@ namespace WebSocketServerWorking.Collectables
         {
             ChangeVariant(var, durationMilliseconds, strength);
         }
-        
+
         public override void Animate()
         {
             throw new NotImplementedException();
@@ -67,38 +51,29 @@ namespace WebSocketServerWorking.Collectables
                         "Custom variant must have duration and strength specified and above 0");
                 duration = durationMilliseconds;
                 effectStrength = strength;
+                ChangeSprite(0);
             }
             else
             {
                 duration = durationList[(int) variant];
                 effectStrength = effectStrengthList[(int) variant];
+                spriteName = spriteNameList[(int) variant];
             }
-
-            spriteName = decideSpriteName(durationMilliseconds, strength);
 
             return true;
         }
 
-        string decideSpriteName(int durationMilliseconds, double strength)
+        public void ChangeSprite(int spriteIndex)
         {
-            int durationIndex = durationMilliseconds < durationList[0] ? 0 : durationList.Count - 1;
-            int strengthIndex = strength < effectStrengthList[0] ? 0 : effectStrengthList.Count - 1;
-
-            for (int i = 0; i < durationList.Count - 2; i++)
-            {
-                if (durationList[i] <= durationMilliseconds && durationMilliseconds < durationList[i + 1])
-                    durationIndex = i;
-                if (effectStrengthList[i] <= strength && strength < effectStrengthList[i + 1])
-                    strengthIndex = i;
-            }
-
-            int index = (int) (durationIndex * 0.5 + strengthIndex * 0.5);
-            return spriteNameList[index];
+            if (spriteIndex < 0 || spriteIndex + 1 > spriteNameList.Count)
+                spriteName = spriteNameList[0];
+            else
+                spriteName = spriteNameList[spriteIndex];
         }
 
-        public IPrototype Clone()
+        public void modify(Visitor visitor)
         {
-            return (IPrototype) MemberwiseClone();
+            visitor.visit(this);
         }
     }
 }

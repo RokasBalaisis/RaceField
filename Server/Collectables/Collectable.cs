@@ -1,4 +1,5 @@
-﻿using System.Timers;
+﻿using System.Collections.Generic;
+using System.Timers;
 
 namespace WebSocketServerWorking.Collectables
 {
@@ -10,9 +11,30 @@ namespace WebSocketServerWorking.Collectables
             SpeedBoost
         }
 
+        public static List<int> durationList = new List<int>
+        {
+            100,
+            300,
+            800,
+            5000
+        };
+
+        public static List<double> effectStrengthList = new List<double>
+        {
+            0.2,
+            0.4,
+            0.8,
+            2
+        };
+
         public int duration { get; protected set; } // duration in milliseconds of the collectable item effect
 
-        public double effectStrength { get; protected set; } // effectStrength could be bigger for better performing players, decrease over time, etc.
+        public double
+            effectStrength
+        {
+            get;
+            protected set;
+        } // effectStrength could be bigger for better performing players, decrease over time, etc.
 
         protected string spriteName; // name of the sprite resource used to represent collectable on the map
 
