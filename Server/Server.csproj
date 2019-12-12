@@ -101,18 +101,23 @@
     <Compile Include="Collectables\Visitable.cs" />
     <Compile Include="Collectables\Visitor.cs" />
     <Compile Include="ConsoleHelpers.cs" />
+    <Compile Include="Context.cs" />
     <Compile Include="DataChange.cs" />
     <Compile Include="DBmanager.cs" />
     <Compile Include="HttpServerMiddleware.cs" />
     <Compile Include="HttpServerController.cs" />
+    <Compile Include="IExpression.cs" />
     <Compile Include="IHttpServer.cs" />
     <Compile Include="MapState.cs" />
+    <Compile Include="NoExpression.cs" />
+    <Compile Include="NonterminalExpression.cs" />
     <Compile Include="ServerController.cs" />
     <Compile Include="SocketComunicator.cs" />
     <Compile Include="MapController.cs" />
     <Compile Include="Player.cs" />
     <Compile Include="ServerCommands.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="TerminalExpression.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
