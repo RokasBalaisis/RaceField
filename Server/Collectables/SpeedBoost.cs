@@ -1,13 +1,22 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace WebSocketServerWorking.Collectables
 {
-    class SpeedBoost : Collectable, IPrototype
+    public class SpeedBoost : Collectable, Visitable
     {
+        public static List<string> spriteNameList = new List<string>
+        {
+            "small",
+            "medium",
+            "big",
+            "Sonic"
+        };
+
         public SpeedBoost(int durationMilliseconds = 5000, double effectStrength = 0.2)
         {
-            duration = duration;
-            this.effectStrength = effectStrength;
+            ChangeVariant(durationMilliseconds, effectStrength);
+            ChangeSprite(0);
         }
 
         public override void Animate()
@@ -25,14 +34,25 @@ namespace WebSocketServerWorking.Collectables
             throw new NotImplementedException();
         }
 
-        public void ChangeVariant()
+        public bool ChangeVariant(int durationMilliseconds = 0, double strength = 0.0)
         {
-            throw new NotImplementedException();
+            duration = durationMilliseconds;
+            effectStrength = strength;
+
+            return true;
         }
 
-        public IPrototype Clone()
+        public void ChangeSprite(int spriteIndex)
         {
-            return (IPrototype) MemberwiseClone();
+            if (spriteIndex < 0 || spriteIndex + 1 > spriteNameList.Count)
+                spriteName = spriteNameList[0];
+            else
+                spriteName = spriteNameList[spriteIndex];
+        }
+
+        public double modify(Visitor visitor)
+        {
+            return visitor.visit(this);
         }
     }
 }

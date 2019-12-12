@@ -91,9 +91,15 @@
     <Compile Include="Collectables\Bomb.cs" />
     <Compile Include="Collectables\Collectable.cs" />
     <Compile Include="Collectables\CollectableFactory.cs" />
+    <Compile Include="Collectables\DurationLongVisitor.cs" />
+    <Compile Include="Collectables\DurationShortVisitor.cs" />
     <Compile Include="Collectables\Factory.cs" />
-    <Compile Include="Collectables\IPrototype.cs" />
     <Compile Include="Collectables\SpeedBoost.cs" />
+    <Compile Include="Collectables\SpriteVisitor.cs" />
+    <Compile Include="Collectables\StrengthHighVisitor.cs" />
+    <Compile Include="Collectables\StrengthLowVisitor.cs" />
+    <Compile Include="Collectables\Visitable.cs" />
+    <Compile Include="Collectables\Visitor.cs" />
     <Compile Include="ConsoleHelpers.cs" />
     <Compile Include="DataChange.cs" />
     <Compile Include="DBmanager.cs" />
@@ -127,5 +133,6 @@
       <Install>false</Install>
     </BootstrapperPackage>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

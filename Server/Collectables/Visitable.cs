@@ -1,7 +1,7 @@
 ﻿namespace WebSocketServerWorking.Collectables
 {
-    interface IPrototype
+    interface Visitable
     {
-        IPrototype Clone();
+        double modify(Visitor visitor);
     }
 }
