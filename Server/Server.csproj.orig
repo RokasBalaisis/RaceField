@@ -109,11 +109,14 @@
     <Compile Include="IExpression.cs" />
     <Compile Include="IHttpServer.cs" />
     <Compile Include="MapState.cs" />
-    <Compile Include="NoExpression.cs" />
-    <Compile Include="NonterminalExpression.cs" />
+<<<<<<< HEAD
     <Compile Include="Mediator.cs" />
     <Compile Include="Colleague.cs" />
     <Compile Include="MapMediator.cs" />
+=======
+    <Compile Include="NoExpression.cs" />
+    <Compile Include="NonterminalExpression.cs" />
+>>>>>>> development
     <Compile Include="ServerController.cs" />
     <Compile Include="SocketComunicator.cs" />
     <Compile Include="MapController.cs" />

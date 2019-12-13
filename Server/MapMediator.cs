@@ -111,5 +111,9 @@ namespace WebSocketServerWorking
             this.changesController.Notify(message);
         }
 
+        public override void Send(string message, MapController mapController)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
