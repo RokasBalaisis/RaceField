@@ -4,7 +4,7 @@ namespace WebsocketClient
 {
     class Bomb : Collectable
     {
-        public Bomb(int duration = 1, double strength = 0.5)
+        public Bomb(int duration, double strength)
         {
             durationMilliseconds = duration;
             this.strength = strength;

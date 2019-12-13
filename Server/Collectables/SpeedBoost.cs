@@ -13,7 +13,7 @@ namespace WebSocketServerWorking.Collectables
             "Sonic"
         };
 
-        public SpeedBoost(int durationMilliseconds = 5000, double effectStrength = 0.2)
+        public SpeedBoost(int durationMilliseconds, double effectStrength)
         {
             ChangeVariant(durationMilliseconds, effectStrength);
             ChangeSprite(0);
@@ -34,7 +34,7 @@ namespace WebSocketServerWorking.Collectables
             throw new NotImplementedException();
         }
 
-        public bool ChangeVariant(int durationMilliseconds = 0, double strength = 0.0)
+        public bool ChangeVariant(int durationMilliseconds, double strength)
         {
             duration = durationMilliseconds;
             effectStrength = strength;

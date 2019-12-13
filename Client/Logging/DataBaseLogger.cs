@@ -12,7 +12,7 @@ namespace WebsocketClient.Logging
         { }
         protected override void WriteMessage(string msg)
         {
-            throw new NotImplementedException();
+            //throw new NotImplementedException();
         }
     }
 }

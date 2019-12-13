@@ -22,7 +22,7 @@ namespace WebSocketServerWorking.Collectables
             "nuclear"
         };
 
-        public Bomb(Variant var, int durationMilliseconds = 0, double strength = 0.0)
+        public Bomb(Variant var, int durationMilliseconds, double strength)
         {
             ChangeVariant(var, durationMilliseconds, strength);
         }
@@ -42,7 +42,7 @@ namespace WebSocketServerWorking.Collectables
             throw new NotImplementedException();
         }
 
-        public bool ChangeVariant(Variant variant, int durationMilliseconds = 0, double strength = 0.0)
+        public bool ChangeVariant(Variant variant, int durationMilliseconds, double strength)
         {
             if (variant == Variant.Custom)
             {

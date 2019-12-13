@@ -31,10 +31,10 @@ namespace WebSocketServerWorking.Collectables
                 switch (type)
                 {
                     case Collectable.Type.Bomb:
-                        _currentCollectables[type] = new Bomb(bombVariant);
+                        _currentCollectables[type] = new Bomb(bombVariant, 1, 0.5);
                         break;
                     case Collectable.Type.SpeedBoost:
-                        _currentCollectables[type] = new SpeedBoost();
+                        _currentCollectables[type] = new SpeedBoost(1, 0.5);
                         break;
                     default:
                         throw new ArgumentOutOfRangeException(nameof(type), type, "Unknown type of collectable");

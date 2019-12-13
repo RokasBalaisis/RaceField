@@ -4,7 +4,7 @@ namespace WebsocketClient
 {
     class SpeedBoost : Collectable
     {
-        public SpeedBoost(int duration = 1, double strength = 0.5)
+        public SpeedBoost(int duration, double strength)
         {
             durationMilliseconds = duration;
             this.strength = strength;

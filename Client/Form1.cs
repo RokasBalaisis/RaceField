@@ -12,6 +12,7 @@ using System.Runtime.InteropServices;
 //using WebSocketSharp;
 //using WebSocketSharp.Net;
 using System.Diagnostics;
+using WebsocketClient.Logging;
 
 namespace WebsocketClient
 {
@@ -44,6 +45,7 @@ namespace WebsocketClient
         public Factory factory;
         public const int CollectablesOnMapCount = 5;
         public Player me;
+        private Logger logger;
 
         //public List<MyPlayer> myPlayers;
         public MyPlayer myPlayer;
@@ -74,6 +76,7 @@ namespace WebsocketClient
             prevWidth = this.Size.Width;
             prevHeight = this.Size.Height;
             ratio = (double) prevHeight / prevWidth;
+            logger = new Logger(DebugLogField);
         }
 
         private WebSocketAdapter client;
@@ -309,24 +312,24 @@ namespace WebsocketClient
         private void OnOpen()
         {
             isConnected = true;
-            DebugLog(string.Format("Connected to {0} successfully ", client.Url()));
+            logger.log(string.Format("Connected to {0} successfully ", client.Url()), LogType.Info);
         }
 
         private void OnError(string message)
         {
-            DebugLog("Error: " + message);
+            logger.log("Error: " + message, LogType.Error);
         }
 
         private void OnClose()
         {
             isConnected = false;
-            DebugLog(string.Format("Disconnected with {0}", client.Url()));
+            logger.log(string.Format("Disconnected with {0}", client.Url()), LogType.Info);
             PlayingField_destroy();
         }
 
         private void MessageReceived(string dataString) // Facade // root message get function to call other functions to parse messages
         {
-            DebugLog("Response: " + dataString);
+            logger.log("Response: " + dataString, LogType.Debug);
             JObject data = JObject.Parse(dataString);
             switch (data["type"].ToString())
             {
@@ -340,7 +343,7 @@ namespace WebsocketClient
                     MapSetupReceived(data);
                     break;
                 default:
-                    DebugLog("ERROR undefined message received!!!");
+                    logger.log("ERROR undefined message received!!!", LogType.Error);
                     break;
             }
         }
@@ -451,7 +454,7 @@ namespace WebsocketClient
                 int idx = players.IndexOf(newplayer);
                 if (idx == -1) // create new
                 {
-                    DebugLog("NEW PLAYER ADDED");
+                    logger.log("NEW PLAYER ADDED", LogType.Debug);
                     idx = players.Count;
                     players.Add(newplayer);
                     SpawnPlayer(newplayer);
@@ -496,15 +499,6 @@ namespace WebsocketClient
         private void DBPanelCnnectBTN_Click(object sender, EventArgs e)
         {
             // TODO: connect to database register if not exists or connect and get player prefs from DB
-            
-        }
-
-        // TODO make anabstract class for logger that can be singleton
-        void DebugLog(string message)
-        {
-            //DebugLogField.Select(DebugLogField.TextLength, DebugLogField.TextLength);
-            //DebugLogField.SelectedRtf = string.Format(@"{{\rtf1\ansi \plain {0} \plain0 \par }}", message);
-            //DebugLogField.ScrollToCaret();
             
         }
 
