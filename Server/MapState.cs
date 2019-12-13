@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace WebSocketServerWorking
 {
-    public class MapState
+    public class MapState : Colleague
     {
         public MapController mapController; // TODO make sure - maybe this is not needed 
         public List<Player> players; // observers collection
@@ -32,7 +32,7 @@ namespace WebSocketServerWorking
         };
         static int counter = 0;             //temporary
 
-        public MapState(MapController mapController)
+        public MapState(MapController mapController, Mediator mediator) : base(mediator) 
         {
             this.mapController = mapController;
             players = new List<Player>();
@@ -104,6 +104,16 @@ namespace WebSocketServerWorking
                 }
             }
             return null;
+        }
+
+        public void Send(string message)
+        {
+            mediator.Send(message, this);
+        }
+
+        public void Notify(string message)
+        {
+
         }
     }
 }

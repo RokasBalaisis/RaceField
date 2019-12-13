@@ -107,6 +107,9 @@
     <Compile Include="HttpServerController.cs" />
     <Compile Include="IHttpServer.cs" />
     <Compile Include="MapState.cs" />
+    <Compile Include="Mediator.cs" />
+    <Compile Include="Colleague.cs" />
+    <Compile Include="MapMediator.cs" />
     <Compile Include="ServerController.cs" />
     <Compile Include="SocketComunicator.cs" />
     <Compile Include="MapController.cs" />

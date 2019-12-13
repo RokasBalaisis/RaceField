@@ -9,62 +9,62 @@ using System.Drawing;
 using Newtonsoft.Json.Linq;
 using System.Threading;
 
+
 namespace WebSocketServerWorking
 {
-    public class MapController // Fasadas
+    public class MapController : Colleague // Fasadas
     {
         static int timeForMapUpdate = 100;
-        MapState mapState;
+        
         public ChangesController changesController;
         int tickCounter = 0;
         WebSocketSessionManager sessions = null;
         bool sessionConnected = false;
         Timer gameTimer;
 
-        public MapController()
-        {
-            mapState = new MapState(this);
-            changesController = new ChangesController(mapState);
+        public MapController(Mediator mediator) : base(mediator)
+        {           
+            changesController = new ChangesController(mediator);
         }
 
         public int RegisterPlayer(Player player)
         {
-            int id = mapState.RegisterPlayer(player);
+            int id = mediator.RegisterPlayer(player);
             UpdateClientsFull();
             return id;
         }
 
         public void UnregisterPlayer(Player player)
         {
-            mapState.UnregisterPlayer(player);
+            mediator.UnRegisterPlayer(player);
             UpdateClientsFull(); // TODO maybe partial would suffice 
         }
 
         public JObject GetPlayersData()
         {
-            return mapState.GetPlayersData();
+            return mediator.GetPlayersData();
         }
 
         public JObject GetPlayerPublicStatsByID(string ID)
         {
-            return mapState.GetPlayerPublicStatsByID(ID);
+            return mediator.GetPlayerPublicStatsByID(ID);
         }
 
         public JObject GetPlayerTagByID(string ID)
         {
-            return mapState.GetPlayerTagByID(ID);
+            return mediator.GetPlayerTagByID(ID);
         }
 
         public Player FindPlayer(string ID)
         {
-            return mapState.FindPlayer(ID);
+            return mediator.FindPlayer(ID);
         }
 
         public void SendAll(JObject data) // observer notifyAll()
         {
-            for (int i = 0; i < mapState.players.Count; i++)
+            for (int i = 0; i < GetPlayersCount(); i++)
             {
-                sessions.SendTo(data.ToString(), mapState.players[i].ID);
+                sessions.SendTo(data.ToString(), mediator.GetPlayerID(i));
             }
         }
 
@@ -72,14 +72,14 @@ namespace WebSocketServerWorking
         {
             JObject data = new JObject();
             data["players"] = GetPlayersData();
-            data["playerCount"] = mapState.players.Count;
+            data["playerCount"] = GetPlayersCount();
             data["type"] = "mapSetup";
-            for (int i = 0; i < mapState.players.Count; i++)
+            for (int i = 0; i < GetPlayersCount(); i++)
             {
-                data["myData"] = mapState.players[i].GetMyStats();
-                sessions.SendTo(data.ToString(), mapState.players[i].ID);
+                data["myData"] = mediator.GetPlayerStats(i);
+                sessions.SendTo(data.ToString(), mediator.GetPlayerID(i));
             }
-            changesController.ClearCache();
+            mediator.ClearChangesCache();            
         }
 
         public void UpdateClientsPartial() // TODO make thread safe changesCache working/clearing 
@@ -87,7 +87,8 @@ namespace WebSocketServerWorking
             // update clients and change full map data with those changes
             JObject data = new JObject();
             data["type"] = "mapUpdate";
-            JArray changes = changesController.FlushCache();
+            JArray changes = mediator.FlushChangesCache();
+
             data["mapChanges"] = changes;
             data["changesCount"] = changes.Count;
             SendAll(data);
@@ -107,7 +108,7 @@ namespace WebSocketServerWorking
             else
             { // send only changes
                 Console.WriteLine("partial update");
-                if(changesController.GetChangesCount() != 0)
+                if(mediator.GetChangesCount() != 0)
                 {
                     UpdateClientsPartial();
                 }
@@ -123,5 +124,12 @@ namespace WebSocketServerWorking
             gameTimer = new Timer(MapTick, null, 0, 10);
             return sessionConnected;
         }
+
+
+        public int GetPlayersCount()
+        {
+            return mediator.GetPlayersCount();
+        }  
+
     }
 }

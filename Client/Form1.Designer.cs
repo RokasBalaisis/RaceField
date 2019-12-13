@@ -161,6 +161,7 @@
             this.MainMenuPanel.Name = "MainMenuPanel";
             this.MainMenuPanel.Size = new System.Drawing.Size(960, 540);
             this.MainMenuPanel.TabIndex = 25;
+            this.MainMenuPanel.Paint += new System.Windows.Forms.PaintEventHandler(this.MainMenuPanel_Paint);
             // 
             // DBPanel
             // 

@@ -496,6 +496,7 @@ namespace WebsocketClient
         private void DBPanelCnnectBTN_Click(object sender, EventArgs e)
         {
             // TODO: connect to database register if not exists or connect and get player prefs from DB
+            
         }
 
         // TODO make anabstract class for logger that can be singleton
@@ -505,6 +506,11 @@ namespace WebsocketClient
             //DebugLogField.SelectedRtf = string.Format(@"{{\rtf1\ansi \plain {0} \plain0 \par }}", message);
             //DebugLogField.ScrollToCaret();
             
+        }
+
+        private void MainMenuPanel_Paint(object sender, PaintEventArgs e)
+        {
+
         }
     }
 }

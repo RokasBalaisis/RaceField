@@ -26,8 +26,19 @@ namespace WebSocketServerWorking
                 Console.WriteLine("{0,6} {1,6} {2,10} {3}", c.duration.ToString(), c.effectStrength.ToString(), c.spriteName, c.GetType());
             }
 
+
+            MapMediator mediator = new MapMediator();
+
+            MapController mapcontroller = new MapController(mediator);
+            MapState mapstate = new MapState(mapcontroller, mediator);
+            ChangesController changescontroller = new ChangesController(mediator);
+
+            mediator.MapController = mapcontroller;
+            mediator.MapState = mapstate;
+            mediator.ChangesController = changescontroller;
+
             //for now only one map will be on
-            currentMapData[0] = new MapController();
+            currentMapData[0] = new MapController(mediator);
 
             ConsoleHelpers.SetInitialWindowSize();
             ConsoleHelpers.PrintLogo();
